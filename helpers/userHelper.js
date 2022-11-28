@@ -45,11 +45,16 @@ function checkId(input){
         throw "ERROR: ID CAN'T BE EMPTY STRING";
     }
 }
+function checkBoolean(input) {
+    if(!input) throw 'ERROR: ALL FIELDS MUST HAVE AN INPUT!';
+    if (typeof input !== 'boolean') throw "ERROR: INPUT MUST BE A BOOLEAN!";
+};
 module.exports ={
     checkEmail,
     validatePhone,
     checkInputString,
     checkInputPassword,
     checkAge,
-    checkId
+    checkId,
+    checkBoolean
 };
