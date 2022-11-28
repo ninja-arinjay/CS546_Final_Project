@@ -36,10 +36,20 @@ function checkAge(input){
     if(typeof input !== 'number') throw "Error : Age must be a number."
     if(input <16 || input >90) throw "Error : Invalid Age"
 }
+function checkId(input){
+    if (!input) throw "ERROR: ID DOES NOT EXIST";
+    if (typeof input !== "string") {
+        throw "ERROR: ID MUST BE A STRING";
+    }
+    if (input.trim().length === 0) {
+        throw "ERROR: ID CAN'T BE EMPTY STRING";
+    }
+}
 module.exports ={
     checkEmail,
     validatePhone,
     checkInputString,
     checkInputPassword,
-    checkAge
+    checkAge,
+    checkId
 };
