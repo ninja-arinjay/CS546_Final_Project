@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 {
   "name": "cs546_final_project",
   "version": "1.0.0",
@@ -26,5 +25,3 @@
     "mongodb": "^4.12.1"
   }
 }
-=======
->>>>>>> parent of a2c8918 (Added .gitignore and used npm init)
