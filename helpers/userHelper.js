@@ -53,7 +53,26 @@ function checkId(input) {
 function checkBoolean(input) {
   if (!input) throw "ERROR: ALL FIELDS MUST HAVE AN INPUT!";
   if (typeof input !== "boolean") throw "ERROR: INPUT MUST BE A BOOLEAN!";
-}
+};
+function dateCheck (date1 , date2){
+  let inp1 = date1.split('/');
+  let inp2 = date2.split('/');
+  if(inp1[0]<=inp2[0]){
+    if(inp1[0]==inp2[0]){
+      if(inp1[1]<=inp2[1]){
+        if(inp1[1]==inp2[1]){
+          if(inp1[2]>inp2[2]){
+            throw "Invalid Date";
+          }
+        }
+      }else{
+        throw "Invalid Date";
+      }
+    }
+  }else{
+    throw "Invalid Date";
+  }
+};
 module.exports = {
   checkEmail,
   validatePhone,
@@ -62,4 +81,5 @@ module.exports = {
   checkAge,
   checkId,
   checkBoolean,
+  dateCheck
 };
