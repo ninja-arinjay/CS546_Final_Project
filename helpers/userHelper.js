@@ -54,23 +54,34 @@ function checkBoolean(input) {
   if (!input) throw "ERROR: ALL FIELDS MUST HAVE AN INPUT!";
   if (typeof input !== "boolean") throw "ERROR: INPUT MUST BE A BOOLEAN!";
 };
-function dateCheck (date1 , date2){
-  let inp1 = date1.split('/');
-  let inp2 = date2.split('/');
-  if(inp1[0]<=inp2[0]){
-    if(inp1[0]==inp2[0]){
-      if(inp1[1]<=inp2[1]){
-        if(inp1[1]==inp2[1]){
-          if(inp1[2]>inp2[2]){
-            throw "Invalid Date";
+function dateCheck (d1 , d2){
+  let inp1 = d1.split('/');
+  let inp2 = d2.split('/');
+  let date1 = parseInt(inp1[1]);
+  let month1 = parseInt(inp1[0]);
+  let year1 = parseInt(inp1[2]);
+  let date2 = parseInt(inp2[1]);
+  let month2 = parseInt(inp2[0]);
+  let year2 = parseInt(inp2[2]);
+  if(year1<=year2){
+      if(year1==year2){
+          if(month1<=month2){
+              if(month1==month2){
+                  if(date1>date2){
+                      throw "Invalid Date";
+                  }
+              }else{
+                  return;
+              }
           }
-        }
+          else{
+              return;
+          }
       }else{
-        throw "Invalid Date";
+          return;
       }
-    }
   }else{
-    throw "Invalid Date";
+      throw "Invalid Date";
   }
 };
 module.exports = {
