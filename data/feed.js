@@ -4,11 +4,6 @@ const { ObjectId } = require("mongodb");
 const userHelper = require("../helpers/userHelper");
 
 const createFeed = async (teamID, createdByID, title, description) => {
-  if (!teamID) throw "ERROR: TEAM ID IS REQUIRED";
-  if (!createdByID) throw "ERROR: CREATED BY ID IS REQUIRED";
-  if (!title) throw "ERROR: TITLE IS REQUIRED";
-  if (!description) throw "ERROR: DESCRIPTION IS REQUIRED";
-
   userHelper.checkInputString(title);
   userHelper.checkInputString(description);
   userHelper.checkId(teamID);
@@ -51,7 +46,6 @@ const createFeed = async (teamID, createdByID, title, description) => {
 };
 
 const getFeedById = async (id) => {
-  if (!id) throw "ERROR: ID IS REQUIRED";
   userHelper.checkInputString(id);
   userHelper.checkId(id);
 
@@ -86,8 +80,25 @@ const getAllFeed = async () => {
   return allFeed;
 };
 
+const getAllFeedByTeam = async (id) => {
+  userHelper.checkId(id);
+  id = id.trim();
+  const feedCollection = await feed();
+  if (feedCollection === undefined) {
+    throw "ERROR: DATABASE COULD NOT BE REACHED.";
+  }
+
+  const allFeed = await feedCollection.find({ teamID: ObjectId(id) }).toArray();
+  if (!allFeed) throw "ERROR: NO POSTS FOUND";
+
+  allFeed.forEach((element) => {
+    element._id = element._id.toString();
+  });
+
+  return allFeed;
+};
+
 const removeFeed = async (id) => {
-  if (!id) throw "ERROR: ID IS REQUIRED";
   userHelper.checkInputString(id);
   userHelper.checkId(id);
 
@@ -109,9 +120,45 @@ const removeFeed = async (id) => {
   return { deleted: true, data: feedPost };
 };
 
+const updateFeed = async (id, title, description) => {
+  // TODO: update the feed post with the given id
+  userHelper.checkId(id);
+  userHelper.checkInputString(title);
+  userHelper.checkInputString(description);
+
+  id = id.trim();
+  title = title.trim();
+  description = description.trim();
+
+  const feedCollection = await feed();
+  if (feedCollection === undefined) {
+    throw "ERROR: DATABASE COULD NOT BE REACHED.";
+  }
+
+  const updatedFeedData = feedCollection.findOne({ _id: ObjectId(id) });
+  if (!updatedFeedData) throw "ERROR: POST NOT FOUND";
+
+  updatedFeedData.title = title;
+  updatedFeedData.description = description;
+
+  const updatedInfo = await feedCollection.updateOne(
+    { _id: ObjectId(id) },
+    { $set: updatedFeedData }
+  );
+  if (updatedInfo.modifiedCount === 0) {
+    throw "ERROR: COULD NOT UPDATE POST";
+  }
+
+  let updatedPost = feedCollection.findOne({ _id: ObjectId(id) });
+  updatedPost._id = updatedPost._id.toString();
+  return updatedPost;
+};
+
 module.exports = {
   createFeed,
   getFeedById,
   getAllFeed,
+  getAllFeedByTeam,
   removeFeed,
+  updateFeed,
 };
