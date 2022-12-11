@@ -1,0 +1,96 @@
+const { ObjectId } = require("mongodb");
+
+function checkEmail(email) {
+  //email error checking
+  let re = /^[^\s@]+@([^\s@.,]+\.)+[^\s@.,]{2,}$/;
+  if (re.test(email.trim()) === false) {
+    throw "INVALID EMAIL! TRY AGAIN!";
+  }
+}
+
+function validatePhone(phone) {
+  //Validate Phone number
+  let re = /^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/;
+  if (re.test(phone.trim()) === false) {
+    throw "INVALID PHONE NUMBER! TRY AGAIN!";
+  }
+}
+function checkInputString(input) {
+  if (!input) throw "ERROR: ALL FIELDS MUST HAVE AN INPUT!";
+  if (typeof input !== "string") throw "ERROR: INPUT MUST BE A STRING!";
+  if (input.trim().length === 0)
+    throw "INPUT CANNOT BE AN EMPTY STRING OR STRING WITH JUST SPACES";
+}
+function checkInputPassword(input) {
+  if (!input) {
+    throw "ERROR: PASSWORD MUST BE INPUTTED";
+  }
+  if (typeof input !== "string") {
+    throw "ERROR: PASSWORD MUST BE A STRING!";
+  }
+  let rePass = /^[a-zA-Z0-9.\-_$#&@*!]{6,}$/;
+  if (rePass.test(input) === false) {
+    throw "ERROR: Not a valid password!";
+  }
+}
+function checkAge(input) {
+  if (!input) throw "Error : Age must have an input.";
+  if (typeof input !== "number") throw "Error : Age must be a number.";
+  if (input < 16 || input > 90) throw "Error : Invalid Age";
+}
+function checkId(input) {
+  if (!input) throw "ERROR: ID DOES NOT EXIST";
+  if (typeof input !== "string") {
+    throw "ERROR: ID MUST BE A STRING";
+  }
+  if (input.trim().length === 0) {
+    throw "ERROR: ID CAN'T BE EMPTY STRING";
+  }
+  if (ObjectId.isValid(id.trim())) {
+    throw "ERROR: NOT A VALID ID - DOESN'T EXIST!";
+  }
+}
+function checkBoolean(input) {
+  if (!input) throw "ERROR: ALL FIELDS MUST HAVE AN INPUT!";
+  if (typeof input !== "boolean") throw "ERROR: INPUT MUST BE A BOOLEAN!";
+};
+function dateCheck (d1 , d2){
+  let inp1 = d1.split('/');
+  let inp2 = d2.split('/');
+  let date1 = parseInt(inp1[1]);
+  let month1 = parseInt(inp1[0]);
+  let year1 = parseInt(inp1[2]);
+  let date2 = parseInt(inp2[1]);
+  let month2 = parseInt(inp2[0]);
+  let year2 = parseInt(inp2[2]);
+  if(year1<=year2){
+      if(year1==year2){
+          if(month1<=month2){
+              if(month1==month2){
+                  if(date1>date2){
+                      throw "Invalid Date";
+                  }
+              }else{
+                  return;
+              }
+          }
+          else{
+              return;
+          }
+      }else{
+          return;
+      }
+  }else{
+      throw "Invalid Date";
+  }
+};
+module.exports = {
+  checkEmail,
+  validatePhone,
+  checkInputString,
+  checkInputPassword,
+  checkAge,
+  checkId,
+  checkBoolean,
+  dateCheck
+};
