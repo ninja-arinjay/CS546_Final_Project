@@ -1,0 +1,111 @@
+
+    <div class="limiter">
+      <div
+        class="container-login100"
+        style="background-image: url('../public/login/images/bg-01.jpg')"
+      >
+        <div class="wrap-login100 p-l-55 p-r-55 p-t-65 p-b-54">
+          <form
+            class="login100-form validate-form"
+            id="login-form"
+            method="post"
+            action="/login"
+          >
+            <span class="login100-form-title p-b-49"> Login </span>
+
+            <div class="wrap-input100 email-div validate-input m-b-23">
+              <span class="label-input100">Email</span>
+              <input
+                class="input100 email"
+                type="text"
+                name="email"
+                id="email"
+                placeholder="Type your email"
+              />
+              <span class="focus-input100" data-symbol="&#xf206;"></span>
+            </div>
+
+            <div class="wrap-input100 password-div validate-input">
+              <span class="label-input100">Password</span>
+              <input
+                class="input100 password"
+                type="password"
+                name="password"
+                id="password"
+                placeholder="Type your password"
+              />
+              <span class="focus-input100" data-symbol="&#xf190;"></span>
+            </div>
+
+            <div class="text-right p-t-8 p-b-31"></div>
+
+            <div class="wrap-login100-form-btn">
+              <div class="login100-form-bgbtn"></div>
+              <button class="login100-form-btn">Login</button>
+            </div>
+
+            <div class="flex-col-c p-t-155">
+              <span class="txt1 p-b-17"> Or Sign Up Using </span>
+              <a href="/register" class="txt2" aria-label="Sign Up"> Sign Up </a>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+   {{#section 'script'}}
+    <script type="text/javascript">
+      jQuery(document).ready(function () {
+        jQuery("#login-form").validate({
+          ignore: [],
+
+          rules: {
+            email: {
+              required: true,
+              maxlength: 255,
+            },
+            password: {
+              required: true,
+              maxlength: 20,
+            },
+          },
+          errorPlacement: function (error, element) {
+            error.insertAfter("."+element.attr("id")+"-div");
+          },
+          submitHandler: function (form) {
+            // Prevent double submission
+            if (!beenSubmitted) {
+              beenSubmitted = true;
+              loaderShow();
+              form.submit();
+            }
+          },
+        });
+        jQuery.validator.addMethod(
+          "email",
+          function (value, element) {
+            return /^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i.test(
+              value
+            );
+          },
+          "Invalid Email"
+        );
+        jQuery.validator.addMethod(
+          "password",
+          function (value, element) {
+            var password_length = "4";
+            var passwordRegex = new RegExp(
+              "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{" +
+                password_length +
+                ",20}$"
+            );
+            if (value.length) {
+              return passwordRegex.test(value);
+            }
+            return true;
+          },
+          "Password must have a small letter, a capital letter, a digit and a special character and must have between 4-20 characters."
+        );
+      });
+    </script>
+ {{/section}}

@@ -1,72 +1,67 @@
-const mongoCollections = require("../config/mongoCollections");
+const mongoCollections = require("./../config/mongoCollections");
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
-const bcrypt = require("bcryptjs/dist/bcrypt");
+const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const helper = require("../helpers/userHelper");
+const helper = require("./../helpers/userHelper");
 
 const exportedMethods = {
+
   //Create a User
-  async createUser(
-    userName,
-    password,
-    email,
-    firstName,
-    lastName,
-    location,
-    bio,
-    age
-  ) {
-    try {
-      //Input Validations
-      helper.checkInputString(userName);
-      helper.checkInputPassword(password);
-      const hashedPass = await bcrypt.hash(password, saltRounds);
-      email = email.toLowerCase;
-      helper.checkEmail(email);
-      helper.checkInputString(firstName);
-      helper.checkInputString(lastName);
-      helper.checkInputString(location);
-      // What else can we check on location
-      helper.checkInputString(bio);
-      helper.checkAge(age);
-      // Teams Created and Teams Joined still pending
-      const userCollection = await users();
-      let duplicateUser = await userCollection.findOne({
-        userName: userName,
-      });
-      if (duplicateUser != null) {
-        throw `User already exits - ${JSON.stringify(duplicateUser)}`;
-      }
-      // when a user is created, teamsCreated and teamsJoined are empty
-      let newUserInfo = {
-        userName: userName.trim(),
-        password: hashedPass,
-        email: email.trim(),
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        location: location.trim(),
-        bio: bio.trim(),
-        age: age,
-        teamsCreated: [],
-        teamsJoined: [],
-      };
-      const insertInfo = await userCollection.insertOne(newUserInfo);
-      if (!insertInfo.acknowledged || insertInfo.insertedCount === 0) {
-        throw "ERROR: COULD NOT CREATE USER";
-      }
-      const newId = insertInfo.insertedId;
-      const newUser = await userCollection.findOne(newId);
-      if (!newUser) {
-        throw "ERROR: UNABLE TO FIND USER";
-      }
-      newUser._id = newUser._id.toString();
-      return newUser;
-    } catch (e) {
-      console.log(e);
+  
+  async createUser(result) {
+    const errorObject = {
+      status: 400,
+    };
+
+    //Input Validations
+
+    if (typeof result !== "object") {
+      errorObject.error = "Invalid Data Posted.";
+      throw errorObject;
     }
+    let objKeys = ['email','password','firstName','lastName','age','bio','location'];
+    objKeys.forEach((element) => {
+      helper.checkInput(
+        element,
+        result[element],
+        element + " of the user",
+      );
+      if (element !== "age") {
+        result[element] = result[element].trim();
+      }
+    });
+
+    let hashedPass = await bcrypt.hash(result.password, saltRounds);
+    result.password = hashedPass;
+    result.email = result["email"].toLowerCase();
+    result.teamsCreated = [];
+    result.teamsJoined = [];
+    const userCollection = await users();
+    let duplicateUser = await userCollection.findOne({
+      email: result.email,
+    });
+    if (duplicateUser != null) {
+      errorObject.error = "User with this email already exists.";
+      throw errorObject;
+    }
+
+    // when a user is created, teamsCreated and teamsJoined are empty
+
+    const insertInfo = await userCollection.insertOne(result);
+    if (!insertInfo.acknowledged || insertInfo.insertedCount === 0) {
+      errorObject.status = 500;
+      errorObject.error = "Could not create user.";
+      throw errorObject;
+    }
+    const newId = insertInfo.insertedId;
+    const newUser = await userCollection.findOne(newId);
+    newUser._id = newUser._id.toString();
+    return newUser;
   },
+
   //Search A User
+
   async checkUser(userName, password) {
     // Input Validation
     helper.checkInputString(userName);
@@ -186,7 +181,7 @@ const exportedMethods = {
       throw "ERROR: UPDATE FAILED!";
     }
     return await this.getUserById(id);
-  }
+  },
 };
 
 module.exports = exportedMethods;
