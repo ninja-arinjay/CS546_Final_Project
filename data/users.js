@@ -181,7 +181,11 @@ const exportedMethods = {
       throw "ERROR: UPDATE FAILED!";
     }
     return await this.getUserById(id);
+<<<<<<< HEAD
   },
+=======
+  }
+>>>>>>> main
 };
 
 module.exports = exportedMethods;

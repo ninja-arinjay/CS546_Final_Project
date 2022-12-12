@@ -53,16 +53,24 @@ function checkId(input) {
 function checkBoolean(input) {
   if (!input) throw "ERROR: ALL FIELDS MUST HAVE AN INPUT!";
   if (typeof input !== "boolean") throw "ERROR: INPUT MUST BE A BOOLEAN!";
+<<<<<<< HEAD
 }
 function dateCheck(d1, d2) {
   let inp1 = d1.split("/");
   let inp2 = d2.split("/");
+=======
+};
+function dateCheck (d1 , d2){
+  let inp1 = d1.split('/');
+  let inp2 = d2.split('/');
+>>>>>>> main
   let date1 = parseInt(inp1[1]);
   let month1 = parseInt(inp1[0]);
   let year1 = parseInt(inp1[2]);
   let date2 = parseInt(inp2[1]);
   let month2 = parseInt(inp2[0]);
   let year2 = parseInt(inp2[2]);
+<<<<<<< HEAD
   if (year1 <= year2) {
     if (year1 == year2) {
       if (month1 <= month2) {
@@ -296,6 +304,29 @@ function checkInput(input, val, variableName, routeFlag = false) {
   return true;
 }
 
+=======
+  if(year1<=year2){
+      if(year1==year2){
+          if(month1<=month2){
+              if(month1==month2){
+                  if(date1>date2){
+                      throw "Invalid Date";
+                  }
+              }else{
+                  return;
+              }
+          }
+          else{
+              return;
+          }
+      }else{
+          return;
+      }
+  }else{
+      throw "Invalid Date";
+  }
+};
+>>>>>>> main
 module.exports = {
   checkEmail,
   validatePhone,
@@ -304,6 +335,10 @@ module.exports = {
   checkAge,
   checkId,
   checkBoolean,
+<<<<<<< HEAD
   dateCheck,
   checkInput,
+=======
+  dateCheck
+>>>>>>> main
 };
