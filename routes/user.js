@@ -1,9 +1,11 @@
 const express = require("express");
 const data = require("../data");
 const userData = data.users;
+const feedData = data.feed;
 const router = express.Router();
 const path = require("path");
 const helpers = require("./../helpers/userHelper");
+const { title } = require("process");
 
 router.route("/").get(async (req, res) => {
   if (req.session.user) {
@@ -38,6 +40,7 @@ router
         throw errorObject;
       }
       let result = req.body;
+      console.log(result);
       let objKeys = ['email','password','firstName','lastName','age','bio','location'];
       objKeys.forEach((element) => {
        helpers.checkInput(
@@ -68,6 +71,55 @@ router
       } else {
         return res.status(400).render("user/register", {
           title: "Register",
+          error: [e],
+          layout: "auth",
+        });
+      }
+    }
+  });
+  router
+  .route("/createfeed")
+  .post(async (req, res) => {
+    try{
+      const errorObject = {
+        status: 400,
+      };
+      //Input Checking
+      if (typeof req.body !== "object") {
+        errorObject.error = "Invalid Data Posted.";
+        throw errorObject;
+      }
+      let result = req.body;
+      let objKeys = ['title','description'];
+      objKeys.forEach((element) =>{
+        helpers.checkInput(
+          element,
+          result[element],
+          element + "of the feed",
+          true
+        );
+      });
+      //retreiving teamID and userID - pending
+      result.teamID ='';
+      result.createdByID = '';
+      await feedData.createFeed(result[title],result[description],result[teamID],result[createdByID]);
+      res.redirect("/");
+    }catch (e){
+      if (
+        typeof e === "object" &&
+        e !== null &&
+        !Array.isArray(e) &&
+        "status" in e &&
+        "error" in e
+      ) {
+        return res.status(e.status).render("user/createFeed", {
+          title: "Create Feed",
+          error: [e.error],
+          layout: "auth",
+        });
+      } else {
+        return res.status(400).render("user/createFeed", {
+          title: "Create Feed",
           error: [e],
           layout: "auth",
         });
