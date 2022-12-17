@@ -1,0 +1,19 @@
+<h1 class="display-4">Feed</h1>
+<div id="fullfeed">
+  <a href="user/createfeed">Create a Post</a>
+  {{#each feedList}}
+    <div class="card">
+      <div class="card-header">
+        <h5>{{title}}</h5>
+        <h6>{{createdByID}}</h6>
+      </div>
+      <div class="card-content">
+        <p>{{description}}</p>
+      </div>
+      <div class="card-footer">
+        <p>Date: {{dataPosted}}</p>
+        <a href="/post/{{_id}}">Comments</a>
+      </div>
+    </div>
+  {{/each}}
+</div>
