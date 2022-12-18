@@ -46,7 +46,7 @@ function checkId(input) {
   if (input.trim().length === 0) {
     throw "ERROR: ID CAN'T BE EMPTY STRING";
   }
-  if (ObjectId.isValid(id.trim())) {
+  if (!ObjectId.isValid(input.trim())) {
     throw "ERROR: NOT A VALID ID - DOESN'T EXIST!";
   }
 }
