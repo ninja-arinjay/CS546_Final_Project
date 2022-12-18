@@ -37,7 +37,10 @@ router.route("/").get(async (req, res) => {
       teamCount: otherTeams,
     });
   } else {
-    return res.redirect("/login");
+    return res.render("static/static",{
+      title :"Landing",
+      layout: "../static/static"
+    });
   }
 });
 
