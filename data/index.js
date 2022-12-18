@@ -5,4 +5,8 @@ module.exports = {
   // posts: require("./posts"),
   // feed: require("./feed"),
   // comments: require("./comments"),
+  teamItems: require("./teamItems"),
+  posts: require("./posts"),
+  feed: require("./feed"),
+  comments: require("./comments"),
 };

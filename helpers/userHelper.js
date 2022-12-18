@@ -46,14 +46,15 @@ function checkId(input) {
   if (input.trim().length === 0) {
     throw "ERROR: ID CAN'T BE EMPTY STRING";
   }
-  if (ObjectId.isValid(id.trim())) {
+  if (!ObjectId.isValid(input.trim())) {
     throw "ERROR: NOT A VALID ID - DOESN'T EXIST!";
   }
 }
 function checkBoolean(input) {
-  if (!input) throw "ERROR: ALL FIELDS MUST HAVE AN INPUT!";
+  //if (!input) throw "ERROR: ALL FIELDS MUST HAVE AN INPUT!";
   if (typeof input !== "boolean") throw "ERROR: INPUT MUST BE A BOOLEAN!";
 }
+
 function dateCheck(d1, d2) {
   let inp1 = d1.split("/");
   let inp2 = d2.split("/");

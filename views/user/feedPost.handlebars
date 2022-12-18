@@ -1,0 +1,20 @@
+<div id="post-page">
+  <header>
+    <h1>{{title}}</h1>
+    <h2>Created by: {{createdByID}}</h2>
+  </header>
+  <div id="post-content">
+    <p>{{description}}</p>
+  </div>
+  <footer>
+    <p>Date: {{dataPosted}}</p>
+    {{! create comment button/form }}
+  </footer>
+  {{#each comments}}
+    <div class="comment">
+      <p>Commented by: {{createdByID}}</p>
+      <p>{{content}}</p>
+      <p>Date created: {{dateCreated}}</p>
+    </div>
+  {{/each}}
+</div>

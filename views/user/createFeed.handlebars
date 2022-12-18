@@ -1,0 +1,41 @@
+
+<h1 class="display-4">Create Feed</h1>
+<br />
+<form action="/createfeed" method="POST">
+  <div class="mb-3">
+    <div class="title">
+      <label for="title">Title</label>
+      <textarea
+        name="title"
+        type="text"
+        id="title"
+        placeholder="Enter the Title of your Feed."
+        value=""
+        required=""
+      ></textarea>
+      <div class="invalid-feedback">
+        Valid Title is required.
+      </div>
+    </div>
+    <div class="description">
+      <label for="description">Description</label>
+      <textarea
+        name="description"
+        type="text"
+        id="description"
+        placeholder="Enter the description of your Feed."
+        value=""
+        required=""
+      ></textarea>
+      <div class="invalid-feedback">
+        Valid Description is required.
+      </div>
+    </div>
+    <br />
+    <button id="postfeed-btn" type="submit" class="btn btn-light">Post Feed</button>
+    {{#if error}}
+      <p class={{class}}> {{error}}</p>
+    {{/if}}
+  </div>
+
+</form>
