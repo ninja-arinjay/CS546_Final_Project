@@ -26677,4 +26677,13 @@ pre[class*="language-"] {
   }
 }
 
+.error{
+  color: red;
+  size: 2em;
+}
+
+.success{
+  color: green;
+  size: 2em;
+}
 /*# sourceMappingURL=dashboard-free.css.map */

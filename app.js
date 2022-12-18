@@ -4,6 +4,7 @@ const session = require("express-session");
 const configRoutes = require("./routes");
 const static = express.static(__dirname + "/public");
 const exphbs = require("express-handlebars");
+const logger = require("./utils/logger");
 
 app.use("/public", static);
 app.use(express.json());
@@ -17,6 +18,24 @@ app.engine(
         if (!this._sections) this._sections = {};
         this._sections[name] = options.fn(this);
         return null;
+      },
+      checkInputValue: function (input, value, flag, options) {
+        var fnTrue = options.fn,
+          fnFalse = options.inverse;
+        input = input + "";
+        if (typeof value == "string") {
+          if (value == input) {
+            return flag ? fnTrue() : fnFalse();
+          } else {
+            return flag ? fnFalse() : fnTrue();
+          }
+        } else if (Array.isArray(value)) {
+          if (value.includes(input)) {
+            return flag ? fnTrue() : fnFalse();
+          } else {
+            return flag ? fnFalse() : fnTrue();
+          }
+        }
       },
     },
   })
@@ -50,4 +69,6 @@ app.use("/register", (req, res, next) => {
 
 configRoutes(app);
 
-app.listen(3000);
+app.listen(3000, function () {
+  logger.info("Server Started");
+});

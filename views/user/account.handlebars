@@ -1,0 +1,259 @@
+<main
+  class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+>
+  <!-- Navbar -->
+  <nav
+    class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
+    id="navbarBlur"
+  >
+    <div class="container-fluid py-1 px-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+          <li class="breadcrumb-item text-sm"><a
+              class="opacity-5 text-dark"
+              href="javascript:;"
+            >Pages</a></li>
+          <li
+            class="breadcrumb-item text-sm text-dark active"
+            aria-current="page"
+          >{{page}}</li>
+        </ol>
+        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+      </nav>
+      <div
+        class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
+        id="navbar"
+      >
+
+        <ul class="navbar-nav justify-content-end">
+          <li class="nav-item d-flex align-items-center">
+            <a
+              class="btn btn-outline-primary btn-sm mb-0 me-3"
+              href="/team"
+            >Cancel</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- End Navbar -->
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+        <div class="card card-plain mt-8">
+          {{#if error}}
+            <p class="error">{{error}}</p>
+          {{/if}}
+          <div class="card-header pb-0 text-left bg-transparent">
+            <h3 class="font-weight-bolder text-info text-gradient">Update Your
+              Profile</h3>
+            <p class="mb-0">Enter your team name and add users if you wish</p>
+          </div>
+          <div class="card-body">
+            <form
+              role="form"
+              id="main-form"
+              action="/account"
+              method="post"
+            >
+              <label>Email</label>
+              <div class="mb-3 email-div">
+                <input
+                  type="text"
+                  class="form-control required email"
+                  placeholder="email"
+                  aria-label="email"
+                  aria-describedby="name-addon"
+                  name="email",
+                  value="{{userData.email}}"
+                />
+              </div>
+              <label>First Name</label>
+              <div class="mb-3 firstName-div">
+                <input
+                  type="text"
+                  class="form-control required inputName"
+                  placeholder="firstname"
+                  aria-label="firstname"
+                  aria-describedby="name-addon"
+                  name="firstName",
+                  value="{{userData.firstName}}"
+                />
+              </div>
+              <label>Last Name</label>
+              <div class="mb-3 lastName-div">
+               <input
+                  type="text"
+                  class="form-control required inputName"
+                  placeholder="lastname"
+                  aria-label="lastname"
+                  aria-describedby="name-addon"
+                  name="lastName",
+                  value="{{userData.lastName}}"
+                />
+              </div>
+              <label>Location (Area)</label>
+              <div class="mb-3 location-div">
+             <input
+                  type="text"
+                  class="form-control required inputName"
+                  placeholder="location"
+                  aria-label="location"
+                  aria-describedby="name-addon"
+                  name="location",
+                  value="{{userData.location}}"
+                />
+              </div>
+              <label>Bio</label>
+              <div class="mb-3 bio-div">
+                 <textarea
+                class="form-control required"
+                type="text"
+                name="bio"
+                id="bio"
+                aria-label="bio"
+                aria-describedby="name-addon"
+                placeholder="Type your bio"
+              > {{userData.bio}}
+              </textarea>
+              </div>
+              <label>Age</label>
+              <div class="mb-3 age-div">
+                 <input
+                class="form-control required age"
+                type="number"
+                name="age"
+                id="age"
+                   aria-label="age"
+                aria-describedby="name-addon"
+                placeholder="Type your age"
+                min="12" max="120"
+                   value="{{userData.age}}"
+              />
+              </div>
+              <label>Password</label>
+              <div class="mb-3 password-div">
+                <input
+                class="form-control password"
+                type="password"
+                name="password"
+                id="password"
+                   aria-describedby="name-addon"
+              />
+              </div>
+              <div class="text-center">
+                <button
+                  type="submit"
+                  class="btn bg-gradient-info w-100 mt-4 mb-0"
+                >Update Profile</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{{#section 'script'}}
+
+    <script type="text/javascript">
+      jQuery(document).ready(function () {
+        jQuery("#main-form").validate({
+          ignore: [],
+
+          rules: {
+            email: {
+              required: true,
+              maxlength: 255,
+            },
+            password: {
+              required: true,
+              maxlength: 20,
+            },
+            username: {
+              required: true,
+            },
+            firstName: {
+              required: true,
+            },
+            lastName: {
+              required: true,
+            },
+            bio: {
+              required: true,
+              minlength: 5,
+            },
+            location: {
+              required: true,
+               minlength: 3,
+            },
+            age: {
+              required: true,
+              min: 12,
+              max:120
+            },
+          },
+          errorPlacement: function (error, element) {
+            error.insertAfter("." + element.attr("id") + "-div");
+          },
+          submitHandler: function (form) {
+            // Prevent double submission
+            if (!beenSubmitted) {
+              beenSubmitted = true;  
+              form.submit();
+            }
+          },
+        });
+        jQuery.validator.addMethod(
+          "email",
+          function (value, element) {
+            return /^[+a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i.test(
+              value
+            );
+          },
+          "Invalid Email"
+        );
+
+        jQuery.validator.addMethod(
+          "inputName",
+          function (value, element) {
+            return /\d*[a-zA-Z][a-zA-Z0-9 ]*$/i.test(
+              value
+            );
+          },
+          "Invalid Name"
+        );
+
+
+        jQuery.validator.addMethod(
+          "age",
+          function (value, element) {
+            return /^[0-9]+$/i.test(
+              value
+            );
+          },
+          "Invalid Age"
+        );
+
+        jQuery.validator.addMethod(
+          "password",
+          function (value, element) {
+            var password_length = "4";
+            var passwordRegex = new RegExp(
+              "^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{" +
+                password_length +
+                ",20}$"
+            );
+            if (value.length > 0) {
+              return passwordRegex.test(value);
+            }
+            return true;
+          },
+          "Password must have a small letter, a capital letter, a digit and a special character and must have between 4-20 characters."
+        );
+      });
+    </script>
+{{/section}}

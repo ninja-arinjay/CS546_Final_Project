@@ -1,0 +1,138 @@
+<main
+  class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+>
+  <!-- Navbar -->
+  <nav
+    class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
+    id="navbarBlur"
+  >
+    <div class="container-fluid py-1 px-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+          <li class="breadcrumb-item text-sm"><a
+              class="opacity-5 text-dark"
+              href="javascript:;"
+            >Pages</a></li>
+          <li
+            class="breadcrumb-item text-sm text-dark active"
+            aria-current="page"
+          >{{page}}</li>
+        </ol>
+        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+      </nav>
+      <div
+        class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
+        id="navbar"
+      >
+
+        <ul class="navbar-nav justify-content-end">
+          <li class="nav-item d-flex align-items-center">
+            <a
+              class="btn btn-outline-primary btn-sm mb-0 me-3"
+              href="/team/edit/{{team}}"
+            >Cancel</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- End Navbar -->
+  <div class="container-fluid py-4">
+    <div class="row">
+      {{#if error}}
+        <p class="error message-div">{{error}}</p>
+      {{/if}}
+      {{#if success}}
+        <p class="success message-div">{{success}}</p>
+      {{/if}}
+      <div class="card-body px-0 pt-0 pb-2">
+        <div class="table-responsive p-0">
+          <table class="table align-items-center mb-0">
+            <thead>
+              <tr>
+                <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >User Name</th>
+                <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                >User Email</th>
+                 <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                >Age</th>
+                 <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                >Location</th>
+                 <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                >Bio</th>
+                <th
+                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                >Options</th>
+              </tr>
+            </thead>
+            <tbody>
+              {{#if userData}}
+              {{#each userData}}
+                <tr>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm" style="text-transform: uppercase;">{{this.firstName}} {{this.lastName}}</h6>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{this.email}}</h6>
+                      </div>
+                    </div>
+
+                  </td>
+                   <td>
+                    <div class="d-flex px-2 py-1">
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{this.age}}</h6>
+                      </div>
+                    </div>
+
+                  </td>
+                   <td>
+                    <div class="d-flex px-2 py-1">
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{this.location}}</h6>
+                      </div>
+                    </div>
+
+                  </td>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div class="d-flex flex-column justify-content-center">
+                        <h6 class="mb-0 text-sm">{{this.bio}}</h6>
+                      </div>
+                    </div>
+
+                  </td>
+                  <td class="align-middle text-center text-sm">
+                    <a href="/team/adminAddMember/{{../team}}/{{this._id}}"><span
+                      class="badge badge-sm bg-gradient-success"
+                    >Add To Team</span></a>
+                  </td>
+
+
+                </tr>
+              {{/each}}
+              {{/if}}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</main>
+

@@ -158,7 +158,7 @@ function checkInput(input, val, variableName, routeFlag = false) {
         } must not be empty.`;
         throw errorObject;
       }
-      inputRegExp = /^[A-Za-z0-9 ]*$/;
+      inputRegExp = /\d*[a-zA-Z][a-zA-Z0-9 ]*$/;
       valid = inputRegExp.test(val);
       if (!valid) {
         errorObject.error = `${
@@ -182,7 +182,7 @@ function checkInput(input, val, variableName, routeFlag = false) {
         } must not be empty.`;
         throw errorObject;
       }
-      inputRegExp = /^[A-Za-z0-9 ]*$/;
+      inputRegExp = /\d*[a-zA-Z][a-zA-Z0-9 ]*$/;
       valid = inputRegExp.test(val);
       if (!valid) {
         errorObject.error = `${
@@ -286,6 +286,25 @@ function checkInput(input, val, variableName, routeFlag = false) {
           variableName || "Provided variable"
         }   must be a valid Age.`;
         throw errorObject;
+      }
+      break;
+
+    case "id":
+      if (typeof val !== "string") {
+        errorObject.error = `${
+          variableName || "Provided variable"
+        } must be a string.`;
+        throw errorObject;
+      }
+      val = val.trim();
+      if (!val) {
+        errorObject.error = `${
+          variableName || "Provided variable"
+        } must not be empty.`;
+        throw errorObject;
+      }
+      if (!ObjectId.isValid(val)) {
+        throw "Invalid User.";
       }
       break;
 

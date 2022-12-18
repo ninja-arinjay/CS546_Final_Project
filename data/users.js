@@ -4,11 +4,11 @@ const { ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const helper = require("./../helpers/userHelper");
+const { use } = require("../routes/user");
 
 const exportedMethods = {
-
   //Create a User
-  
+
   async createUser(result) {
     const errorObject = {
       status: 400,
@@ -20,13 +20,17 @@ const exportedMethods = {
       errorObject.error = "Invalid Data Posted.";
       throw errorObject;
     }
-    let objKeys = ['email','password','firstName','lastName','age','bio','location'];
+    let objKeys = [
+      "email",
+      "password",
+      "firstName",
+      "lastName",
+      "age",
+      "bio",
+      "location",
+    ];
     objKeys.forEach((element) => {
-      helper.checkInput(
-        element,
-        result[element],
-        element + " of the user",
-      );
+      helper.checkInput(element, result[element], element + " of the user");
       if (element !== "age") {
         result[element] = result[element].trim();
       }
@@ -62,37 +66,41 @@ const exportedMethods = {
 
   //Search A User
 
-  async checkUser(userName, password) {
+  async checkUser(email, password) {
     // Input Validation
-    helper.checkInputString(userName);
-    helper.checkInputPassword(password);
+
+    const errorObject = {
+      status: 400,
+    };
+
+    helper.checkInput("email", email);
+    helper.checkInput("password", password);
 
     const userCollection = await users();
 
-    let Query; // query the db
-    let compareFoundUser; // compare the passwords
-    try {
-      Query = await userCollection.findOne({
-        userName: userName,
-      });
+    let row;
+    let comparePassword; // compare the passwords
 
-      if (Object.keys(Query).length === 0) {
-        throw "Either the username or password is invalid";
-      } else {
-        compareFoundUser = await bcrypt.compare(password, Query.password);
-        if (!compareFoundUser) {
-          throw "Either the username or password is invalid";
-        } else {
-          return {
-            authenticated: true,
-            id: Query["_id"].toString(),
-          };
-        }
-      }
-    } catch (e) {
-      throw e;
+    row = await userCollection.findOne({
+      email: email.trim().toLowerCase(),
+    });
+
+    if (row == null) {
+      errorObject.error = "Email is not registered in the system.";
+      throw errorObject;
+    }
+
+    comparePassword = await bcrypt.compare(password, row.password.trim());
+    if (!comparePassword) {
+      throw "Invalid Password Provided";
+    } else {
+      return {
+        authenticated: true,
+        id: row["_id"].toString(),
+      };
     }
   },
+
   //Get All users
   async getAllUsers() {
     const userCollection = await users();
@@ -105,9 +113,10 @@ const exportedMethods = {
     }
     return getAllUser;
   },
+
   //Search profile
   async getUserById(id) {
-    helper.checkId(id);
+    helper.checkInput("id", id, "USER");
     const userCollection = await users();
     id = id.trim();
     if (!ObjectId.isValid(id)) {
@@ -122,6 +131,7 @@ const exportedMethods = {
     getuser._id = getuser._id.toString();
     return getuser;
   },
+
   //Delete a User
   async removeUserById(id) {
     helper.checkId(id);
@@ -137,10 +147,10 @@ const exportedMethods = {
     }
     return `${user_name} has been successfully deleted!`;
   },
+
   //Update a User
   async updateUser(
     id,
-    userName,
     password,
     email,
     firstName,
@@ -149,7 +159,6 @@ const exportedMethods = {
     bio,
     age
   ) {
-    helper.checkInputString(userName);
     helper.checkInputPassword(password);
     helper.checkEmail(email);
     helper.checkInputString(firstName);
@@ -163,7 +172,6 @@ const exportedMethods = {
       throw "Error : No user present for that user Id.";
     }
     let userUpdateInfo = {
-      userName: userName,
       password: password,
       email: email,
       firstName: firstName,
@@ -181,6 +189,45 @@ const exportedMethods = {
       throw "ERROR: UPDATE FAILED!";
     }
     return await this.getUserById(id);
+  },
+  async getUsersByTeam(array) {
+    const errorObject = {
+      status: 400,
+    };
+    if (!Array.isArray(array)) {
+      errorObject.status = 500;
+      errorObject.error = "Undefined Data";
+      throw errorObject;
+    }
+    array = array.map(function (element) {
+      return ObjectId(element);
+    });
+    const userCollection = await users();
+    let usersData = await userCollection
+      .find({
+        _id: { $in: array },
+      })
+      .toArray();
+    usersData = usersData.map(function (element) {
+      if (element == "_id") {
+        element._id = element._id.toString();
+      }
+      return element;
+    });
+    return usersData;
+  },
+
+  async getNonTeamUsers(id) {
+    const errorObject = {
+      status: 400,
+    };
+    const userCollection = await users();
+    let usersData = await userCollection
+      .find({
+        teamsJoined: { $nin: [id] },
+      })
+      .toArray();
+    return usersData;
   },
 };
 

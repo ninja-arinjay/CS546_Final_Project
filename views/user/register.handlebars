@@ -11,12 +11,8 @@
             action="/register"
           >
             <span class="login100-form-title p-b-49"> Register </span>
-            {{#if error}}
-            <ul>
-            {{#each error}}
-              <li class="error">{{this}}</li>
-            {{/each}}
-            </ul>
+            {{#if error}}      
+              <p class="error">{{this}}</p>
             {{/if}}
             <div class="wrap-input100 email-div validate-input m-b-23">
               <span class="label-input100">Email</span>
@@ -166,8 +162,7 @@
           submitHandler: function (form) {
             // Prevent double submission
             if (!beenSubmitted) {
-              beenSubmitted = true;
-              loaderShow();
+              beenSubmitted = true;  
               form.submit();
             }
           },
@@ -185,7 +180,7 @@
         jQuery.validator.addMethod(
           "inputName",
           function (value, element) {
-            return /^[A-Za-z0-9 ]*$/i.test(
+            return /\d*[a-zA-Z][a-zA-Z0-9 ]*$/i.test(
               value
             );
           },

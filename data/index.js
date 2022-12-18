@@ -1,6 +1,6 @@
 module.exports = {
   users: require("./users"),
-  // teams: require("./teams"),
+  teams: require("./teams"),
   // teamItems: require("./teamItems"),
   // posts: require("./posts"),
   // feed: require("./feed"),
