@@ -3,7 +3,7 @@ const feed = mongoCollections.feed;
 const { ObjectId } = require("mongodb");
 const userHelper = require("../helpers/userHelper");
 
-const createFeed = async (title, description,teamID, createdByID) => {
+const createFeed = async (title, description, teamID, createdByID) => {
   userHelper.checkInputString(title);
   userHelper.checkInputString(description);
   userHelper.checkId(teamID);

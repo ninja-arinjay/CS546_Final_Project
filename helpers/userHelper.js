@@ -51,9 +51,10 @@ function checkId(input) {
   }
 }
 function checkBoolean(input) {
-  if (!input) throw "ERROR: ALL FIELDS MUST HAVE AN INPUT!";
+  //if (!input) throw "ERROR: ALL FIELDS MUST HAVE AN INPUT!";
   if (typeof input !== "boolean") throw "ERROR: INPUT MUST BE A BOOLEAN!";
 }
+
 function dateCheck(d1, d2) {
   let inp1 = d1.split("/");
   let inp2 = d2.split("/");
