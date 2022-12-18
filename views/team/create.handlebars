@@ -53,8 +53,8 @@
           </div>
           <div class="card-body">
             <form role="form" id="main-form" action="/team/create" method="post">
-              <label>Name</label>
-              <div class="mb-3">
+              <div></div><label>Name</label>
+              <div class="mb-3 name-div">
                 <input type="hidden" id="addUserChange" name="addUser" value="0">
                 <input
                   type="text"
@@ -64,6 +64,42 @@
                   aria-describedby="name-addon"
                   name="name"
                 />
+              </div>
+               <div></div><label>Description</label>
+              <div class="mb-3 description-div">
+               <textarea
+                  class="form-control required"
+                  aria-label="description"
+                  aria-describedby="description-addon"
+                  name="description"
+                /></textarea>
+              </div>
+               <div></div><label>Member Limit</label>
+              <div class="mb-3 memberLimit-div">
+                <input
+                  type="number"
+                  class="form-control required memberLimit"
+                  aria-label="memberLimit"
+                  aria-describedby="memberLimit-addon"
+                  name="memberLimit"
+                    min="2"
+                      max="200"
+                />
+              </div>
+               <div></div><label>Minimum User Age</label>
+               <div class="mb-3 ageMin-div">
+                <input
+                  type="number"
+                  class="form-control required minAge"
+                  aria-label="ageMin"
+                  aria-describedby="ageMin-addon"
+                  name="ageMin"
+                    min="16"
+                />
+              </div>
+               <div></div><label>Is Private Team</label>
+               <div class="mb-3 private-div">
+                <input type="checkbox" id="private_option" name="private" value="1">
               </div>
               <div class="text-center">
                 <button
@@ -94,9 +130,23 @@
               required: true,
               maxlength: 255,
             },
+             description: {
+              required: true,
+              minlength: 5,
+            },
+             ageMin: {
+              required: true,
+              min: 12,
+              max:120
+            },
+            memberLimit: {
+              required: true,
+              min: 2,
+              max:200
+            },
           } ,
           errorPlacement: function (error, element) {
-            error.insertAfter(".mb-3");
+            error.insertAfter("." + element.attr("name") + "-div");
           },
           submitHandler: function (form) {
               form.submit();
@@ -112,6 +162,26 @@
           "Invalid Name"
         );
    });
+
+    jQuery.validator.addMethod(
+          "minAge",
+          function (value, element) {
+            return /^[0-9]+$/i.test(
+              value
+            );
+          },
+          "Invalid Minimum Age"
+        );
+
+         jQuery.validator.addMethod(
+          "memberLimit",
+          function (value, element) {
+            return /^[0-9]+$/i.test(
+              value
+            );
+          },
+          "Invalid Member Limit"
+        );
 
    jQuery(".addUserButton").click(function(){
     jQuery("#addUserChange").val(1);

@@ -36,7 +36,7 @@ function checkInputPassword(input) {
 function checkAge(input) {
   if (!input) throw "Error : Age must have an input.";
   if (typeof input !== "number") throw "Error : Age must be a number.";
-  if (input < 16 || input > 90) throw "Error : Invalid Age";
+  if (input < 12 || input > 120) throw "Error : Invalid Age";
 }
 function checkId(input) {
   if (!input) throw "ERROR: ID DOES NOT EXIST";

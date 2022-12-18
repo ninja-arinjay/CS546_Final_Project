@@ -8,15 +8,33 @@ const userhelper = require("../helpers/userHelper");
 // createTeam, getTeamById, getAllTeams, getTeamByName, updateTeam, deleteTeam
 // removeMember, addMember, removeAdmin, addAdmin
 
-const createTeam = async (teamName, creatorID) => {
+const createTeam = async (
+  teamName,
+  description,
+  private,
+  memberLimit,
+  ageMin,
+  creatorID
+) => {
   const errorObject = {
     status: 400,
   };
   helper.checkTeamInput("name", teamName, "Team Name");
+  helper.checkTeamInput("description", description, "Team Description");
+  helper.checkTeamInput(
+    "private",
+    private,
+    "Private option for Team",
+    false,
+    true
+  );
+  helper.checkTeamInput("memberLimit", memberLimit, "Team Member Limit");
+  helper.checkTeamInput("ageMin", ageMin, "Team Member Minimum");
   helper.checkTeamInput("id", creatorID, "User");
 
   teamName = teamName.trim().toLowerCase();
   creatorID = creatorID.trim();
+  description = description.trim();
 
   // get access to the database
   const teamCollection = await teams();
@@ -46,6 +64,10 @@ const createTeam = async (teamName, creatorID) => {
     creatorID: creatorID,
     dateCreated: createdDate,
     numMembers: 1,
+    description: description,
+    private: private,
+    memberLimit: memberLimit,
+    ageMin: ageMin,
     members: [creatorID],
     admins: [creatorID],
     teamItems: [],
@@ -106,6 +128,37 @@ const getAllTeams = async () => {
   return allTeams;
 };
 
+const getAllUserTeams = async (array, flag = true) => {
+  const errorObject = {
+    status: 400,
+  };
+  if (!Array.isArray(array)) {
+    errorObject.status = 500;
+    errorObject.error = "Invalid Data";
+    throw errorObject;
+  }
+  const teamCollection = await teams();
+  if (teamCollection === undefined) {
+    errorObject.status = 500;
+    errorObject.error = "DATABASE COULD NOT BE REACHED.";
+    throw errorObject;
+  }
+  let allTeams = [];
+  array = array.map(function (element) {
+    return ObjectId(element);
+  });
+  if (flag) {
+    allTeams = await teamCollection.find({ _id: { $in: array } }).toArray();
+  } else {
+    allTeams = await teamCollection.find({ _id: { $nin: array } }).toArray();
+  }
+  allTeams.forEach((element) => {
+    element._id = element._id.toString();
+  });
+
+  return allTeams;
+};
+
 // get a team by its id
 const getTeamById = async (id) => {
   const errorObject = {
@@ -159,13 +212,35 @@ const getTeamByName = async (teamName) => {
 };
 
 // update a teams name
-const updateTeam = async (id, teamName, currentUserID) => {
+const updateTeam = async (
+  id,
+  teamName,
+  description,
+  private,
+  memberLimit,
+  ageMin,
+  currentUserID
+) => {
   const errorObject = {
     status: 400,
   };
+
   helper.checkTeamInput("id", id, "Team");
   helper.checkTeamInput("name", teamName, "Team Name");
+  helper.checkTeamInput("description", description, "Team Description");
+  helper.checkTeamInput(
+    "private",
+    private,
+    "Private option for Team",
+    false,
+    true
+  );
+  helper.checkTeamInput("memberLimit", memberLimit, "Team Member Limit");
+  helper.checkTeamInput("ageMin", ageMin, "Team Member Minimum");
+  helper.checkTeamInput("id", currentUserID, "User");
+
   teamName = teamName.trim().toLowerCase();
+  description = description.trim();
   const teamCollection = await teams();
   if (teamCollection === undefined) {
     {
@@ -200,14 +275,46 @@ const updateTeam = async (id, teamName, currentUserID) => {
     throw errorObject;
   }
 
+  //check if minimum age is fullfill by all members leaving creator
+  const userCollection = await users();
+  let usersData = await userCollection
+    .find({
+      teamsJoined: { $in: [id] },
+      teamsCreated: { $nin: [id] },
+    })
+    .sort({ age: 1 })
+    .limit(1)
+    .toArray();
+
+  if (usersData) {
+    if (ageMin > usersData[0].age) {
+      errorObject.error = "Team has user whose age is less than " + ageMin;
+      throw errorObject;
+    }
+  }
+
+  //check if max member requirement is fullfill
+  if (findTeam.numMembers > memberLimit) {
+    errorObject.error = "Team has members more than " + memberLimit;
+    throw errorObject;
+  }
+
   const updateInfo = await teamCollection.updateOne(
     { _id: ObjectId(id) },
-    { $set: { teamName: teamName } }
+    {
+      $set: {
+        teamName: teamName,
+        description: description,
+        private: private,
+        memberLimit: memberLimit,
+        ageMin: ageMin,
+      },
+    }
   );
   if (updateInfo.modifiedCount === 0) {
     {
       errorObject.status = 500;
-      errorObject.error = "Team Name same as Old One";
+      errorObject.error = "Team Values Same as Old One";
       throw errorObject;
     }
   }
@@ -293,7 +400,7 @@ const deleteTeam = async (id, userid) => {
 };
 
 // add a user to a team
-const addMember = async (teamId, userId) => {
+const addMember = async (teamId, userId, isAdmin = false) => {
   const errorObject = {
     status: 400,
   };
@@ -337,6 +444,25 @@ const addMember = async (teamId, userId) => {
   if (findTeam.members.includes(findUser._id.toString())) {
     errorObject.status = 500;
     errorObject.error = "User is already a member";
+    throw errorObject;
+  }
+
+  //check if user is of valid age
+  if (findTeam.ageMin > findUser.age) {
+    errorObject.error = "User does not meet age Criteria to join Team";
+    throw errorObject;
+  }
+
+  //check if team has reached capacity
+  if (findTeam.numMembers >= findTeam.memberLimit) {
+    errorObject.error = "Team has reached its maximum member capacity";
+    throw errorObject;
+  }
+
+  //check if team is private
+  if (findTeam.private && !isAdmin) {
+    errorObject.status = 500;
+    errorObject.error = "Team is Private";
     throw errorObject;
   }
 
@@ -693,6 +819,155 @@ const userStatus = async (teamId, userId) => {
   return { teamName: findTeam.teamName, inTeam: true, admin: findTeam.admins };
 };
 
+const addComment = async (teamId, userId, comment) => {
+  const errorObject = {
+    status: 400,
+  };
+  helper.checkTeamInput("id", teamId, "Team");
+  helper.checkTeamInput("id", userId, "User");
+  helper.checkTeamInput("description", comment, "Team Comment");
+  teamId = teamId.trim();
+  userId = userId.trim();
+  comment = comment.trim();
+
+  const teamCollection = await teams();
+  if (teamCollection === undefined) {
+    errorObject.status = 500;
+    errorObject.error = "DATABASE COULD NOT BE REACHED.";
+    throw errorObject;
+  }
+
+  const findTeam = await teamCollection.findOne({ _id: ObjectId(teamId) });
+  if (!findTeam) {
+    errorObject.status = 500;
+    errorObject.error = "TEAM NOT FOUND";
+    throw errorObject;
+  }
+
+  const userCollection = await users();
+  if (userCollection === undefined) {
+    errorObject.status = 500;
+    errorObject.error = "DATABASE COULD NOT BE REACHED.";
+    throw errorObject;
+  }
+
+  const findUser = await userCollection.findOne({ _id: ObjectId(userId) });
+  if (!findUser) {
+    errorObject.status = 500;
+    errorObject.error = "USER NOT FOUND";
+    throw errorObject;
+  }
+
+  // check if the user is in the team
+  const userInTeam = findUser.teamsJoined.includes(teamId);
+
+  // if user is not in team return false
+  if (!userInTeam) {
+    errorObject.status = 500;
+    errorObject.error = "USER NOT FOUND";
+    throw errorObject;
+  }
+
+  let today = new Date();
+  let dd = String(today.getDate()).padStart(2, "0");
+  let mm = String(today.getMonth() + 1).padStart(2, "0");
+  let yyyy = today.getFullYear();
+
+  today = mm + "/" + dd + "/" + yyyy;
+  let commentObjectId = new ObjectId();
+  let newComment = {
+    _id: commentObjectId.toString(),
+    comment: comment.trim(),
+    userId: userId,
+    userName: findUser.firstName + " " + findUser.lastName,
+    createdAt: today,
+  };
+  let teamComments = findTeam.comments;
+  teamComments.push(newComment);
+  const updatedTeam = {
+    comments: teamComments,
+  };
+  const updatedInfo = await teamCollection.updateOne(
+    { _id: ObjectId(teamId) },
+    { $set: updatedTeam }
+  );
+  if (updatedInfo.modifiedCount === 0) {
+    errorObject.status = 500;
+    errorObject.error = "Could not update team comment successfully.";
+    throw errorObject;
+  }
+
+  return await getTeamById(teamId);
+};
+
+const deleteComment = async (commentId, teamId, userId) => {
+  const errorObject = {
+    status: 400,
+  };
+  helper.checkTeamInput("id", teamId, "Team");
+  helper.checkTeamInput("id", userId, "User");
+  helper.checkTeamInput("id", commentId, "Comment");
+  teamId = teamId.trim();
+  userId = userId.trim();
+  commentId = commentId.trim();
+
+  const teamCollection = await teams();
+  if (teamCollection === undefined) {
+    errorObject.status = 500;
+    errorObject.error = "DATABASE COULD NOT BE REACHED.";
+    throw errorObject;
+  }
+
+  const findTeam = await teamCollection.findOne({ _id: ObjectId(teamId) });
+  if (!findTeam) {
+    errorObject.status = 500;
+    errorObject.error = "TEAM NOT FOUND";
+    throw errorObject;
+  }
+
+  const userCollection = await users();
+  if (userCollection === undefined) {
+    errorObject.status = 500;
+    errorObject.error = "DATABASE COULD NOT BE REACHED.";
+    throw errorObject;
+  }
+
+  const findUser = await userCollection.findOne({ _id: ObjectId(userId) });
+  if (!findUser) {
+    errorObject.status = 500;
+    errorObject.error = "USER NOT FOUND";
+    throw errorObject;
+  }
+
+  // check if the user is in the team admin
+  const userInTeam = findTeam.admins.includes(userId);
+  if (!userInTeam) {
+    errorObject.status = 403;
+    errorObject.error = "Unauthorized Access";
+    throw errorObject;
+  }
+  let teamComments = findTeam.comments;
+  const indexOfObject = teamComments.findIndex((object) => {
+    return object._id == commentId;
+  });
+  teamComments.splice(indexOfObject, 1);
+
+  const updatedTeam = {
+    comments: teamComments,
+  };
+  const updatedInfo = await teamCollection.updateOne(
+    { _id: ObjectId(teamId) },
+    { $set: updatedTeam }
+  );
+  if (updatedInfo.modifiedCount === 0) {
+    errorObject.status = 500;
+    errorObject.error = "Could not update team comment successfully.";
+    throw errorObject;
+  }
+
+  return await getTeamById(teamId);
+};
+
 module.exports = {
   createTeam,
   getTeamById,
@@ -705,4 +980,7 @@ module.exports = {
   addAdmin,
   removeAdmin,
   userStatus,
+  addComment,
+  deleteComment,
+  getAllUserTeams,
 };

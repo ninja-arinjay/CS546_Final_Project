@@ -1,6 +1,7 @@
 const express = require("express");
 const data = require("../data");
 const userData = data.users;
+const teamData = data.teams;
 const feedData = data.feed;
 const router = express.Router();
 const path = require("path");
@@ -13,10 +14,27 @@ const xss = require("xss");
 
 router.route("/").get(async (req, res) => {
   if (req.session.user) {
+    let userCount = await userData.getAllUsers();
+    userCount = userCount.length;
+    let userRow = await userData.getUserById(
+      aes256.decrypt(config.get("aes_key"), req.session.user.id)
+    );
+    let allTeams = await teamData.getAllTeams();
+    let otherTeams = allTeams.length;
+     allTeams = await teamData.getAllUserTeams(userRow.teamsJoined);
+    let myTeams = allTeams.length;
+    let successMessage = req.session.success;
+    req.session.success = "";
     return res.status(200).render("dashboard/index", {
       title: "Dashboard",
       page: "Dashboard",
       activeClass: "dashboard-active",
+      teams: allTeams,
+      userData: aes256.decrypt(config.get("aes_key"), req.session.user.id),
+      success: successMessage,
+      userCount: userCount,
+      myTeams: myTeams,
+      teamCount: otherTeams,
     });
   } else {
     return res.redirect("/login");
@@ -45,7 +63,6 @@ router
         throw errorObject;
       }
       let result = req.body;
-      //console.log(result);
       let objKeys = [
         "email",
         "password",

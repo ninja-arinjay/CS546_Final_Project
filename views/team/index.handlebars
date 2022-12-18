@@ -89,9 +89,6 @@
                     <a href="/team/delete/{{../this._id}}"><span
                       class="badge badge-sm bg-gradient-danger"
                     >Delete Team</span></a>
-                     <a href="/task/team/{{../this._id}}"><span
-                      class="badge badge-sm bg-gradient-success"
-                    >Create Tak</span></a>
                     {{/checkInputValue}}
 
                    {{#checkInputValue ../userData this.admins true }}
@@ -101,12 +98,16 @@
                     {{/checkInputValue}}
                     
                      {{#checkInputValue ../userData this.members false }}
-                    <a href="/team/addMember/{{../this._id}}"><span class="badge badge-sm bg-gradient-success"
+                     {{#unless ../this.private}}
+                    <a href="/team/addMember/{{../../this._id}}"><span class="badge badge-sm bg-gradient-success"
                     >Join Team</span></a>
+                    {{/unless}}
                     {{/checkInputValue}}
-                     <a href="/team/comment/{{this._id}}"><span
+
+                     <a href="/team/info/{{this._id}}">
+                     <span
                       class="badge badge-sm bg-gradient-warning"
-                    >Team Comments</span></a>
+                    >Team Info</span></a>
                   </td>
 
 

@@ -4,7 +4,6 @@ const { ObjectId } = require("mongodb");
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 const helper = require("./../helpers/userHelper");
-const { use } = require("../routes/user");
 
 const exportedMethods = {
   //Create a User
@@ -227,6 +226,21 @@ const exportedMethods = {
         teamsJoined: { $nin: [id] },
       })
       .toArray();
+    return usersData;
+  },
+
+  async getMinAgeUser(teamId) {
+    const errorObject = {
+      status: 400,
+    };
+    const userCollection = await users();
+    let usersData = await userCollection
+      .find({
+        teamsJoined: { $in: [teamId] },
+        teamsCreated: { $nin: [teamId] },
+      })
+      .sort({ age: 1 })
+      .limit(1).toArray();
     return usersData;
   },
 };

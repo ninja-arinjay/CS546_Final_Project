@@ -1,36 +1,19 @@
-<main
-  class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
->
+<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
   <!-- Navbar -->
-  <nav
-    class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
-    id="navbarBlur"
-  >
+  <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur">
     <div class="container-fluid py-1 px-3">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-          <li class="breadcrumb-item text-sm"><a
-              class="opacity-5 text-dark"
-              href="javascript:;"
-            >Pages</a></li>
-          <li
-            class="breadcrumb-item text-sm text-dark active"
-            aria-current="page"
-          >{{page}}</li>
+          <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+          <li class="breadcrumb-item text-sm text-dark active" aria-current="page">{{page}}</li>
         </ol>
         <h6 class="font-weight-bolder mb-0">{{page}}</h6>
       </nav>
-      <div
-        class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
-        id="navbar"
-      >
+      <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
 
         <ul class="navbar-nav justify-content-end">
           <li class="nav-item d-flex align-items-center">
-            <a
-              class="btn btn-outline-primary btn-sm mb-0 me-3"
-              href="/team"
-            >Cancel</a>
+            <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="/team">Back</a>
           </li>
 
         </ul>
@@ -43,16 +26,16 @@
     <div class="row">
       <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
         <div class="card card-plain mt-8">
-              {{#if error}}
-              <p class="error message-div">{{error}}</p>
-              {{else}}
-               <p class="error"></p>
-            {{/if}}
-              {{#if success}}
-              <p class="success message-div">{{success}}</p>
-              {{else}}
-                <p class="success"></p>
-            {{/if}}
+          {{#if error}}
+          <p class="error message-div">{{error}}</p>
+          {{else}}
+          <p class="error"></p>
+          {{/if}}
+          {{#if success}}
+          <p class="success message-div">{{success}}</p>
+          {{else}}
+          <p class="success"></p>
+          {{/if}}
           <div class="card-header pb-0 text-left bg-transparent">
             <h3 class="font-weight-bolder text-info text-gradient">Edit Your
               Team</h3>
@@ -61,95 +44,100 @@
           <div class="card-body">
             <form role="form" id="main-form" action="/team/edit/{{teamData._id}}" method="post">
               <label>Name</label>
-              <div class="mb-3">
-                <input
-                  type="text"
-                  class="form-control required inputName"
-                  placeholder="name"
-                  aria-label="name"
-                  aria-describedby="name-addon"
-                  name="name"
-                    value="{{teamData.teamName}}"
-                />
+              <div class="mb-3 name-div">
+                <input type="text" class="form-control required inputName" placeholder="name" aria-label="name"
+                  aria-describedby="name-addon" name="name" value="{{teamData.teamName}}" />
+              </div>
+              <div></div><label>Description</label>
+              <div class="mb-3 description-div">
+                <textarea class="form-control required" aria-label="description"
+                  aria-describedby="description-addon" name="description" />{{teamData.description}}</textarea>
+              </div>
+              <div></div><label>Member Limit</label>
+              <div class="mb-3 memberLimit-div">
+                <input type="number" class="form-control required memberLimit" aria-label="memberLimit"
+                  aria-describedby="memberLimit-addon" name="memberLimit" min="{{teamData.numMembers}}" max="200"
+                  value="{{teamData.memberLimit}}" />
+              </div>
+              <div></div><label>Minimum User Age</label>
+              <div class="mb-3 ageMin-div">
+                <input type="number" class="form-control required minAge" aria-label="ageMin"
+                  aria-describedby="ageMin-addon" name="ageMin" min="16" max="{{minAgeValue}}"
+                  value="{{teamData.ageMin}}" />
+              </div>
+              <div></div><label>Is Private Team</label>
+              <div class="mb-3 private-div">
+                {{#if teamData.private}}
+                <input type="checkbox" id="private_option" name="private" checked value="1">
+                {{else}}
+                <input type="checkbox" id="private_option" name="private" value="1">
+                {{/if}}
               </div>
               <div class="text-center">
-                <button
-                  type="submit"
-                  class="btn bg-gradient-info w-100 mt-4 mb-0"
-                >Edit Team Name</button>
+                <button type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Edit Team Details</button>
               </div>
-                <a href="/team/addUser/{{teamData._id}}"><button
-                  type="button"
-                  class="btn bg-gradient-info w-100 mt-4 mb-0"
-                >Add User</button></a>
+              <a href="/team/addUser/{{teamData._id}}"><button type="button"
+                  class="btn bg-gradient-info w-100 mt-4 mb-0">Add User</button></a>
             </form>
           </div>
         </div>
       </div>
-        <div class="card-body px-0 pt-0 pb-2">
+      <div class="card-body px-0 pt-0 pb-2">
         <div class="table-responsive p-0">
           <table class="table align-items-center mb-0">
             <thead>
               <tr>
-                <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                >Member</th>
-                <th
-                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
-                >Options</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Member</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Options</th>
               </tr>
             </thead>
             <tbody>
               {{#if users}}
               {{#each users}}
-                <tr>
-                  <td>
-                    <div class="d-flex px-2 py-1">
+              <tr>
+                <td>
+                  <div class="d-flex px-2 py-1">
 
-                      <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">{{this.firstName}}  {{this.lastName}}</h6>
-                      </div>
+                    <div class="d-flex flex-column justify-content-center">
+                      <h6 class="mb-0 text-sm">{{this.firstName}} {{this.lastName}}</h6>
                     </div>
-                  </td>
-                 
-                  <td class="align-middle text-center text-sm">
-                    {{#checkInputValue ../currentUser ../teamData.creatorID true }}
-                      {{#checkInputValue ../this._id ../../currentUser false }}
-                        {{#checkInputValue ../this._id ../../teamData.admins true }}
-                          <a href="/team/removeAdmin/{{../../teamData._id}}/{{../this._id}}"><span
-                          class="badge badge-sm bg-gradient-danger"
-                          >Remove As Admin</span></a>
-                        {{/checkInputValue}}
-                        {{#checkInputValue ../this._id ../../teamData.admins false }}
-                          <a href="/team/makeAdmin/{{../../teamData._id}}/{{../this._id}}"><span
-                          class="badge badge-sm bg-gradient-success"
-                          >Make Admin</span></a>
-                        {{/checkInputValue}}
-                      {{/checkInputValue}}
-                    {{/checkInputValue}}
-                    
-                    {{#checkInputValue ../currentUser ../teamData.creatorID false }}
-                      {{#checkInputValue ../../currentUser ../../teamData.admins true }}
-                        {{#checkInputValue ../this._id ../../currentUser false }}
-                          {{#checkInputValue ../this._id ../../teamData.admins false }}
-                            {{#checkInputValue ../this._id ../../teamData.creatorID false }}
-                              <a href="/team/removeUser/{{../../teamData._id}}/{{../this._id}}"><span
-                              class="badge badge-sm bg-gradient-success"
-                              >Remove User</span></a>
-                            {{/checkInputValue}} 
-                          {{/checkInputValue}} 
-                        {{/checkInputValue}} 
-                      {{/checkInputValue}}
-                    {{/checkInputValue}}
-                    {{#checkInputValue ../currentUser ../teamData.creatorID true }}
-                      {{#checkInputValue ../this._id ../../teamData.creatorID false }}
-                        <a href="/team/removeUser/{{../../teamData._id}}/{{../this._id}}"><span
-                            class="badge badge-sm bg-gradient-success"
-                        >Remove User</span></a>
-                      {{/checkInputValue}}
-                    {{/checkInputValue}}
-                  </td>
-                </tr>
+                  </div>
+                </td>
+
+                <td class="align-middle text-center text-sm">
+                  {{#checkInputValue ../currentUser ../teamData.creatorID true }}
+                  {{#checkInputValue ../this._id ../../currentUser false }}
+                  {{#checkInputValue ../this._id ../../teamData.admins true }}
+                  <a href="/team/removeAdmin/{{../../teamData._id}}/{{../this._id}}"><span
+                      class="badge badge-sm bg-gradient-danger">Remove As Admin</span></a>
+                  {{/checkInputValue}}
+                  {{#checkInputValue ../this._id ../../teamData.admins false }}
+                  <a href="/team/makeAdmin/{{../../teamData._id}}/{{../this._id}}"><span
+                      class="badge badge-sm bg-gradient-success">Make Admin</span></a>
+                  {{/checkInputValue}}
+                  {{/checkInputValue}}
+                  {{/checkInputValue}}
+
+                  {{#checkInputValue ../currentUser ../teamData.creatorID false }}
+                  {{#checkInputValue ../../currentUser ../../teamData.admins true }}
+                  {{#checkInputValue ../this._id ../../currentUser false }}
+                  {{#checkInputValue ../this._id ../../teamData.admins false }}
+                  {{#checkInputValue ../this._id ../../teamData.creatorID false }}
+                  <a href="/team/removeUser/{{../../teamData._id}}/{{../this._id}}"><span
+                      class="badge badge-sm bg-gradient-success">Remove User</span></a>
+                  {{/checkInputValue}}
+                  {{/checkInputValue}}
+                  {{/checkInputValue}}
+                  {{/checkInputValue}}
+                  {{/checkInputValue}}
+                  {{#checkInputValue ../currentUser ../teamData.creatorID true }}
+                  {{#checkInputValue ../this._id ../../teamData.creatorID false }}
+                  <a href="/team/removeUser/{{../../teamData._id}}/{{../this._id}}"><span
+                      class="badge badge-sm bg-gradient-success">Remove User</span></a>
+                  {{/checkInputValue}}
+                  {{/checkInputValue}}
+                </td>
+              </tr>
               {{/each}}
               {{/if}}
             </tbody>
@@ -160,40 +148,90 @@
   </div>
 </main>
 
+
+
+
 {{#section "script"}}
 
-  <script type="text/javascript">
-    jQuery(document).ready(function () {
-    jQuery.validator.addMethod(
-          "inputName",
-          function (value, element) {
-            return /\d*[a-zA-Z][a-zA-Z0-9 ]*$/i.test(
-              value
-            );
-          },
-          "Invalid Name"
-        );
+<script>
+  jQuery(document).ready(function () {
+    jQuery("#main-form").validate({
+      ignore: [],
+      rules: {
+        name: {
+          required: true,
+          maxlength: 255,
+        },
+        description: {
+          required: true,
+          minlength: 5,
+        },
+        ageMin: {
+          required: true,
+          min: 12,
+          max: {{ minAgeValue }}
+            },
+    memberLimit: {
+    required: true,
+    min: {{ teamData.numMembers }},
+    max: 200
+            },
+          } ,
+    errorPlacement: function (error, element) {
+      error.insertAfter("." + element.attr("name") + "-div");
+    },
+        });
+  jQuery.validator.addMethod(
+    "inputName",
+    function (value, element) {
+      return /\d*[a-zA-Z][a-zA-Z0-9 ]*$/i.test(
+        value
+      );
+    },
+    "Invalid Name"
+  );
    });
-    const $form = jQuery('#main-form');
-    $form.on('submit', submitHandler);
-    function submitHandler (e) {
-      console.log("HOO");
-      e.preventDefault();
-      $form.validate();
-      jQuery.ajax({
-        url: '/team/edit/{{teamData._id}}',
-        type:'POST',
-        data: $form.serialize()
-      }).done(response => {
-       jQuery(".inputName").val(response.teamRow.teamName);
-        jQuery(".error").html("");
-       jQuery(".success").html("Team Name Updated Successfully.");
-      }).fail( function(xhr, textStatus, errorThrown) {
-        jQuery(".success").html("");
-       jQuery(".error").html(xhr.responseText);
-     
-      });
+
+  jQuery.validator.addMethod(
+    "minAge",
+    function (value, element) {
+      return /^[0-9]+$/i.test(
+        value
+      );
+    },
+    "Invalid Minimum Age"
+  );
+
+  jQuery.validator.addMethod(
+    "memberLimit",
+    function (value, element) {
+      return /^[0-9]+$/i.test(
+        value
+      );
+    },
+    "Invalid Member Limit"
+  );
+  const $form = jQuery('#main-form');
+  $form.on('submit', submitHandler);
+  function submitHandler(e) {
+    e.preventDefault();
+    if (!$("#main-form").validate()) {
+      return false;
     }
-  </script>
+    jQuery.ajax({
+      url: '/team/edit/{{teamData._id}}',
+      type: 'POST',
+      data: $form.serialize()
+    }).done(response => {
+      jQuery(".inputName").val(response.teamRow.teamName);
+      jQuery(".error").html("");
+      jQuery(".success").html("Team Updated Successfully.");
+    }).fail(function (xhr, textStatus, errorThrown) {
+      jQuery(".success").html("");
+      jQuery(".error").html(xhr.responseText);
+    });
+
+  }
+</script>
 
 {{/section}}
