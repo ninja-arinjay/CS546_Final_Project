@@ -19,7 +19,10 @@ router.route("/").get(async (req, res) => {
       activeClass: "dashboard-active",
     });
   } else {
-    return res.redirect("/login");
+    return res.render("static/static",{
+      title :"Landing",
+      layout: "../static/static"
+    });
   }
 });
 
