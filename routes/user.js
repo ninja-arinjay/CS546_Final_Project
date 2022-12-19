@@ -21,7 +21,7 @@ router.route("/").get(async (req, res) => {
     );
     let allTeams = await teamData.getAllTeams();
     let otherTeams = allTeams.length;
-     allTeams = await teamData.getAllUserTeams(userRow.teamsJoined);
+    allTeams = await teamData.getAllUserTeams(userRow.teamsJoined);
     let myTeams = allTeams.length;
     let successMessage = req.session.success;
     req.session.success = "";
@@ -37,9 +37,9 @@ router.route("/").get(async (req, res) => {
       teamCount: otherTeams,
     });
   } else {
-    return res.render("static/static",{
-      title :"Landing",
-      layout: "../static/static"
+    return res.render("static/static", {
+      title: "Landing",
+      layout: "../static/static",
     });
   }
 });
@@ -306,105 +306,105 @@ router.route("/logout").get(async (req, res) => {
   res.redirect("/");
 });
 
-router.route("/createfeed").post(async (req, res) => {
-  try {
-    const errorObject = {
-      status: 400,
-    };
-    //Input Checking
-    if (typeof req.body !== "object") {
-      errorObject.error = "Invalid Data Posted.";
-      throw errorObject;
-    }
-    let result = req.body;
-    let objKeys = ["title", "description"];
-    objKeys.forEach((element) => {
-      helpers.checkInput(
-        element,
-        result[element],
-        element + "of the feed",
-        true
-      );
-    });
-    //retreiving teamID and userID - pending
-    result.teamID = "";
-    result.createdByID = "";
-    await feedData.createFeed(
-      result[title],
-      result[description],
-      result[teamID],
-      result[createdByID]
-    );
-    res.redirect("user/feed");
-  } catch (e) {
-    if (
-      typeof e === "object" &&
-      e !== null &&
-      !Array.isArray(e) &&
-      "status" in e &&
-      "error" in e
-    ) {
-      return res.status(e.status).render("user/createFeed", {
-        title: "Create Feed",
-        error: [e.error],
-        layout: "auth",
-      });
-    } else {
-      return res.status(400).render("user/createFeed", {
-        title: "Create Feed",
-        error: [e],
-        layout: "auth",
-      });
-    }
-  }
-});
+// router.route("/createfeed").post(async (req, res) => {
+//   try {
+//     const errorObject = {
+//       status: 400,
+//     };
+//     //Input Checking
+//     if (typeof req.body !== "object") {
+//       errorObject.error = "Invalid Data Posted.";
+//       throw errorObject;
+//     }
+//     let result = req.body;
+//     let objKeys = ["title", "description"];
+//     objKeys.forEach((element) => {
+//       helpers.checkInput(
+//         element,
+//         result[element],
+//         element + "of the feed",
+//         true
+//       );
+//     });
+//     //retreiving teamID and userID - pending
+//     result.teamID = "";
+//     result.createdByID = "";
+//     await feedData.createFeed(
+//       result[title],
+//       result[description],
+//       result[teamID],
+//       result[createdByID]
+//     );
+//     res.redirect("user/feed");
+//   } catch (e) {
+//     if (
+//       typeof e === "object" &&
+//       e !== null &&
+//       !Array.isArray(e) &&
+//       "status" in e &&
+//       "error" in e
+//     ) {
+//       return res.status(e.status).render("user/createFeed", {
+//         title: "Create Feed",
+//         error: [e.error],
+//         layout: "auth",
+//       });
+//     } else {
+//       return res.status(400).render("user/createFeed", {
+//         title: "Create Feed",
+//         error: [e],
+//         layout: "auth",
+//       });
+//     }
+//   }
+// });
 
-router.route("/feed").get(async (req, res) => {
-  try {
-    const errorObject = {
-      status: 404,
-    };
-    const feedList = await feedData.getAllFeeds();
-    if (feedList.length === 0) {
-      errorObject.error = "No feeds found.";
-      throw errorObject;
-    }
-    // only get what is needed for the feed
-    let feedProjection = feedList.map(async (feedItem) => {
-      let userName = await userData.getUserById(feedItem.createdByID);
-      let firstLast = "deleted user";
-      if (userName) {
-        firstLast = userName.firstName + " " + userName.lastName;
-      }
-      return {
-        _id: feedItem._id.toString(),
-        title: feedItem.title,
-        description: feedItem.description,
-        createdByID: firstLast,
-        dataPosted: feedItem.dataPosted,
-        comments: feedItem.comments,
-      };
-    });
-    res.status(200).render("feed", { title: "Feed", feedList: feedProjection });
-  } catch (e) {
-    if (
-      typeof e === "object" &&
-      e !== null &&
-      !Array.isArray(e) &&
-      "status" in e &&
-      "error" in e
-    ) {
-      return res.status(e.status).render("user/feed", {
-        title: "Feed",
-        error: [e.error],
-      });
-    } else {
-      return res.status(400).render("user/feed", {
-        title: "Feed",
-        error: [e],
-      });
-    }
-  }
-});
+// router.route("/feed").get(async (req, res) => {
+//   try {
+//     const errorObject = {
+//       status: 404,
+//     };
+//     const feedList = await feedData.getAllFeeds();
+//     if (feedList.length === 0) {
+//       errorObject.error = "No feeds found.";
+//       throw errorObject;
+//     }
+//     // only get what is needed for the feed
+//     let feedProjection = feedList.map(async (feedItem) => {
+//       let userName = await userData.getUserById(feedItem.createdByID);
+//       let firstLast = "deleted user";
+//       if (userName) {
+//         firstLast = userName.firstName + " " + userName.lastName;
+//       }
+//       return {
+//         _id: feedItem._id.toString(),
+//         title: feedItem.title,
+//         description: feedItem.description,
+//         createdByID: firstLast,
+//         dataPosted: feedItem.dataPosted,
+//         comments: feedItem.comments,
+//       };
+//     });
+//     res.status(200).render("feed", { title: "Feed", feedList: feedProjection });
+//   } catch (e) {
+//     if (
+//       typeof e === "object" &&
+//       e !== null &&
+//       !Array.isArray(e) &&
+//       "status" in e &&
+//       "error" in e
+//     ) {
+//       return res.status(e.status).render("user/feed", {
+//         title: "Feed",
+//         error: [e.error],
+//       });
+//     } else {
+//       return res.status(400).render("user/feed", {
+//         title: "Feed",
+//         error: [e],
+//       });
+//     }
+//   }
+// });
 
 module.exports = router;

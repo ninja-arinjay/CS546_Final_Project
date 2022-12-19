@@ -63,7 +63,7 @@ const createComment = async (postID, createdByID, content, type) => {
 
   const newId = newComment._id.toString();
   // change id to string version only for display purposes
-  newReview._id = newId;
+  newComment._id = newId;
   findPost.comments.push(newComment);
 
   return findPost;

@@ -1,20 +1,137 @@
-<div id="post-page">
-  <header>
-    <h1>{{title}}</h1>
-    <h2>Created by: {{createdByID}}</h2>
-  </header>
-  <div id="post-content">
-    <p>{{description}}</p>
-  </div>
-  <footer>
-    <p>Date: {{dataPosted}}</p>
-    {{! create comment button/form }}
-  </footer>
-  {{#each comments}}
-    <div class="comment">
-      <p>Commented by: {{createdByID}}</p>
-      <p>{{content}}</p>
-      <p>Date created: {{dateCreated}}</p>
+<main
+  class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+>
+  <nav
+    class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
+    id="navbarBlur"
+  >
+    <div class="container-fluid py-1 px-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+          <li class="breadcrumb-item text-sm"><a
+              class="opacity-5 text-dark"
+              href="javascript:;"
+            >Pages</a></li>
+          <li
+            class="breadcrumb-item text-sm text-dark active"
+            aria-current="page"
+          >{{page}}</li>
+        </ol>
+        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+      </nav>
+      <div
+        class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
+        id="navbar"
+      >
+
+        <ul class="navbar-nav justify-content-end">
+          <li class="nav-item d-flex align-items-center">
+            <a
+              class="btn btn-outline-primary btn-sm mb-0 me-3"
+              href="/feed"
+            >Back</a>
+          </li>
+        </ul>
+      </div>
     </div>
-  {{/each}}
+  </nav>
+  <div id="post-page" class="container-fluid py-4">
+    <header>
+      <h1 class="text-dark">{{title}}</h1>
+      <h2 class="opacity-5 text-dark">Created by: {{feedPost.createdByID}}</h2>
+    </header>
+    <div id="post-content">
+      <p>{{feedPost.description}}</p>
+    </div>
+    <div>
+      <p>Date: {{feedPost.datePosted}}</p>
+      {{! create comment button/form }}
+    </div>
+    <div class="nav-item d-flex align-items-center">
+      <button
+        class="btn btn-outline-primary btn-sm mb-0 me-3"
+        onclick="loadCommentForm()"
+      >Add Comment</button>
+    </div>
+
+      <div class="row">
+        <div class="col-md-12 mt-4">
+          <div class="card">
+            <div class="card-header pb-0 px-3">
+              <h6 class="mb-0">Post Comments</h6>
+            </div>
+            <div class="card-body pt-4 p-3">
+              <ul class="list-group">
+                {{#each comments}}
+                <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                  <div class="d-flex flex-column">
+                    <h6 class="mb-3 text-sm">{{this.creatorID}}, {{this.dateCreated}}</h6>
+                    <span class="mb-2 text-xs"><span
+                        class="text-dark font-weight-bold ms-sm-2">{{this.content}}</span></span>
+                  </div>
+                </li>
+                {{/each}}
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+  </div>
+</main>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="Comment-Modal"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Comment-Modal">Add Post Comment</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form id="comment-form" action="/feed/addComment/{{feedPost._id}}" method="post">
+        <div class="modal-body">
+          <label for="comment">Comment</label>
+          <div class="mb-3 comment-div">
+            <textarea id="comment" class="form-control required" aria-label="comment" aria-describedby="comment"
+              name="comment"></textarea>
+          </div>
+          <div></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Add Comment</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
+
+{{#section "script"}}
+<script>
+  function loadCommentForm() {
+    $('#exampleModal').modal('toggle');
+  }
+  jQuery(document).ready(function () {
+    jQuery("#comment-form").validate({
+      ignore: [],
+      rules: {
+        comment: {
+          required: true,
+          minlength: 5
+        },
+      },
+      errorPlacement: function (error, element) {
+        error.insertAfter("." + element.attr("name") + "-div");
+      },
+      submitHandler: function (form) {
+        form.submit();
+      },
+    });
+
+  });
+
+
+</script>
+{{/section}}

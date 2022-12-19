@@ -1,41 +1,78 @@
+<main
+  class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+>
+  <nav
+    class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
+    id="navbarBlur"
+  >
+    <div class="container-fluid py-1 px-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+          <li class="breadcrumb-item text-sm"><a
+              class="opacity-5 text-dark"
+              href="javascript:;"
+            >Pages</a></li>
+          <li
+            class="breadcrumb-item text-sm text-dark active"
+            aria-current="page"
+          >{{page}}</li>
+        </ol>
+        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+      </nav>
+      <div
+        class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
+        id="navbar"
+      >
 
-<h1 class="display-4">Create Feed</h1>
-<br />
-<form action="/createfeed" method="POST">
-  <div class="mb-3">
-    <div class="title">
-      <label for="title">Title</label>
-      <textarea
-        name="title"
-        type="text"
-        id="title"
-        placeholder="Enter the Title of your Feed."
-        value=""
-        required=""
-      ></textarea>
-      <div class="invalid-feedback">
-        Valid Title is required.
+        <ul class="navbar-nav justify-content-end">
+          <li class="nav-item d-flex align-items-center">
+            <a
+              class="btn btn-outline-primary btn-sm mb-0 me-3"
+              href="/feed"
+            >Back</a>
+          </li>
+        </ul>
       </div>
     </div>
-    <div class="description">
-      <label for="description">Description</label>
-      <textarea
-        name="description"
-        type="text"
-        id="description"
-        placeholder="Enter the description of your Feed."
-        value=""
-        required=""
-      ></textarea>
-      <div class="invalid-feedback">
-        Valid Description is required.
+  </nav>
+  <div class="container-fluid py-4 flex col">
+    <form action="/feed/createfeed" method="POST">
+      <div class="mb-3">
+        <div class="title">
+          <label for="title">Title</label>
+          <textarea
+            name="title"
+            type="text"
+            id="title"
+            placeholder="Enter the Title of your Feed."
+            value=""
+            required=""
+          ></textarea>
+          <div class="invalid-feedback">
+            Valid Title is required.
+          </div>
+        </div>
+        <div class="description">
+          <label for="description">Description</label>
+          <textarea
+            name="description"
+            type="text"
+            id="description"
+            placeholder="Enter the description of your Feed."
+            value=""
+            required=""
+          ></textarea>
+          <div class="invalid-feedback">
+            Valid Description is required.
+          </div>
+        </div>
+        <br />
+        <button id="postfeed-btn" type="submit" class="btn btn-light">Post Feed</button>
+        {{#if error}}
+          <p class={{class}}> {{error}}</p>
+        {{/if}}
       </div>
-    </div>
-    <br />
-    <button id="postfeed-btn" type="submit" class="btn btn-light">Post Feed</button>
-    {{#if error}}
-      <p class={{class}}> {{error}}</p>
-    {{/if}}
+
+    </form>
   </div>
-
-</form>
+</main>
