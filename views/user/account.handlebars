@@ -53,73 +53,70 @@
           </div>
           <div class="card-body">
             <form
-              role="form"
               id="main-form"
               action="/account"
               method="post"
             >
-              <label>Email</label>
+              <label for="email">Email</label>
               <div class="mb-3 email-div">
                 <input
                   type="text"
+                    id="email"
                   class="form-control required email"
                   placeholder="email"
                   aria-label="email"
-                  aria-describedby="name-addon"
-                  name="email",
+                  name="email"
                   value="{{userData.email}}"
                 />
               </div>
-              <label>First Name</label>
+              <label for="firstname">First Name</label>
               <div class="mb-3 firstName-div">
                 <input
+                id="firstname"
                   type="text"
                   class="form-control required inputName"
                   placeholder="firstname"
                   aria-label="firstname"
-                  aria-describedby="name-addon"
-                  name="firstName",
+                  name="firstName"
                   value="{{userData.firstName}}"
                 />
               </div>
-              <label>Last Name</label>
+              <label for="lastname">Last Name</label>
               <div class="mb-3 lastName-div">
                <input
                   type="text"
+                    id="lastname"
                   class="form-control required inputName"
                   placeholder="lastname"
                   aria-label="lastname"
-                  aria-describedby="name-addon"
-                  name="lastName",
+                  name="lastName"
                   value="{{userData.lastName}}"
                 />
               </div>
-              <label>Location (Area)</label>
+              <label for="location">Location (Area)</label>
               <div class="mb-3 location-div">
              <input
+             id="location"
                   type="text"
                   class="form-control required inputName"
                   placeholder="location"
                   aria-label="location"
-                  aria-describedby="name-addon"
-                  name="location",
+                  name="location"
                   value="{{userData.location}}"
                 />
               </div>
-              <label>Bio</label>
+              <label for="bio">Bio</label>
               <div class="mb-3 bio-div">
                  <textarea
                 class="form-control required"
-                type="text"
                 name="bio"
                 id="bio"
                 aria-label="bio"
-                aria-describedby="name-addon"
                 placeholder="Type your bio"
               > {{userData.bio}}
               </textarea>
               </div>
-              <label>Age</label>
+              <label for="age">Age</label>
               <div class="mb-3 age-div">
                  <input
                 class="form-control required age"
@@ -127,24 +124,24 @@
                 name="age"
                 id="age"
                    aria-label="age"
-                aria-describedby="name-addon"
                 placeholder="Type your age"
                 min="12" max="120"
                    value="{{userData.age}}"
               />
               </div>
-              <label>Password</label>
+              <label for="password">Password</label>
               <div class="mb-3 password-div">
                 <input
                 class="form-control password"
                 type="password"
                 name="password"
                 id="password"
-                   aria-describedby="name-addon"
               />
               </div>
               <div class="text-center">
+                <label for="subbtn">Update</label>
                 <button
+                id="subbtn"
                   type="submit"
                   class="btn bg-gradient-info w-100 mt-4 mb-0"
                 >Update Profile</button>
@@ -159,7 +156,7 @@
 
 {{#section 'script'}}
 
-    <script type="text/javascript">
+    <script>
       jQuery(document).ready(function () {
         jQuery("#main-form").validate({
           ignore: [],

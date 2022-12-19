@@ -4,13 +4,14 @@ const feedData = data.feed;
 const userData = data.users;
 const commentData = data.comments;
 const router = express.Router();
-const path = require("path");
+//const path = require("path");
 const aes256 = require("aes256");
 const config = require("config");
 const helpers = require("./../helpers/userHelper");
 //const { title } = require("process");
 const xss = require("xss");
 const { feed } = require("../data");
+const logger = require("../utils/logger");
 
 router.route("/").get(async (req, res) => {
   if (!req.session.user) {
@@ -54,6 +55,7 @@ router.route("/").get(async (req, res) => {
       feedList: feedProjection,
       page: "Feed",
       layout: "main",
+      activeClass: "feed-active",
     });
   } catch (e) {
     if (
@@ -82,7 +84,6 @@ router.route("/post/:id").get(async (req, res) => {
   }
   try {
     let id = xss(req.params.id);
-    //console.log(id);
     helpers.checkId(id);
     let feedPost = await feedData.getFeedById(id);
     if (!feedPost) throw "No such post exists";
@@ -91,7 +92,6 @@ router.route("/post/:id").get(async (req, res) => {
     feedPost.createdByID = userName.firstName + " " + userName.lastName;
     let comments = await commentData.getAllComments(id, "feed");
     if (!comments) throw "No comments found";
-    //console.log(comments);
     if (comments.length === 0) {
       comments = null;
     } else {
@@ -101,13 +101,16 @@ router.route("/post/:id").get(async (req, res) => {
         try {
           userName = await userData.getUserById(curr.creatorID);
         } catch (error) {
-          throw error;
+          userName = "deleted user";
         }
         if (!userName) throw "No such user exists";
-        comments[i].creatorID = userName.firstName + " " + userName.lastName;
+        if(userName !== "deleted user"){
+          comments[i].creatorID = userName.firstName + " " + userName.lastName;
+        } else {
+          comments[i].creatorID = userName;
+        }
       }
     }
-    console.log(comments);
     return res.status(200).render("user/feedPost", {
       feedPost: feedPost,
       title: feedPost.title,
@@ -155,6 +158,7 @@ router
         result[teamID],
         result[createdByID]
       );
+      logger.info("User Created Feed.");
       res.redirect("/feed");
     } catch (e) {
       if (

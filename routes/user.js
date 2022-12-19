@@ -11,6 +11,7 @@ const config = require("config");
 const { Console } = require("console");
 const { title } = require("process");
 const xss = require("xss");
+const logger = require("../utils/logger");
 
 router.route("/").get(async (req, res) => {
   if (req.session.user) {
@@ -87,6 +88,7 @@ router
         }
       });
       console.log("working");
+      logger.info("User Registered");
       await userData.createUser(result);
       res.redirect("/login");
     } catch (e) {
@@ -151,6 +153,7 @@ router
         ),
         id: aes256.encrypt(config.get("aes_key"), userRow.id),
       };
+      logger.info("User Logged In");
       return res.redirect("/");
     } catch (e) {
       if (
@@ -271,7 +274,7 @@ router
           result.bio,
           result.age
         );
-
+        logger.info("User Updated Profile");
         req.session.success = "Profile Udated Successfully";
         return res.redirect("/account");
       } else {

@@ -52,8 +52,8 @@
             <p class="mb-0">Enter your team name and add users if you wish</p>
           </div>
           <div class="card-body">
-            <form role="form" id="main-form" action="/team/create" method="post">
-              <div></div><label>Name</label>
+            <form id="main-form" action="/team/create" method="post">
+              <div></div><label for="addUserChange">Name</label>
               <div class="mb-3 name-div">
                 <input type="hidden" id="addUserChange" name="addUser" value="0">
                 <input
@@ -61,38 +61,37 @@
                   class="form-control required inputName"
                   placeholder="name"
                   aria-label="name"
-                  aria-describedby="name-addon"
                   name="name"
                 />
               </div>
-               <div></div><label>Description</label>
+               <div></div><label for="text1">Description</label>
               <div class="mb-3 description-div">
                <textarea
                   class="form-control required"
                   aria-label="description"
-                  aria-describedby="description-addon"
+                  id="text1"
                   name="description"
-                /></textarea>
+                ></textarea>
               </div>
-               <div></div><label>Member Limit</label>
+               <div></div><label for="inpnumber">Member Limit</label>
               <div class="mb-3 memberLimit-div">
                 <input
+                  id="inpnumber"
                   type="number"
                   class="form-control required memberLimit"
                   aria-label="memberLimit"
-                  aria-describedby="memberLimit-addon"
                   name="memberLimit"
                     min="2"
                       max="200"
                 />
               </div>
-               <div></div><label>Minimum User Age</label>
+               <div></div><label for="inpnumber2">Minimum User Age</label>
                <div class="mb-3 ageMin-div">
                 <input
+                  id="inpnumber2"
                   type="number"
                   class="form-control required minAge"
                   aria-label="ageMin"
-                  aria-describedby="ageMin-addon"
                   name="ageMin"
                     min="16"
                 />
@@ -102,11 +101,15 @@
                 <input type="checkbox" id="private_option" name="private" value="1">
               </div>
               <div class="text-center">
+                <label for="btnSubmit">Create</label>
                 <button
+                id="btnSubmit"
                   type="submit"
                   class="btn bg-gradient-info w-100 mt-4 mb-0"
                 >Create Team</button>
+                <label for="btnSubmit2">Create & Add Users</label>
                 <button
+                id="btnSubmit2"
                   type="button"
                   class="btn bg-gradient-info w-100 mt-4 mb-0 addUserButton"
                 >Create Team & Continue To Add Users</button>
