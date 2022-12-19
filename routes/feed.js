@@ -136,7 +136,7 @@ router
         errorObject.error = "Invalid Data Posted.";
         throw errorObject;
       }
-      let result = req.body;
+      let result = xss(req.body);
       let objKeys = ["title", "description"];
       objKeys.forEach((element) => {
         helpers.checkInput(
