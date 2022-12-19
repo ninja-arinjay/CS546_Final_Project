@@ -155,7 +155,7 @@ router
         if (req.body.addUser != 0) {
           return res.redirect("/team/addUser/" + teamRow._id);
         } else {
-          return res.redirect("/team");
+          return res.redirect("/");
         }
       } else {
         errorObject.status = 403;

@@ -1,6 +1,7 @@
 const mongoCollections = require("../config/mongoCollections");
 const teamItems = mongoCollections.teamItems;
 const teams = mongoCollections.teams;
+const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 const helper = require("../helpers/userHelper");
 const e = require("express");
@@ -11,13 +12,10 @@ const createTeamItem = async (
   dateEnd,
   title,
   content,
-  location,
-  done,
-  type,
   teamID
 ) => {
   helper.checkId(teamID);
-  helper.checkInputString(createdBy);
+  helper.checkId(createdBy);
   //Input validation of dates is still not complete
   let d = new Date();
   let dateCreated =
@@ -25,23 +23,12 @@ const createTeamItem = async (
   // Date Start => 11/28/2022
   helper.checkInputString(dateStart);
   //Date Start can not be before date created
-  helper.dateCheck(dateCreated, dateStart);
+  helper.dateCheckTask(dateCreated, dateStart);
   helper.checkInputString(dateEnd);
   //Date End can not be before date start
-  helper.dateCheck(dateEnd, dateEnd);
+  helper.dateCheckTask(dateStart, dateEnd);
   helper.checkInputString(title);
   helper.checkInputString(content);
-  helper.checkBoolean(done);
-  helper.checkInputString(type);
-  if (type === "Event" || type === "Task") {
-    if (type === "Task") {
-      location = undefined;
-    } else {
-      helper.checkInputString(location);
-    }
-  } else {
-    throw "Invalid Type!";
-  }
   let comments = [];
   let newTeamItemInfo = {
     createdBy: createdBy.trim(),
@@ -50,10 +37,7 @@ const createTeamItem = async (
     dateEnd: dateEnd.trim(),
     title: title.trim(),
     content: content.trim(),
-    location: location.trim(),
     teamID: teamID.trim(),
-    done: done,
-    type: type,
     comments: comments,
   };
 
@@ -61,6 +45,10 @@ const createTeamItem = async (
   const team = await teamCollection.findOne({ _id: ObjectId(teamID) });
   if (!team) {
     throw "ERROR: TEAM NOT FOUND";
+  }
+
+  if (team.creatorID != createdBy) {
+    throw "ERROR: CANNOT ADD A TASK";
   }
 
   const teamItemsCollection = await teamItems();
@@ -183,7 +171,7 @@ const getTeamItemById = async (id) => {
   getTeamItem._id = getTeamItem._id.toString();
   return getTeamItem;
 };
-const getAllTeamItem = async (teamID) => {
+const getAllTeamItem = async () => {
   const teamItemsCollection = await teamItems();
   const getAllTeamItems = await teamItemsCollection.find({}).toArray();
   if (!getAllTeamItems) {
@@ -195,10 +183,70 @@ const getAllTeamItem = async (teamID) => {
   return getAllTeamItems;
 };
 
+const getTeamItemByTeam = async (teamID) => {
+  const teamItemsCollection = await teamItems();
+  const getAllTeamItems = await teamItemsCollection
+    .find({ teamID: { $in: [teamID] } })
+    .toArray();
+  if (!getAllTeamItems) {
+    throw "ERROR: UNABLE TO GET ALL TEAM ITEMS";
+  }
+  for (let i = 0; i < getAllTeamItems.length; i++) {
+    getAllTeamItems[i]["_id"] = getAllTeamItems[i]["_id"].toString();
+  }
+  return getAllTeamItems;
+};
+
+const addComment = async (id, comment, currentUser) => {
+  let row = await this.getTeamItemById(id);
+  const teamCollection = await teams();
+  const userCollection = await users();
+  const team = await teamCollection.findOne({ _id: ObjectId(row.teamID) });
+  if (!team) {
+    throw "ERROR: TEAM NOT FOUND";
+  }
+  if (!team.members.includes(currentUser)) {
+    throw "ERROR: USER NO ACCESS";
+  }
+  const user = await userCollection.findOne({ _id: ObjectId(currentUser) });
+  let commentArray = row.comments;
+  let d = new Date();
+  let dateCreated =
+    d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
+  if (
+    Date.parse(row.startDate) > Date.parse(dateCreated) ||
+    Date.parse(row.endDate) < dateCreated
+  ) {
+    throw "ERROR: CANNOT ADD COMMENT AS TASK IS NOT ACTIVE";
+  }
+  commentArray.push({
+    _id: new ObjectId(),
+    name: user.firstName + " " + user.lastName,
+    comment: comment,
+    createdAt: dateCreated,
+  });
+  if (!user) {
+    throw "ERROR: USER NO FOUND";
+  }
+  const updateInfo = await teamItemsCollection.updateOne(
+    { _id: ObjectId(id) },
+    { $push: { comment: commentArray } }
+  );
+  if (updateInfo.modifiedCount === 0) {
+    {
+      errorObject.status = 500;
+      errorObject.error = "COULD NOT ADD Comment TO TASK";
+      throw errorObject;
+    }
+  }
+};
+
 module.exports = {
   createTeamItem,
   deleteTeamItem,
   updateTeamItem,
   getAllTeamItem,
   getTeamItemById,
+  getTeamItemByTeam,
+  addComment,
 };

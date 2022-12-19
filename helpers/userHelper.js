@@ -68,7 +68,37 @@ function dateCheck(d1, d2) {
     if (year1 == year2) {
       if (month1 <= month2) {
         if (month1 == month2) {
-          if (date1 > date2) {
+          if (date1 >= date2) {
+            throw "Invalid Date";
+          }
+        } else {
+          return;
+        }
+      } else {
+        return;
+      }
+    } else {
+      return;
+    }
+  } else {
+    throw "Invalid Date";
+  }
+}
+
+function dateCheckTask(d1, d2) {
+  let inp1 = d1.split("-");
+  let inp2 = d2.split("-");
+  let date1 = parseInt(inp1[2]);
+  let month1 = parseInt(inp1[1]);
+  let year1 = parseInt(inp1[0]);
+  let date2 = parseInt(inp2[2]);
+  let month2 = parseInt(inp2[1]);
+  let year2 = parseInt(inp2[0]);
+  if (year1 <= year2) {
+    if (year1 == year2) {
+      if (month1 <= month2) {
+        if (month1 == month2) {
+          if (date1 >= date2) {
             throw "Invalid Date";
           }
         } else {
@@ -86,11 +116,17 @@ function dateCheck(d1, d2) {
 }
 
 //common function to check all input parameters for both route and data
-function checkInput(input, val, variableName, routeFlag = false) {
+function checkInput(
+  input,
+  val,
+  variableName,
+  routeFlag = false,
+  required = true
+) {
   const errorObject = {
     status: 400,
   };
-  if (!val) {
+  if (!val && required) {
     throw `${variableName || "Provided variable"} is required.`;
   }
   let inputRegExp = "";
@@ -128,7 +164,7 @@ function checkInput(input, val, variableName, routeFlag = false) {
         throw errorObject;
       }
       val = val.trim();
-      if (!val) {
+      if (!val && required) {
         errorObject.error = `${
           variableName || "Provided variable"
         } must not be empty.`;
@@ -137,7 +173,7 @@ function checkInput(input, val, variableName, routeFlag = false) {
       inputRegExp =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*]).{4,20}$/;
       valid = inputRegExp.test(val);
-      if (!valid) {
+      if (!valid && val) {
         errorObject.error = `${
           variableName || "Provided variable"
         }  must have a small letter, a capital letter, a digit and a special character and must have between 4-20 characters.`;
@@ -326,4 +362,5 @@ module.exports = {
   checkBoolean,
   dateCheck,
   checkInput,
+  dateCheckTask,
 };

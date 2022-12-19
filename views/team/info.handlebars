@@ -17,12 +17,17 @@
           </li>
           {{#if creatorUser}}
           <li class="nav-item d-flex align-items-center">
-            <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="/team/createTask/{{teamData._id}}">Create Task</a>
+            <button class="btn btn-outline-primary btn-sm mb-0 me-3" onclick="loadAddTaskForm()">Create Task</button>
           </li>
           {{/if}}
           {{#if teamUser}}
           <li class="nav-item d-flex align-items-center">
             <button class="btn btn-outline-primary btn-sm mb-0 me-3" onclick="loadCommentForm()">Add Comment</button>
+          </li>
+          {{/if}}
+          {{#if teamUser}}
+          <li class="nav-item d-flex align-items-center">
+            <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="/task/info/{{teamData._id}}">View Tasks</a>
           </li>
           {{/if}}
 
@@ -86,17 +91,6 @@
                   </div>
                 </div>
               </li>
-
-              <li class="nav-item d-flex align-items-center">
-                <div>
-                  <div class="d-flex px-2 py-1">
-                    <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm" style="text-transform: uppercase;"> Minimum User Age:
-                        {{teamData.ageMin}}</h6>
-                    </div>
-                  </div>
-                </div>
-              </li>
               <li class="nav-item d-flex align-items-center">
                 <div>
                   <div class="d-flex px-2 py-1">
@@ -140,7 +134,7 @@
         </div>
       </div>
       {{#if teamUser}}
-        <div class="row">
+      <div class="row">
         <div class="col-md-12 mt-4">
           <div class="card">
             <div class="card-header pb-0 px-3">
@@ -202,8 +196,8 @@
         </div>
 
       </div>
-    {{/unless}}
-    {{/if}}
+      {{/unless}}
+      {{/if}}
 
     </div>
   </div>
@@ -237,11 +231,60 @@
   </div>
 </div>
 
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="Task Modal" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Task Modal">Add Team Task</h5>
+        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <form role="form" id="task-form" action="/task/create/{{teamData._id}}" method="post">
+        <div class="modal-body">
+          <label>Title</label>
+          <div class="mb-3 title-div">
+            <input type="text" class="form-control inputName required" aria-label="title" aria-describedby="title-addon"
+              name="title">
+          </div>
+          <div></div>
+          <label>Content</label>
+          <div class="mb-3 content-div">
+            <textarea class="form-control required" aria-label="content" aria-describedby="content-addon"
+              name="content" /></textarea>
+          </div>
+          <div></div>
+          <label>Start Date</label>
+          <div class="mb-3 startDate-div">
+            <input type="date" id="StartDate" class="form-control required" aria-label="startDate"
+              aria-describedby="startDate-addon" name="startDate" />
+          </div>
+          <div></div>
+          <label>End Date</label>
+          <div class="mb-3 endDate-div">
+            <input type="date" id="EndDate" class="form-control required" aria-label="endDate"
+              aria-describedby="endDate-addon" name="endDate" />
+          </div>
+          <div></div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="submit" class="btn btn-primary">Add Task</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
 
 {{#section "script"}}
 <script>
   function loadCommentForm() {
     $('#exampleModal').modal('toggle');
+  }
+
+  function loadAddTaskForm() {
+    $('#exampleModal2').modal('toggle');
   }
   jQuery(document).ready(function () {
     jQuery("#comment-form").validate({
@@ -260,7 +303,69 @@
       },
     });
 
+    jQuery("#task-form").validate({
+      ignore: [],
+      rules: {
+        title: {
+          required: true,
+        },
+        content: {
+          required: true,
+          minlength: 5
+        },
+
+      },
+      errorPlacement: function (error, element) {
+        error.insertAfter("." + element.attr("name") + "-div");
+      },
+      submitHandler: function (form) {
+        form.submit();
+      },
+    });
+
+    jQuery.validator.addMethod(
+      "inputName",
+      function (value, element) {
+        return /\d*[a-zA-Z][a-zA-Z0-9 ]*$/i.test(
+          value
+        );
+      },
+      "Invalid Name"
+    );
+
+    jQuery("#EndDate").change(function () {
+      checkEndDate();
+    });
+
+    jQuery("#StartDate").change(function () {
+      checkStartDate();
+      checkEndDate();
+    });
+
   });
+
+  function checkEndDate() {
+
+    var startDate = document.getElementById("StartDate").value;
+    var endDate = document.getElementById("EndDate").value;
+
+    if ((Date.parse(endDate) <= Date.parse(startDate))) {
+      alert("End date should be greater than Start date");
+      document.getElementById("EndDate").value = "";
+    }
+  }
+
+  function checkStartDate() {
+    var startDate = document.getElementById("StartDate").value;
+    var d = new Date();
+    d = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
+    if ((Date.parse(startDate) < Date.parse(d))) {
+      alert("Start date should be greater than Today");
+      document.getElementById("StartDate").value = "";
+    }
+  }
+
+
 
 
 </script>

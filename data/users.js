@@ -35,9 +35,9 @@ const exportedMethods = {
       }
     });
 
-    let hashedPass = await bcrypt.hash(result.password, saltRounds);
+    let hashedPass = await bcrypt.hash(result.password.trim(), saltRounds);
     result.password = hashedPass;
-    result.email = result["email"].toLowerCase();
+    result.email = result["email"].trim().toLowerCase();
     result.teamsCreated = [];
     result.teamsJoined = [];
     const userCollection = await users();
@@ -158,17 +158,35 @@ const exportedMethods = {
     bio,
     age
   ) {
-    helper.checkInputPassword(password);
+    const errorObject = {
+      status: 400,
+    };
+    helper.checkInput("id", id, "User");
+    helper.checkInput("password", password, "User Password", false, false);
     helper.checkEmail(email);
     helper.checkInputString(firstName);
     helper.checkInputString(lastName);
     helper.checkInputString(location);
     helper.checkInputString(bio);
     helper.checkAge(age);
+
+    id = id.trim();
+    email = email.trim();
+    firstName = firstName.trim();
+    lastName = lastName.trim();
+    location = location.trim();
+    bio = bio.trim();
+    password = password.trim();
     const userCollection = await users();
     const updateInfo = await userCollection.findOne({ _id: ObjectId(id) });
     if (!updateInfo) {
       throw "Error : No user present for that user Id.";
+    }
+    if (password) {
+      let hashedPass = await bcrypt.hash(password, saltRounds);
+      password = hashedPass;
+    } else {
+      password = updateInfo.password;
     }
     let userUpdateInfo = {
       password: password,
@@ -180,6 +198,15 @@ const exportedMethods = {
       age: age,
       //teams created and teams joined pending
     };
+
+    let duplicateUser = await userCollection.findOne({
+      email: email,
+      _id: { $nin: [ObjectId(id)] },
+    });
+    if (duplicateUser != null) {
+      errorObject.error = "User with this email already exists.";
+      throw errorObject;
+    }
     const updateI = await userCollection.updateOne(
       { _id: ObjectId(id) },
       { $set: userUpdateInfo }
@@ -240,7 +267,8 @@ const exportedMethods = {
         teamsCreated: { $nin: [teamId] },
       })
       .sort({ age: 1 })
-      .limit(1).toArray();
+      .limit(1)
+      .toArray();
     return usersData;
   },
 };

@@ -21,7 +21,7 @@ router.route("/").get(async (req, res) => {
     );
     let allTeams = await teamData.getAllTeams();
     let otherTeams = allTeams.length;
-     allTeams = await teamData.getAllUserTeams(userRow.teamsJoined);
+    allTeams = await teamData.getAllUserTeams(userRow.teamsJoined);
     let myTeams = allTeams.length;
     let successMessage = req.session.success;
     req.session.success = "";
@@ -37,9 +37,9 @@ router.route("/").get(async (req, res) => {
       teamCount: otherTeams,
     });
   } else {
-    return res.render("static/static",{
-      title :"Landing",
-      layout: "../static/static"
+    return res.render("static/static", {
+      title: "Landing",
+      layout: "../static/static",
     });
   }
 });
@@ -249,12 +249,22 @@ router
           "location",
         ];
         objKeys.forEach((element) => {
-          helpers.checkInput(
-            element,
-            result[element],
-            element + " of the user",
-            true
-          );
+          if (element === "password") {
+            helpers.checkInput(
+              element,
+              result[element],
+              element + " of the user",
+              true,
+              false
+            );
+          } else {
+            helpers.checkInput(
+              element,
+              result[element],
+              element + " of the user",
+              true
+            );
+          }
           if (element === "age") {
             result[element] = parseInt(result[element]);
           }
