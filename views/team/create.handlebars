@@ -1,0 +1,199 @@
+<main
+  class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+>
+  <!-- Navbar -->
+  <nav
+    class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
+    id="navbarBlur"
+  >
+    <div class="container-fluid py-1 px-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+          <li class="breadcrumb-item text-sm"><a
+              class="opacity-5 text-dark"
+              href="javascript:;"
+            >Pages</a></li>
+          <li
+            class="breadcrumb-item text-sm text-dark active"
+            aria-current="page"
+          >{{page}}</li>
+        </ol>
+        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+      </nav>
+      <div
+        class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
+        id="navbar"
+      >
+
+        <ul class="navbar-nav justify-content-end">
+          <li class="nav-item d-flex align-items-center">
+            <a
+              class="btn btn-outline-primary btn-sm mb-0 me-3"
+              href="/team"
+            >Cancel</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- End Navbar -->
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-xl-4 col-lg-5 col-md-6 d-flex flex-column mx-auto">
+        <div class="card card-plain mt-8">
+              {{#if error}}
+              <p class="error">{{error}}</p>
+            {{/if}}
+          <div class="card-header pb-0 text-left bg-transparent">
+            <h3 class="font-weight-bolder text-info text-gradient">Create Your
+              Team</h3>
+            <p class="mb-0">Enter your team name and add users if you wish</p>
+          </div>
+          <div class="card-body">
+            <form id="main-form" action="/team/create" method="post">
+              <div></div><label for="addUserChange">Name</label>
+              <div class="mb-3 name-div">
+                <input type="hidden" id="addUserChange" name="addUser" value="0">
+                <input
+                  type="text"
+                  class="form-control required inputName"
+                  placeholder="name"
+                  aria-label="name"
+                  name="name"
+                />
+              </div>
+               <div></div><label for="text1">Description</label>
+              <div class="mb-3 description-div">
+               <textarea
+                  class="form-control required"
+                  aria-label="description"
+                  id="text1"
+                  name="description"
+                ></textarea>
+              </div>
+               <div></div><label for="inpnumber">Member Limit</label>
+              <div class="mb-3 memberLimit-div">
+                <input
+                  id="inpnumber"
+                  type="number"
+                  class="form-control required memberLimit"
+                  aria-label="memberLimit"
+                  name="memberLimit"
+                    min="2"
+                      max="200"
+                />
+              </div>
+               <div></div><label for="inpnumber2">Minimum User Age</label>
+               <div class="mb-3 ageMin-div">
+                <input
+                  id="inpnumber2"
+                  type="number"
+                  class="form-control required minAge"
+                  aria-label="ageMin"
+                  name="ageMin"
+                    min="16"
+                />
+              </div>
+               <div></div><label>Is Private Team</label>
+               <div class="mb-3 private-div">
+                <input type="checkbox" id="private_option" name="private" value="1">
+              </div>
+              <div class="text-center">
+                <label for="btnSubmit">Create</label>
+                <button
+                id="btnSubmit"
+                  type="submit"
+                  class="btn bg-gradient-info w-100 mt-4 mb-0"
+                >Create Team</button>
+                <label for="btnSubmit2">Create & Add Users</label>
+                <button
+                id="btnSubmit2"
+                  type="button"
+                  class="btn bg-gradient-info w-100 mt-4 mb-0 addUserButton"
+                >Create Team & Continue To Add Users</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+{{#section "script"}}
+
+  <script>
+    jQuery(document).ready(function () {
+    jQuery("#main-form").validate({ 
+   ignore: [],
+          rules: {
+            name: {
+              required: true,
+              maxlength: 255,
+            },
+             description: {
+              required: true,
+              minlength: 5,
+            },
+             ageMin: {
+              required: true,
+              min: 12,
+              max:120
+            },
+            memberLimit: {
+              required: true,
+              min: 2,
+              max:200
+            },
+          } ,
+          errorPlacement: function (error, element) {
+            error.insertAfter("." + element.attr("name") + "-div");
+          },
+          submitHandler: function (form) {
+              form.submit();
+          },
+    });
+    jQuery.validator.addMethod(
+          "inputName",
+          function (value, element) {
+            return /\d*[a-zA-Z][a-zA-Z0-9 ]*$/i.test(
+              value
+            );
+          },
+          "Invalid Name"
+        );
+   });
+
+    jQuery.validator.addMethod(
+          "minAge",
+          function (value, element) {
+            return /^[0-9]+$/i.test(
+              value
+            );
+          },
+          "Invalid Minimum Age"
+        );
+
+         jQuery.validator.addMethod(
+          "memberLimit",
+          function (value, element) {
+            return /^[0-9]+$/i.test(
+              value
+            );
+          },
+          "Invalid Member Limit"
+        );
+
+   jQuery(".addUserButton").click(function(){
+    jQuery("#addUserChange").val(1);
+      let result = jQuery("#main-form").validate();
+      if(result){
+        jQuery("#main-form").submit();
+      }
+
+   });
+  </script>
+
+{{/section}}

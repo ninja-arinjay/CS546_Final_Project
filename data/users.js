@@ -1,103 +1,105 @@
-const mongoCollections = require("../config/mongoCollections");
+const mongoCollections = require("./../config/mongoCollections");
 const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
-const bcrypt = require("bcryptjs/dist/bcrypt");
+const bcrypt = require("bcrypt");
 const saltRounds = 10;
-const helper = require("../helpers/userHelper");
+const helper = require("./../helpers/userHelper");
 
 const exportedMethods = {
   //Create a User
-  async createUser(
-    userName,
-    password,
-    email,
-    firstName,
-    lastName,
-    location,
-    bio,
-    age
-  ) {
-    try {
-      //Input Validations
-      helper.checkInputString(userName);
-      helper.checkInputPassword(password);
-      const hashedPass = await bcrypt.hash(password, saltRounds);
-      email = email.toLowerCase;
-      helper.checkEmail(email);
-      helper.checkInputString(firstName);
-      helper.checkInputString(lastName);
-      helper.checkInputString(location);
-      // What else can we check on location
-      helper.checkInputString(bio);
-      helper.checkAge(age);
-      // Teams Created and Teams Joined still pending
-      const userCollection = await users();
-      let duplicateUser = await userCollection.findOne({
-        userName: userName,
-      });
-      if (duplicateUser != null) {
-        throw `User already exits - ${JSON.stringify(duplicateUser)}`;
-      }
-      // when a user is created, teamsCreated and teamsJoined are empty
-      let newUserInfo = {
-        userName: userName.trim(),
-        password: hashedPass,
-        email: email.trim(),
-        firstName: firstName.trim(),
-        lastName: lastName.trim(),
-        location: location.trim(),
-        bio: bio.trim(),
-        age: age,
-        teamsCreated: [],
-        teamsJoined: [],
-      };
-      const insertInfo = await userCollection.insertOne(newUserInfo);
-      if (!insertInfo.acknowledged || insertInfo.insertedCount === 0) {
-        throw "ERROR: COULD NOT CREATE USER";
-      }
-      const newId = insertInfo.insertedId;
-      const newUser = await userCollection.findOne(newId);
-      if (!newUser) {
-        throw "ERROR: UNABLE TO FIND USER";
-      }
-      newUser._id = newUser._id.toString();
-      return newUser;
-    } catch (e) {
-      console.log(e);
+
+  async createUser(result) {
+    const errorObject = {
+      status: 400,
+    };
+
+    //Input Validations
+
+    if (typeof result !== "object") {
+      errorObject.error = "Invalid Data Posted.";
+      throw errorObject;
     }
+    let objKeys = [
+      "email",
+      "password",
+      "firstName",
+      "lastName",
+      "age",
+      "bio",
+      "location",
+    ];
+    objKeys.forEach((element) => {
+      helper.checkInput(element, result[element], element + " of the user");
+      if (element !== "age") {
+        result[element] = result[element].trim();
+      }
+    });
+
+    let hashedPass = await bcrypt.hash(result.password.trim(), saltRounds);
+    result.password = hashedPass;
+    result.email = result["email"].trim().toLowerCase();
+    result.teamsCreated = [];
+    result.teamsJoined = [];
+    const userCollection = await users();
+    let duplicateUser = await userCollection.findOne({
+      email: result.email,
+    });
+    if (duplicateUser != null) {
+      errorObject.error = "User with this email already exists.";
+      throw errorObject;
+    }
+
+    // when a user is created, teamsCreated and teamsJoined are empty
+
+    const insertInfo = await userCollection.insertOne(result);
+    if (!insertInfo.acknowledged || insertInfo.insertedCount === 0) {
+      errorObject.status = 500;
+      errorObject.error = "Could not create user.";
+      throw errorObject;
+    }
+    const newId = insertInfo.insertedId;
+    const newUser = await userCollection.findOne(newId);
+    newUser._id = newUser._id.toString();
+    return newUser;
   },
+
   //Search A User
-  async checkUser(userName, password) {
+
+  async checkUser(email, password) {
     // Input Validation
-    helper.checkInputString(userName);
-    helper.checkInputPassword(password);
+
+    const errorObject = {
+      status: 400,
+    };
+
+    helper.checkInput("email", email);
+    helper.checkInput("password", password);
 
     const userCollection = await users();
 
-    let Query; // query the db
-    let compareFoundUser; // compare the passwords
-    try {
-      Query = await userCollection.findOne({
-        userName: userName,
-      });
+    let row;
+    let comparePassword; // compare the passwords
 
-      if (Object.keys(Query).length === 0) {
-        throw "Either the username or password is invalid";
-      } else {
-        compareFoundUser = await bcrypt.compare(password, Query.password);
-        if (!compareFoundUser) {
-          throw "Either the username or password is invalid";
-        } else {
-          return {
-            authenticated: true,
-            id: Query["_id"].toString(),
-          };
-        }
-      }
-    } catch (e) {
-      throw e;
+    row = await userCollection.findOne({
+      email: email.trim().toLowerCase(),
+    });
+
+    if (row == null) {
+      errorObject.error = "Email is not registered in the system.";
+      throw errorObject;
+    }
+
+    comparePassword = await bcrypt.compare(password, row.password.trim());
+    if (!comparePassword) {
+      throw "Invalid Password Provided";
+    } else {
+      return {
+        authenticated: true,
+        id: row["_id"].toString(),
+      };
     }
   },
+
   //Get All users
   async getAllUsers() {
     const userCollection = await users();
@@ -110,9 +112,10 @@ const exportedMethods = {
     }
     return getAllUser;
   },
+
   //Search profile
   async getUserById(id) {
-    helper.checkId(id);
+    helper.checkInput("id", id, "USER");
     const userCollection = await users();
     id = id.trim();
     if (!ObjectId.isValid(id)) {
@@ -127,6 +130,7 @@ const exportedMethods = {
     getuser._id = getuser._id.toString();
     return getuser;
   },
+
   //Delete a User
   async removeUserById(id) {
     helper.checkId(id);
@@ -142,10 +146,10 @@ const exportedMethods = {
     }
     return `${user_name} has been successfully deleted!`;
   },
+
   //Update a User
   async updateUser(
     id,
-    userName,
     password,
     email,
     firstName,
@@ -154,21 +158,37 @@ const exportedMethods = {
     bio,
     age
   ) {
-    helper.checkInputString(userName);
-    helper.checkInputPassword(password);
+    const errorObject = {
+      status: 400,
+    };
+    helper.checkInput("id", id, "User");
+    helper.checkInput("password", password, "User Password", false, false);
     helper.checkEmail(email);
     helper.checkInputString(firstName);
     helper.checkInputString(lastName);
     helper.checkInputString(location);
     helper.checkInputString(bio);
     helper.checkAge(age);
+
+    id = id.trim();
+    email = email.trim();
+    firstName = firstName.trim();
+    lastName = lastName.trim();
+    location = location.trim();
+    bio = bio.trim();
+    password = password.trim();
     const userCollection = await users();
     const updateInfo = await userCollection.findOne({ _id: ObjectId(id) });
     if (!updateInfo) {
       throw "Error : No user present for that user Id.";
     }
+    if (password) {
+      let hashedPass = await bcrypt.hash(password, saltRounds);
+      password = hashedPass;
+    } else {
+      password = updateInfo.password;
+    }
     let userUpdateInfo = {
-      userName: userName,
       password: password,
       email: email,
       firstName: firstName,
@@ -178,6 +198,15 @@ const exportedMethods = {
       age: age,
       //teams created and teams joined pending
     };
+
+    let duplicateUser = await userCollection.findOne({
+      email: email,
+      _id: { $nin: [ObjectId(id)] },
+    });
+    if (duplicateUser != null) {
+      errorObject.error = "User with this email already exists.";
+      throw errorObject;
+    }
     const updateI = await userCollection.updateOne(
       { _id: ObjectId(id) },
       { $set: userUpdateInfo }
@@ -186,7 +215,62 @@ const exportedMethods = {
       throw "ERROR: UPDATE FAILED!";
     }
     return await this.getUserById(id);
-  }
+  },
+  async getUsersByTeam(array) {
+    const errorObject = {
+      status: 400,
+    };
+    if (!Array.isArray(array)) {
+      errorObject.status = 500;
+      errorObject.error = "Undefined Data";
+      throw errorObject;
+    }
+    array = array.map(function (element) {
+      return ObjectId(element);
+    });
+    const userCollection = await users();
+    let usersData = await userCollection
+      .find({
+        _id: { $in: array },
+      })
+      .toArray();
+    usersData = usersData.map(function (element) {
+      if (element == "_id") {
+        element._id = element._id.toString();
+      }
+      return element;
+    });
+    return usersData;
+  },
+
+  async getNonTeamUsers(id) {
+    const errorObject = {
+      status: 400,
+    };
+    const userCollection = await users();
+    let usersData = await userCollection
+      .find({
+        teamsJoined: { $nin: [id] },
+      })
+      .toArray();
+    return usersData;
+  },
+
+  async getMinAgeUser(teamId) {
+    const errorObject = {
+      status: 400,
+    };
+    const userCollection = await users();
+    let usersData = await userCollection
+      .find({
+        teamsJoined: { $in: [teamId] },
+        teamsCreated: { $nin: [teamId] },
+      })
+      .sort({ age: 1 })
+      .limit(1)
+      .toArray();
+    return usersData;
+  },
 };
 
 module.exports = exportedMethods;
