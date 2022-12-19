@@ -125,6 +125,316 @@ async function main() {
       location: "North Carolina",
       password: "qkQ0Gi2xq4G#",
     },
+    {
+      firstName: "Nicolai",
+      lastName: "Padmore",
+      email: "npadmore0@fda.gov",
+      age: 32,
+      bio: "Innovative regional implementation",
+      location: "Diadema",
+      password: "CYjfT177Mir@1",
+    },
+    {
+      firstName: "Bess",
+      lastName: "Kelk",
+      email: "bkelk1@baidu.com",
+      age: 44,
+      bio: "Right-sized intermediate implementation",
+      location: "Mytishchi",
+      password: "hBCqiyhT9G1e@1",
+    },
+    {
+      firstName: "Imogene",
+      lastName: "Saxon",
+      email: "isaxon2@1688.com",
+      age: 52,
+      bio: "Optional homogeneous matrices",
+      location: "Fengyang Fuchengzhen",
+      password: "CIS9Pe@1",
+    },
+    {
+      firstName: "Kristal",
+      lastName: "Hartles",
+      email: "khartles3@cdc.gov",
+      age: 60,
+      bio: "Visionary web-enabled paradigm",
+      location: "Ganjiangtou",
+      password: "9PnaGPzfTxcs@1",
+    },{
+      firstName: "Aurelie",
+      lastName: "Borrowman",
+      email: "aborrowman4@unblog.fr",
+      age: 58,
+      bio: "Enterprise-wide high-level throughput",
+      location: "Capljina",
+      password: "lqygAGcpVe@1",
+    },{
+      firstName: "Eliot",
+      lastName: "Gaskell",
+      email: "egaskell5@myspace.com",
+      age: 46,
+      bio: "Business-focused regional focus group",
+      location: "Thi Tran Giao",
+      password: "u3MjVN@1",
+    },
+    {
+      "firstName": "Lynsey",
+      "lastName": "Junifer",
+      "email": "ljunifer1k@google.de",
+      "age": 27,
+      "bio": "Switchable upward-trending project",
+      "location": "Cajamarca",
+      "password": "Jb0Gd5@1"
+    }, {
+      "firstName": "Cesar",
+      "lastName": "Golthorpp",
+      "email": "cgolthorpp1l@devhub.com",
+      "age": 47,
+      "bio": "Universal logistical knowledge base",
+      "location": "Bantry",
+      "password": "eLnnMW@1"
+    }, {
+      "firstName": "Kimbell",
+      "lastName": "Thoma",
+      "email": "kthoma1m@moonfruit.com",
+      "age": 46,
+      "bio": "Decentralized neutral support",
+      "location": "Tsuruoka",
+      "password": "OEyuwNg@1"
+    }, {
+      "firstName": "Pat",
+      "lastName": "Polhill",
+      "email": "ppolhill1n@vkontakte.ru",
+      "age": 29,
+      "bio": "Down-sized neutral concept",
+      "location": "Hovorany",
+      "password": "9WnReKEZsY@1"
+    }, {
+      "firstName": "Erny",
+      "lastName": "Leaves",
+      "email": "eleaves1o@lycos.com",
+      "age": 36,
+      "bio": "Public-key holistic Graphic Interface",
+      "location": "Huashi",
+      "password": "ApmuGePM@1"
+    }, {
+      "firstName": "Giustina",
+      "lastName": "Snowding",
+      "email": "gsnowding1p@g.co",
+      "age": 58,
+      "bio": "Enhanced actuating support",
+      "location": "Bir Nabala",
+      "password": "NMKajJ@1"
+    }, {
+      "firstName": "Tansy",
+      "lastName": "Mantram",
+      "email": "tmantram1q@is.gd",
+      "age": 45,
+      "bio": "Devolved object-oriented encryption",
+      "location": "Krikil",
+      "password": "QgIjYkaYUQ@1"
+    }, {
+      "firstName": "Haven",
+      "lastName": "Gallamore",
+      "email": "hgallamore1r@cargocollective.com",
+      "age": 58,
+      "bio": "Compatible multi-tasking pricing structure",
+      "location": "Aghajari",
+      "password": "bX5maKGoB5fb@1"
+    }, {
+      "firstName": "Milty",
+      "lastName": "Allbon",
+      "email": "mallbon1s@gnu.org",
+      "age": 51,
+      "bio": "Multi-lateral logistical challenge",
+      "location": "Yevlakh",
+      "password": "Ujmxgf36nXh@1"
+    }, {
+      "firstName": "Ferd",
+      "lastName": "Cottham",
+      "email": "fcottham1t@msu.edu",
+      "age": 31,
+      "bio": "Customizable systematic software",
+      "location": "Minakuchi",
+      "password": "3XHG9AxF@1"
+    }, {
+      "firstName": "Riki",
+      "lastName": "Robilliard",
+      "email": "rrobilliard1u@whitehouse.gov",
+      "age": 38,
+      "bio": "Enhanced eco-centric matrix",
+      "location": "Kabin Buri",
+      "password": "7oXfcjyyTsZ@1"
+    }, {
+      "firstName": "Robers",
+      "lastName": "Pichan",
+      "email": "rpichan1v@constantcontact.com",
+      "age": 41,
+      "bio": "Public-key bandwidth-monitored contingency",
+      "location": "Sabang",
+      "password": "WzuJdd9C@1"
+    }, {
+      "firstName": "Miguela",
+      "lastName": "Glitherow",
+      "email": "mglitherow1w@instagram.com",
+      "age": 58,
+      "bio": "Balanced non-volatile knowledge user",
+      "location": "Puyo",
+      "password": "TMCoN9SHTsuz@1"
+    }, {
+      "firstName": "Norman",
+      "lastName": "Hodinton",
+      "email": "nhodinton1x@reference.com",
+      "age": 40,
+      "bio": "Integrated impactful standardization",
+      "location": "Little Rock",
+      "password": "OAdbMmMXC@1"
+    }, {
+      "firstName": "Viviyan",
+      "lastName": "Greasty",
+      "email": "vgreasty1y@biblegateway.com",
+      "age": 33,
+      "bio": "User-friendly empowering conglomeration",
+      "location": "Francisco Villa",
+      "password": "w7TtFIJi@1"
+    }, {
+      "firstName": "Matteo",
+      "lastName": "Padwick",
+      "email": "mpadwick1z@google.co.jp",
+      "age": 49,
+      "bio": "Cloned bifurcated capacity",
+      "location": "Lenghu",
+      "password": "GJHtz4mPNf1@1"
+    }, {
+      "firstName": "Miller",
+      "lastName": "Lardnar",
+      "email": "mlardnar20@usa.gov",
+      "age": 46,
+      "bio": "Future-proofed optimal alliance",
+      "location": "Tabalosos",
+      "password": "IK5piRJmGVLu@1"
+    }, {
+      "firstName": "Carmelia",
+      "lastName": "Elliker",
+      "email": "celliker21@twitpic.com",
+      "age": 25,
+      "bio": "Face to face secondary attitude",
+      "location": "Poxin",
+      "password": "aGX50rTBF4@1"
+    }, {
+      "firstName": "Viviene",
+      "lastName": "Boutcher",
+      "email": "vboutcher22@digg.com",
+      "age": 44,
+      "bio": "Optimized background customer loyalty",
+      "location": "Cabrela",
+      "password": "57W7i9@1"
+    },
+    {
+      "firstName": "Karney",
+      "lastName": "Haywood",
+      "email": "khaywoodt@hostgator.com",
+      "age": 33,
+      "bio": "Ergonomic high-level orchestration",
+      "location": "Pregonero",
+      "password": "J00t2wfbOk@1"
+    }, {
+      "firstName": "Veronique",
+      "lastName": "Simko",
+      "email": "vsimkou@jiathis.com",
+      "age": 33,
+      "bio": "Synergistic neutral standardization",
+      "location": "San Carlos",
+      "password": "qvK9g6PZ30jz@1"
+    }, {
+      "firstName": "Thain",
+      "lastName": "Dayment",
+      "email": "tdaymentv@squarespace.com",
+      "age": 50,
+      "bio": "Mandatory interactive workforce",
+      "location": "Horodok",
+      "password": "WpQg51B06qh@1"
+    }, {
+      "firstName": "Wallache",
+      "lastName": "Cambell",
+      "email": "wcambellw@youtu.be",
+      "age": 35,
+      "bio": "Open-source clear-thinking approach",
+      "location": "Bialobrzegi",
+      "password": "ItBQRxmeB@1"
+    }, {
+      "firstName": "Davidson",
+      "lastName": "Mitroshinov",
+      "email": "dmitroshinovx@github.com",
+      "age": 31,
+      "bio": "Intuitive scalable array",
+      "location": "Jajawai",
+      "password": "XTjZ2UY@1"
+    }, {
+      "firstName": "Sibbie",
+      "lastName": "Sutherns",
+      "email": "ssuthernsy@sciencedaily.com",
+      "age": 52,
+      "bio": "Organized high-level success",
+      "location": "Skalanion",
+      "password": "ChnP5gEh2@1"
+    }, {
+      "firstName": "Taddeo",
+      "lastName": "Eastmond",
+      "email": "teastmondz@cnet.com",
+      "age": 38,
+      "bio": "Implemented coherent database",
+      "location": "Korenov",
+      "password": "PgHGn8ZaEX@1"
+    }, {
+      "firstName": "Der",
+      "lastName": "Northbridge",
+      "email": "dnorthbridge10@disqus.com",
+      "age": 23,
+      "bio": "Operative global synergy",
+      "location": "Puqi",
+      "password": "yfO4Ho64wMG@1"
+    }, {
+      "firstName": "Nicola",
+      "lastName": "Minchell",
+      "email": "nminchell11@issuu.com",
+      "age": 40,
+      "bio": "Compatible global interface",
+      "location": "Estrada",
+      "password": "Sg4t2D@1"
+    }, {
+      "firstName": "Jakie",
+      "lastName": "Blain",
+      "email": "jblain12@blog.com",
+      "age": 58,
+      "bio": "Polarised value-added conglomeration",
+      "location": "Solntsevo",
+      "password": "HJGRNlm0ks!1"
+    }, {
+      "firstName": "Valaree",
+      "lastName": "Ivanenko",
+      "email": "vivanenko13@yellowpages.com",
+      "age": 50,
+      "bio": "Reactive full-range protocol",
+      "location": "Longmen",
+      "password": "oTGmR4R0qoNs@1"
+    }, {
+      "firstName": "Byrle",
+      "lastName": "Fasham",
+      "email": "bfasham14@google.com.br",
+      "age": 50,
+      "bio": "Advanced cohesive frame",
+      "location": "Patzicia",
+      "password": "AWYRezlYj1j@1"
+    }, {
+      "firstName": "Kare",
+      "lastName": "Sharrard",
+      "email": "ksharrard15@lulu.com",
+      "age": 59,
+      "bio": "Front-line upward-trending application",
+      "location": "Haoba",
+      "password": "mBIyB5j@1"
+    }
   ];
 
   let userIdList = [];
@@ -144,124 +454,144 @@ async function main() {
   let teamList = [
     {
       teamName: "Pagac LLC",
-      creatorID: "Alpha",
+      description :"Random Description",
+      private :false,
+      memberLimit : 6,
+      ageMin : 22
     },
     {
-      teamName: "Cummings-Abshire",
-      creatorID: "Flexidy",
-    },
-    {
-      teamName: "Adams-Wuckert",
-      creatorID: "Lotlux",
-    },
-    {
-      teamName: "Armstrong Group",
-      creatorID: "Sonair",
-    },
-    {
-      teamName: "Turner-O'Keefe",
-      creatorID: "Tempsoft",
-    },
-    {
-      teamName: "Luettgen-Dibbert",
-      creatorID: "Ronstring",
-    },
-    {
-      teamName: "Kihn Group",
-      creatorID: "Domainer",
-    },
-    {
-      teamName: "Crona-Parisian",
-      creatorID: "Sonair",
-    },
-    {
-      teamName: "Mitchell, Wiza and Mosciski",
-      creatorID: "Voyatouch",
-    },
-    {
-      teamName: "Mante Inc",
-      creatorID: "Namfix",
-    },
-    {
-      teamName: "Schiller, Rempel and Wehner",
-      creatorID: "Konklab",
-    },
-    {
-      teamName: "Dach-D'Amore",
-      creatorID: "Stringtough",
-    },
-    {
-      teamName: "Larson and Sons",
-      creatorID: "Asoka",
-    },
-    {
-      teamName: "Schuster Inc",
-      creatorID: "Greenlam",
-    },
-    {
-      teamName: "Waelchi, Shields and Cassin",
-      creatorID: "Stronghold",
-    },
-    {
-      teamName: "Conroy, Hermann and Maggio",
-      creatorID: "Regrant",
-    },
-    {
-      teamName: "Swift, Klocko and Haley",
-      creatorID: "Temp",
-    },
-    {
-      teamName: "Sauer-Friesen",
-      creatorID: "Transcof",
-    },
-    {
-      teamName: "Mueller LLC",
-      creatorID: "Daltfresh",
-    },
-    {
-      teamName: "Lehner, Funk and Herzog",
-      creatorID: "Zoolab",
-    },
-    {
-      teamName: "Denesik-Leffler",
-      creatorID: "Otcom",
-    },
-    {
-      teamName: "Rippin and Sons",
-      creatorID: "Subin",
-    },
-    {
-      teamName: "Hirthe-Hickle",
-      creatorID: "Asoka",
-    },
-    {
-      teamName: "Conn-Mayer",
-      creatorID: "Job",
-    },
-    {
-      teamName: "Ebert-Rowe",
-      creatorID: "Flowdesk",
-    },
-    {
-      teamName: "Brown-Goldner",
-      creatorID: "Daltfresh",
-    },
-    {
-      teamName: "Heathcote, Zieme and Kunde",
-      creatorID: "Asoka",
-    },
-    {
-      teamName: "Dickinson, Kunde and Douglas",
-      creatorID: "Alpha",
-    },
-    {
-      teamName: "Lebsack Inc",
-      creatorID: "Asoka",
-    },
-    {
-      teamName: "Schumm-Gaylord",
-      creatorID: "Home Ing",
-    },
+      teamName: "Zamit",
+      description: "In hac habitasse platea dictumst. Morbi vestibulum, velit id pretium iaculis, diam erat fermentum justo, nec condimentum neque sapien placerat ante. Nulla justo.",
+      private: true,
+      memberLimit: 9,
+      ageMin: 26
+    }, {
+      "teamName": "Wrapsafe",
+      "description": "Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.",
+      "private": true,
+      "memberLimit": 10,
+      "ageMin": 54
+    }, {
+      "teamName": "Hatity",
+      "description": "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.",
+      "private": true,
+      "memberLimit": 9,
+      "ageMin": 51
+    }, {
+      "teamName": "Namfix",
+      "description": "Proin eu mi. Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem.",
+      "private": false,
+      "memberLimit": 10,
+      "ageMin": 29
+    }, {
+      "teamName": "Otcom",
+      "description": "Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.",
+      "private": true,
+      "memberLimit": 7,
+      "ageMin": 53
+    }, {
+      "teamName": "Fintone",
+      "description": "In congue. Etiam justo. Etiam pretium iaculis justo.",
+      "private": true,
+      "memberLimit": 4,
+      "ageMin": 72
+    }, {
+      "teamName": "Job",
+      "description": "Nulla ut erat id mauris vulputate elementum. Nullam varius. Nulla facilisi.",
+      "private": true,
+      "memberLimit": 10,
+      "ageMin": 37
+    }, {
+      "teamName": "Hatity2",
+      "description": "Cras mi pede, malesuada in, imperdiet et, commodo vulputate, justo. In blandit ultrices enim. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.",
+      "private": false,
+      "memberLimit": 4,
+      "ageMin": 38
+    }, {
+      "teamName": "Flowdesk",
+      "description": "Maecenas leo odio, condimentum id, luctus nec, molestie sed, justo. Pellentesque viverra pede ac diam. Cras pellentesque volutpat dui.",
+      "private": false,
+      "memberLimit": 7,
+      "ageMin": 26
+    }, {
+      "teamName": "Regrant",
+      "description": "In congue. Etiam justo. Etiam pretium iaculis justo.",
+      "private": false,
+      "memberLimit": 5,
+      "ageMin": 34
+    }, {
+      "teamName": "Solarbreeze",
+      "description": "Nullam porttitor lacus at turpis. Donec posuere metus vitae ipsum. Aliquam non mauris.",
+      "private": false,
+      "memberLimit": 5,
+      "ageMin": 76
+    }, {
+      "teamName": "Voyatouch",
+      "description": "Duis bibendum, felis sed interdum venenatis, turpis enim blandit mi, in porttitor pede justo eu massa. Donec dapibus. Duis at velit eu est congue elementum.",
+      "private": true,
+      "memberLimit": 4,
+      "ageMin": 35
+    }, {
+      "teamName": "Kanlam",
+      "description": "In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.",
+      "private": true,
+      "memberLimit": 6,
+      "ageMin": 64
+    }, {
+      "teamName": "Sonsing",
+      "description": "Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.",
+      "private": true,
+      "memberLimit": 8,
+      "ageMin": 73
+    }, {
+      "teamName": "Stringtough",
+      "description": "In hac habitasse platea dictumst. Etiam faucibus cursus urna. Ut tellus.",
+      "private": false,
+      "memberLimit": 8,
+      "ageMin": 43
+    }, {
+      "teamName": "It",
+      "description": "Proin leo odio, porttitor id, consequat in, consequat ut, nulla. Sed accumsan felis. Ut at dolor quis odio consequat varius.",
+      "private": true,
+      "memberLimit": 7,
+      "ageMin": 44
+    }, {
+      "teamName": "Daltfresh",
+      "description": "Integer tincidunt ante vel ipsum. Praesent blandit lacinia erat. Vestibulum sed magna at nunc commodo placerat.",
+      "private": true,
+      "memberLimit": 7,
+      "ageMin": 44
+    }, {
+      "teamName": "Bamity",
+      "description": "Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus.",
+      "private": true,
+      "memberLimit": 5,
+      "ageMin": 71
+    }, {
+      "teamName": "Greenlam",
+      "description": "Curabitur at ipsum ac tellus semper interdum. Mauris ullamcorper purus sit amet nulla. Quisque arcu libero, rutrum ac, lobortis vel, dapibus at, diam.",
+      "private": true,
+      "memberLimit": 8,
+      "ageMin": 61
+    }, {
+      "teamName": "Y-find",
+      "description": "In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.",
+      "private": false,
+      "memberLimit": 9,
+      "ageMin": 67
+    }, {
+      "teamName": "Transcof",
+      "description": "Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum.",
+      "private": true,
+      "memberLimit": 7,
+      "ageMin": 69
+    }, {
+      "teamName": "Konklux",
+      "description": "Curabitur gravida nisi at nibh. In hac habitasse platea dictumst. Aliquam augue quam, sollicitudin vitae, consectetuer eget, rutrum at, lorem.",
+      "private": false,
+      "memberLimit": 4,
+      "ageMin": 75
+    }
   ];
   for (let i = 0; i < teamList.length; i++) {
     let element = teamList[i];
@@ -269,7 +599,7 @@ async function main() {
     element.creatorID = userIdList[random]._id;
     let curr;
     try {
-      curr = await teams.createTeam(element.teamName, element.creatorID);
+      curr = await teams.createTeam(element.teamName, element.description, element.private,element.memberLimit,element.ageMin,element.creatorID);
     } catch (error) {
       console.log(element.teamName, error);
     }
