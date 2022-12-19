@@ -1,3 +1,4 @@
+const mongoCollections = require("../config/mongoCollections");
 const dbConnection = require("../config/mongoConnection");
 const data = require("../data/");
 const users = data.users;
@@ -6,6 +7,7 @@ const teamitems = data.teamItems;
 const feed = data.feed;
 const comments = data.comments;
 const teams = data.teams;
+
 
 async function createUsers() {
   return idList;
@@ -605,6 +607,20 @@ async function main() {
     }
     teamIdList.push(curr);
   }
+let element = teamIdList;
+let a = true;
+// let count =0;
+// let userAdded =[];
+for(let i =0; i<20;i++){
+  let curr;
+  a = !a;
+  let random = Math.floor(Math.random() * userIdList.length);
+  try {
+    curr = await teams.addMember(element[i]._id,userIdList[random]._id,a);
+  } catch (error) {
+    console.log(element.teamName, error,i);
+  }
+}
 
   // seed posts
   let paragraphList = [
