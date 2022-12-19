@@ -112,7 +112,7 @@ router
           errorObject.error = "Invalid Data Posted.";
           throw errorObject;
         }
-        let result = req.body;
+        let result = xss(req.body);
         let privateFlag = false;
         if (result.private) {
           privateFlag = true;
@@ -295,7 +295,7 @@ router
           throw errorObject;
         }
 
-        let result = req.body;
+        let result = xss(req.body);
         let privateFlag = false;
         if (result.private) {
           privateFlag = true;
