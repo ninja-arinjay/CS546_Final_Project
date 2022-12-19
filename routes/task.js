@@ -74,7 +74,8 @@ router.route("/addComment/:id").post(async (req, res) => {
       //helpers.checkTeamInput("id", req.params.id.trim(), "Team Id");
       userHelpers.checkId(req.params.id.trim());
       let teamRow = await teamItemData.getTeamItemById(req.params.id.trim());
-      helpers.checkTeamInput("description", xss(req.body.comment.trim()), "Task Comment");
+      userHelpers.checkInputString(xss(req.body.comment.trim()));
+      let comm = xss(req.body.comment.trim());
       let d = new Date();
       let dateCreated =
         d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
@@ -86,21 +87,21 @@ router.route("/addComment/:id").post(async (req, res) => {
         errorObject.error = "ERROR: CANNOT ADD COMMENT AS TASK IS NOT ACTIVE";
         throw errorObject;
       }
-      await commentData.addComment(
+      await commentData.createComment(
         teamRow._id,
-        teamRow.createdBy,
-        xss(req.body.comment.trim()),
         aes256.decrypt(config.get("aes_key"), req.session.user.id),
+        comm,
         "teamItem"
       );
       req.session.success = "Comment Created Successfully";
-      res.redirect("/task/info/" + teamRow._id);
+      res.redirect("/task/info/" + teamRow.teamID);
     } else {
       errorObject.status = 403;
       errorObject.error = "Unauthorized Access";
       throw errorObject;
     }
   } catch (e) {
+    //console.log(e);
     if (
       typeof e === "object" &&
       e !== null &&
@@ -173,6 +174,26 @@ router.route("/info/:id").get(async (req, res) => {
       let d = new Date();
       d = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
       let taskRows = await teamItemData.getTeamItemByTeam(teamRow._id);
+      for (let i = 0; i < taskRows.length; i++) {
+        let comms = await commentData.getAllComments(
+          taskRows[i]._id,
+          "teamItem"
+        );
+        if (!comms) {
+          comms = [];
+        } else {
+          for (let j = 0; j < comms.length; j++) {
+            let user = await userData.getUserById(comms[j].creatorID);
+            if (user) {
+              comms[j].creatorID = user.firstName + " " + user.lastName;
+            } else {
+              comms[j].creatorID = "deleted user";
+            }
+          }
+        }
+        taskRows[i].comments = comms;
+      }
+
       return res.status(200).render("task/info", {
         title: "Task Info",
         page: "Task Info",

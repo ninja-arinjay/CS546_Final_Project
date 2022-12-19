@@ -38,9 +38,9 @@ router.route("/").get(async (req, res) => {
       teamCount: otherTeams,
     });
   } else {
-    return res.render("static/static",{
-      title :"Team Up",
-      layout: "../static/static"
+    return res.render("static/static", {
+      title: "Team Up",
+      layout: "../static/static",
     });
   }
 });
@@ -66,7 +66,14 @@ router
         errorObject.error = "Invalid Data Posted.";
         throw errorObject;
       }
-      let result = (req.body);
+      let result = req.body;
+      result.email = xss(result.email);
+      result.password = xss(result.password);
+      result.firstName = xss(result.firstName);
+      result.lastName = xss(result.lastName);
+      result.age = xss(result.age);
+      result.bio = xss(result.bio);
+      result.location = xss(result.location);
       let objKeys = [
         "email",
         "password",
@@ -87,11 +94,12 @@ router
           result[element] = parseInt(result[element]);
         }
       });
-      console.log("working");
+      //console.log("working");
       logger.info("User Registered");
       await userData.createUser(result);
       res.redirect("/login");
     } catch (e) {
+      //console.log(e);
       if (
         typeof e === "object" &&
         e !== null &&
@@ -107,7 +115,7 @@ router
       } else {
         return res.status(400).render("user/register", {
           title: "Register",
-          error: e,
+          error: e.error,
           layout: "auth",
         });
       }
@@ -135,7 +143,7 @@ router
         errorObject.error = "Invalid Data Posted.";
         throw errorObject;
       }
-      let result = (req.body);
+      let result = req.body;
       let objKeys = ["email", "password"];
       objKeys.forEach((element) => {
         helpers.checkInput(

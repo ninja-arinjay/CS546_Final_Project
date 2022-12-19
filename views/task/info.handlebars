@@ -37,7 +37,7 @@
           <div class="card">
             <div class="card-header pb-0 px-3">
               <h6 class="mb-0">{{this.title}}</h6>
-              <p class="mb-0">Description: {{this.description}}</p>
+              <p class="mb-0">Description: {{this.content}}</p>
               <p class="mb-0">Comments</p>
             </div>
             <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="/task/addComment/{{this._id}}"><i
@@ -47,9 +47,9 @@
                 {{#each this.comments}}
                 <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                   <div class="d-flex flex-column">
-                    <h6 class="mb-3 text-sm">{{this.name}}, {{this.createdAt}}</h6>
+                    <h6 class="mb-3 text-sm">{{this.creatorID}}, {{this.dateCreated}}</h6>
                     <span class="mb-2 text-xs"><span
-                        class="text-dark font-weight-bold ms-sm-2">{{this.comment}}</span></span>
+                        class="text-dark font-weight-bold ms-sm-2">{{this.content}}</span></span>
                   </div>
                 </li>
                 {{/each}}

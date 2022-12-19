@@ -35,23 +35,28 @@
       </div>
     </div>
   </nav>
-  <div class="container-fluid py-4">
-    <div class="flex col">
+  <div class="card-body pt-4 p-3">
+    <ul class="list-group">
       {{#each feedList}}
-        <div class="flex col mb-2">
-          <div class="flex row">
-            <h5>{{this.title}}</h5>
-            <h6>{{this.createdByID}}</h6>
+        <li
+          class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg"
+        >
+          <div class="d-flex flex-column">
+            <div>
+              <h5 class="mb-0">{{this.title}}</h5>
+            </div>
+            <h6 class="mb-3 text-sm">{{this.createdByID}},
+              {{this.dataPosted}}</h6>
+            <div class="mb-2"><span
+                class="text-dark font-weight-bold ms-sm-2"
+              >{{this.description}}</span></div>
+            <div class="flex row">
+              <a href="/feed/post/{{this._id}}">Comments</a>
+            </div>
           </div>
-          <div class="">
-            <p>{{this.description}}</p>
-          </div>
-          <div class="">
-            <p>Date: {{this.dataPosted}}</p>
-            <a href="/feed/post/{{this._id}}">Comments</a>
-          </div>
-        </div>
+        </li>
       {{/each}}
-    </div>
+    </ul>
   </div>
+
 </main>
