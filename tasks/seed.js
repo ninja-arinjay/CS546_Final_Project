@@ -611,14 +611,22 @@ let element = teamIdList;
 let a = true;
 // let count =0;
 // let userAdded =[];
-for(let i =0; i<20;i++){
+for(let i =0; i<20;){
   let curr;
   a = !a;
   let random = Math.floor(Math.random() * userIdList.length);
   try {
     curr = await teams.addMember(element[i]._id,userIdList[random]._id,a);
+    if(a===true){
+      curr = await teams.addAdmin(element[i]._id,userIdList[random]._id,element[i].creatorID);
+    }
+    i--;
+    if(i<0){
+      i=0;
+    }
   } catch (error) {
-    console.log(element.teamName, error,i);
+    i++;
+    //console.log(element.teamName, error,i);
   }
 }
 
