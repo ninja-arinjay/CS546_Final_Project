@@ -203,22 +203,22 @@
   </div>
 </main>
 
-<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="Comment Modal"
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
   aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="Comment Modal">Add Team Comment</h5>
+        <h5 class="modal-title" id="Comment-Modal">Add Team Comment</h5>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form role="form" id="comment-form" action="/team/addComment/{{teamData._id}}" method="post">
+      <form id="comment-form" action="/team/addComment/{{teamData._id}}" method="post">
         <div class="modal-body">
           <label>Comment</label>
           <div class="mb-3 comment-div">
-            <textarea class="form-control required" aria-label="comment" aria-describedby="comment-addon"
-              name="comment" /></textarea>
+            <textarea class="form-control required" aria-label="comment"
+              name="comment" ></textarea>
           </div>
           <div></div>
         </div>
@@ -231,39 +231,39 @@
   </div>
 </div>
 
-<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="Task Modal" aria-hidden="true">
+<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="Task Modal">Add Team Task</h5>
+        <h5 class="modal-title" id="Task-Modal">Add Team Task</h5>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form role="form" id="task-form" action="/task/create/{{teamData._id}}" method="post">
+      <form id="task-form" action="/task/create/{{teamData._id}}" method="post">
         <div class="modal-body">
           <label>Title</label>
           <div class="mb-3 title-div">
-            <input type="text" class="form-control inputName required" aria-label="title" aria-describedby="title-addon"
+            <input type="text" class="form-control inputName required" aria-label="title"
               name="title">
           </div>
           <div></div>
           <label>Content</label>
           <div class="mb-3 content-div">
-            <textarea class="form-control required" aria-label="content" aria-describedby="content-addon"
-              name="content" /></textarea>
+            <textarea class="form-control required" aria-label="content" 
+              name="content" ></textarea>
           </div>
           <div></div>
           <label>Start Date</label>
           <div class="mb-3 startDate-div">
             <input type="date" id="StartDate" class="form-control required" aria-label="startDate"
-              aria-describedby="startDate-addon" name="startDate" />
+               name="startDate" />
           </div>
           <div></div>
           <label>End Date</label>
           <div class="mb-3 endDate-div">
             <input type="date" id="EndDate" class="form-control required" aria-label="endDate"
-              aria-describedby="endDate-addon" name="endDate" />
+             name="endDate" />
           </div>
           <div></div>
         </div>

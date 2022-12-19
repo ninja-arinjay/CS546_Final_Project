@@ -267,6 +267,7 @@ router.route("/addComment/:id").get(async (req, res) => {
         activeClass: "team-active",
         taskID: teamItemRow._id,
         layout: "main",
+        teamID: teamItemRow.teamID,
       });
     } else {
       errorObject.status = 403;

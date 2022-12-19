@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Bootstrap -->
-    {{!--  --}}
+    {{!  }}
     <link
       rel="stylesheet"
       href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css"
@@ -46,41 +46,51 @@
     </nav>
     <script src="../public/form.js"></script>
     <div class="jumbrotron jumbrotron-fluid">
-    <div class="container-fluid">
+      <div class="container-fluid">
         <h1 class="display-3">Welcome to Team Up!</h1>
         <hr class="my-4" />
         <p class="lead">A Platform that promotes Open Source Collaborations!</p>
-    </div>
+      </div>
     </div>
     <div class="row d-flex justify-content-center">
-    <div id="card_balzers" class="card" style="width: 20rem; ">
-        <img src="../public/landingPage/images/blazers.jpeg" class="card-img-top" alt="..." />
+      <div id="card_balzers" class="card" style="width: 20rem; ">
+        <img
+          src="../public/landingPage/images/blazers.jpeg"
+          class="card-img-top"
+          alt="..."
+        />
         <div class="card-body">
-        <h5 class="card-title">Blazers</h5>
-        <p class="card-text">Tech Stack - JavaFX</p>
+          <p class="card-title">Blazers</p>
+          <p class="card-text">Tech Stack - JavaFX</p>
         </div>
-    </div>
-    <div id="card_nightcrawlers" class="card" style="width: 20rem;">
-        <img src="../public/landingPage/images/Nightcrawlers.jpg" class="card-img-top" alt="..." />
+      </div>
+      <div id="card_nightcrawlers" class="card" style="width: 20rem;">
+        <img
+          src="../public/landingPage/images/Nightcrawlers.jpg"
+          class="card-img-top"
+          alt="..."
+        />
         <div class="card-body">
-        <h5 class="card-title">Night Crawlers</h5>
-        <p class="card-text">Tech Stack - JavaScript</p>
+          <p class="card-title">Night Crawlers</p>
+          <p class="card-text">Tech Stack - JavaScript</p>
         </div>
-    </div>
-    <div id="card_bangers" class="card" style="width: 20rem;">
-        <img src="../public/landingPage/images/bangers.jpeg" class="card-img-top" alt="..." />
+      </div>
+      <div id="card_bangers" class="card" style="width: 20rem;">
+        <img
+          src="../public/landingPage/images/bangers.jpeg"
+          class="card-img-top"
+          alt="..."
+        />
         <div class="card-body">
-        <h5 class="card-title">Bangers</h5>
-        <p class="card-text">iOS Projects Only</p>
+          <p class="card-title">Bangers</p>
+          <p class="card-text">iOS Projects Only</p>
         </div>
+      </div>
     </div>
-    </div>
-    <button id="login-btn" class="btn btn-light btn-lg"><a
-        href="/login"
-    >Login</a></button>
-    <button id="signup-btn" class="btn btn-light btn-lg"><a href="/register">Sign Up</a></button>
+    <a href="/login" id="login-btn" class="btn btn-light btn-lg">Login</a>
+    <a href="/register" id="signup-btn" class="btn btn-light btn-lg">Sign Up</a>
     {{#if error}}
-    <p class={{class}}>{{error}}</p>
+      <p class={{class}}>{{error}}</p>
     {{/if}}
     <nav
       class="navbar fixed-bottom navbar-light"

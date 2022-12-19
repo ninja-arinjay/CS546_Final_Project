@@ -23,7 +23,7 @@ router.route("/").get(async (req, res) => {
       status: 404,
     };
     const feedList = await feedData.getAllFeed();
-    if(!feedList) {
+    if (!feedList) {
       errorObject.error = "No feeds found.";
       throw errorObject;
     }
@@ -113,7 +113,7 @@ router.route("/post/:id").get(async (req, res) => {
           userName = "deleted user";
         }
         if (!userName) throw "No such user exists";
-        if(userName !== "deleted user"){
+        if (userName !== "deleted user") {
           comments[i].creatorID = userName.firstName + " " + userName.lastName;
         } else {
           comments[i].creatorID = userName;
@@ -155,7 +155,10 @@ router
       }
 
       //retreiving teamID and userID - pending
-      result.createdByID = aes256.decrypt(config.get("aes_key"), req.session.user.id);
+      result.createdByID = aes256.decrypt(
+        config.get("aes_key"),
+        req.session.user.id
+      );
       result.description = xss(result.description.trim());
       result.title = xss(result.title.trim());
 
@@ -198,6 +201,7 @@ router
     res.render("user/createFeed", {
       title: "Create Feed",
       page: "Create Feed",
+      activeClass: "feed-active",
     });
   });
 
