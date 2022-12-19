@@ -38,7 +38,7 @@ router.route("/").get(async (req, res) => {
     });
   } else {
     return res.render("static/static",{
-      title :"Landing",
+      title :"Team Up",
       layout: "../static/static"
     });
   }
@@ -88,7 +88,7 @@ router
       });
       console.log("working");
       await userData.createUser(result);
-      res.redirect("/");
+      res.redirect("/login");
     } catch (e) {
       if (
         typeof e === "object" &&
