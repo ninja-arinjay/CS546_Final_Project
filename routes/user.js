@@ -66,7 +66,7 @@ router
         errorObject.error = "Invalid Data Posted.";
         throw errorObject;
       }
-      let result = xss(req.body);
+      let result = (req.body);
       let objKeys = [
         "email",
         "password",
@@ -135,7 +135,7 @@ router
         errorObject.error = "Invalid Data Posted.";
         throw errorObject;
       }
-      let result = xss(req.body);
+      let result = (req.body);
       let objKeys = ["email", "password"];
       objKeys.forEach((element) => {
         helpers.checkInput(
@@ -242,7 +242,7 @@ router
           errorObject.error = "Invalid Data Posted.";
           throw errorObject;
         }
-        let result = xss(req.body);
+        let result = (req.body);
         let objKeys = [
           "email",
           "password",
@@ -330,7 +330,7 @@ router.route("/createfeed").post(async (req, res) => {
       errorObject.error = "Invalid Data Posted.";
       throw errorObject;
     }
-    let result = xss(req.body);
+    let result = (req.body);
     let objKeys = ["title", "description"];
     objKeys.forEach((element) => {
       helpers.checkInput(

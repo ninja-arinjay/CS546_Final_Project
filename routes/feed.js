@@ -83,7 +83,7 @@ router.route("/post/:id").get(async (req, res) => {
     return res.redirect("/");
   }
   try {
-    let id = xss(req.params.id);
+    let id = (req.params.id);
     helpers.checkId(id);
     let feedPost = await feedData.getFeedById(id);
     if (!feedPost) throw "No such post exists";
@@ -139,7 +139,7 @@ router
         errorObject.error = "Invalid Data Posted.";
         throw errorObject;
       }
-      let result = xss(req.body);
+      let result = (req.body);
       let objKeys = ["title", "description"];
       objKeys.forEach((element) => {
         helpers.checkInput(
@@ -174,7 +174,7 @@ router
           layout: "auth",
         });
       } else {
-        return res.status(400).render("/usercreateFeed", {
+        return res.status(400).render("user/createFeed", {
           title: "Create Feed",
           error: [e],
           layout: "auth",
@@ -196,8 +196,8 @@ router.route("/addComment/:id").post(async (req, res) => {
   if (!req.session.user) {
     return res.redirect("/");
   }
-  let id = xss(req.params.id.trim());
-  let comment = xss(req.body.comment.trim());
+  let id = (req.params.id.trim());
+  let comment = (req.body.comment.trim());
   helpers.checkId(id);
   helpers.checkInputString(comment);
   try {
