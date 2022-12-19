@@ -198,7 +198,7 @@ const getTeamItemByTeam = async (teamID) => {
 };
 
 const addComment = async (id, comment, currentUser) => {
-  let row = await this.getTeamItemById(id);
+  let row = await getTeamItemById(id);
   const teamCollection = await teams();
   const userCollection = await users();
   const team = await teamCollection.findOne({ _id: ObjectId(row.teamID) });
@@ -228,6 +228,7 @@ const addComment = async (id, comment, currentUser) => {
   if (!user) {
     throw "ERROR: USER NO FOUND";
   }
+  const teamItemsCollection = await teamItems();
   const updateInfo = await teamItemsCollection.updateOne(
     { _id: ObjectId(id) },
     { $push: { comment: commentArray } }

@@ -49,13 +49,6 @@
                     <span class="mb-2 text-xs"><span
                         class="text-dark font-weight-bold ms-sm-2">{{this.comment}}</span></span>
                   </div>
-                  {{#if ../../adminUser}}
-                  <div class="ms-auto text-end">
-                    <a class="btn btn-link text-danger text-gradient px-3 mb-0"
-                      href="/task/deleteComment/{{this._id}}/{{../this._id}}"><i
-                        class="far fa-trash-alt me-2"></i>Delete</a>
-                  </div>
-                  {{/if}}
                 </li>
                 {{/each}}
               </ul>

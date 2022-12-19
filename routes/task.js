@@ -72,6 +72,7 @@ router.route("/task/addComment/:id").post(async (req, res) => {
       helpers.checkTeamInput("id", req.params.id.trim(), "Team Id");
       let teamRow = await teamItemData.getTeamItemById(req.params.id.trim());
       helpers.checkTeamInput("description", req.body.comment, "Task Comment");
+      let d = new Date();
       let dateCreated =
         d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
       if (
@@ -209,133 +210,64 @@ router.route("/task/info/:id").get(async (req, res) => {
   }
 });
 
-router
-  .route("/task/addComment/:id")
-  .get(async (req, res) => {
-    try {
-      const errorObject = {
-        status: 400,
-      };
-      if (req.session.user) {
-        helpers.checkTeamInput("id", req.params.id.trim(), "Team Id");
-        let teamItemRow = await teamItemData.getTeamItemById(
-          req.params.id.trim()
-        );
-        if (!teamItemRow) {
-          errorObject.status = 500;
-          errorObject.error = "INVALID DATA";
-          throw errorObject;
-        }
-        let teamRow = await teamData.getTeamById(teamItemRow.teamID);
-        if (
-          !teamRow.members.includes(
-            aes256.decrypt(config.get("aes_key"), req.session.user.id)
-          )
-        ) {
-          errorObject.status = 403;
-          errorObject.error = "Unauthorized Access";
-          throw errorObject;
-        }
-        return res.status(200).render("task/create", {
-          title: "Taks Comment Info",
-          page: "Taks Comment Info",
-          activeClass: "team-active",
-          taskID: teamItemRow._id,
-        });
-      } else {
+router.route("/task/addComment/:id").get(async (req, res) => {
+  try {
+    const errorObject = {
+      status: 400,
+    };
+    if (req.session.user) {
+      helpers.checkTeamInput("id", req.params.id.trim(), "Team Id");
+      let teamItemRow = await teamItemData.getTeamItemById(
+        req.params.id.trim()
+      );
+      if (!teamItemRow) {
+        errorObject.status = 500;
+        errorObject.error = "INVALID DATA";
+        throw errorObject;
+      }
+      let teamRow = await teamData.getTeamById(teamItemRow.teamID);
+      if (
+        !teamRow.members.includes(
+          aes256.decrypt(config.get("aes_key"), req.session.user.id)
+        )
+      ) {
         errorObject.status = 403;
         errorObject.error = "Unauthorized Access";
         throw errorObject;
       }
-    } catch (e) {
-      if (
-        typeof e === "object" &&
-        e !== null &&
-        !Array.isArray(e) &&
-        "status" in e &&
-        "error" in e
-      ) {
-        return res.status(e.status).render("error/error", {
-          title: "Error",
-          error: e.error,
-          status: e.status,
-          layout: "error",
-        });
-      } else {
-        return res.status(400).render("error/error", {
-          title: "Error",
-          error: e,
-          status: 400,
-          layout: "error",
-        });
-      }
+      return res.status(200).render("task/create", {
+        title: "Taks Comment Info",
+        page: "Taks Comment Info",
+        activeClass: "team-active",
+        taskID: teamItemRow._id,
+      });
+    } else {
+      errorObject.status = 403;
+      errorObject.error = "Unauthorized Access";
+      throw errorObject;
     }
-  })
-  .post(async (req, res) => {
-    try {
-      console.log("HELLO");
-      const errorObject = {
+  } catch (e) {
+    if (
+      typeof e === "object" &&
+      e !== null &&
+      !Array.isArray(e) &&
+      "status" in e &&
+      "error" in e
+    ) {
+      return res.status(e.status).render("error/error", {
+        title: "Error",
+        error: e.error,
+        status: e.status,
+        layout: "error",
+      });
+    } else {
+      return res.status(400).render("error/error", {
+        title: "Error",
+        error: e,
         status: 400,
-      };
-      if (req.session.user) {
-        helpers.checkTeamInput("id", req.params.id.trim(), "Team Id");
-        let teamItemRow = await teamItemData.getTeamItemById(
-          req.params.id.trim()
-        );
-        if (!teamItemRow) {
-          errorObject.status = 500;
-          errorObject.error = "INVALID DATA";
-          throw errorObject;
-        }
-        let teamRow = await teamData.getTeamById(teamItemRow.teamID);
-        if (
-          !teamRow.members.includes(
-            aes256.decrypt(config.get("aes_key"), req.session.user.id)
-          )
-        ) {
-          errorObject.status = 403;
-          errorObject.error = "Unauthorized Access";
-          throw errorObject;
-        }
-        let d = new Date();
-        d = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
-        if (
-          Date.parse(teamItemRow.startDate) > Date.parse(d) ||
-          Date.parse(teamItemRow.endDate) < Date.parse(d)
-        ) {
-          errorObject.status = 500;
-          errorObject.error = "TASK NOT ACTIVE";
-          throw errorObject;
-        }
-        await teamItemData.addComment(
-          teamItemRow._id,
-          req.body.comment.trim(),
-          aes256.decrypt(config.get("aes_key"), req.session.user.id)
-        );
-        return res.redirect("/task/info/" + teamItemRow._id);
-      }
-    } catch (e) {
-      if (
-        typeof e === "object" &&
-        e !== null &&
-        !Array.isArray(e) &&
-        "status" in e &&
-        "error" in e
-      ) {
-        return res.status(e.status).render("error/error", {
-          title: "Error",
-          error: e.error,
-          status: e.status,
-          layout: "error",
-        });
-      } else {
-        return res.status(400).render("error/error", {
-          title: "Error",
-          error: e,
-          status: 400,
-          layout: "error",
-        });
-      }
+        layout: "error",
+      });
     }
-  });
+  }
+});
 module.exports = router;
