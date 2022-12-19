@@ -11,6 +11,7 @@ const config = require("config");
 const { Console } = require("console");
 const { title } = require("process");
 const xss = require("xss");
+const logger = require("../utils/logger");
 
 router.route("/").get(async (req, res) => {
   if (req.session.user) {
@@ -37,9 +38,9 @@ router.route("/").get(async (req, res) => {
       teamCount: otherTeams,
     });
   } else {
-    return res.render("static/static", {
-      title: "Landing",
-      layout: "../static/static",
+    return res.render("static/static",{
+      title :"Team Up",
+      layout: "../static/static"
     });
   }
 });
@@ -65,7 +66,7 @@ router
         errorObject.error = "Invalid Data Posted.";
         throw errorObject;
       }
-      let result = req.body;
+      let result = xss(req.body);
       let objKeys = [
         "email",
         "password",
@@ -86,8 +87,10 @@ router
           result[element] = parseInt(result[element]);
         }
       });
+      console.log("working");
+      logger.info("User Registered");
       await userData.createUser(result);
-      res.redirect("/");
+      res.redirect("/login");
     } catch (e) {
       if (
         typeof e === "object" &&
@@ -132,7 +135,7 @@ router
         errorObject.error = "Invalid Data Posted.";
         throw errorObject;
       }
-      let result = req.body;
+      let result = xss(req.body);
       let objKeys = ["email", "password"];
       objKeys.forEach((element) => {
         helpers.checkInput(
@@ -150,6 +153,7 @@ router
         ),
         id: aes256.encrypt(config.get("aes_key"), userRow.id),
       };
+      logger.info("User Logged In");
       return res.redirect("/");
     } catch (e) {
       if (
@@ -238,7 +242,7 @@ router
           errorObject.error = "Invalid Data Posted.";
           throw errorObject;
         }
-        let result = req.body;
+        let result = xss(req.body);
         let objKeys = [
           "email",
           "password",
@@ -280,7 +284,7 @@ router
           result.bio,
           result.age
         );
-
+        logger.info("User Updated Profile");
         req.session.success = "Profile Udated Successfully";
         return res.redirect("/account");
       } else {
@@ -326,7 +330,7 @@ router.route("/createfeed").post(async (req, res) => {
       errorObject.error = "Invalid Data Posted.";
       throw errorObject;
     }
-    let result = req.body;
+    let result = xss(req.body);
     let objKeys = ["title", "description"];
     objKeys.forEach((element) => {
       helpers.checkInput(

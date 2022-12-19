@@ -8,6 +8,7 @@ const helpers = require("./../helpers/teamHelper");
 const userHelpers = require("./../helpers/userHelper");
 const aes256 = require("aes256");
 const config = require("config");
+const logger = require("../utils/logger");
 const { Console } = require("console");
 
 router.route("/team").get(async (req, res) => {
@@ -112,7 +113,7 @@ router
           errorObject.error = "Invalid Data Posted.";
           throw errorObject;
         }
-        let result = req.body;
+        let result = xss(req.body);
         let privateFlag = false;
         if (result.private) {
           privateFlag = true;
@@ -150,7 +151,7 @@ router
           parseInt(result.ageMin),
           aes256.decrypt(config.get("aes_key"), req.session.user.id)
         );
-
+        logger.info("User Created Team");
         req.session.success = "Team Created Successfully";
         if (req.body.addUser != 0) {
           return res.redirect("/team/addUser/" + teamRow._id);
@@ -295,7 +296,7 @@ router
           throw errorObject;
         }
 
-        let result = req.body;
+        let result = xss(req.body);
         let privateFlag = false;
         if (result.private) {
           privateFlag = true;
