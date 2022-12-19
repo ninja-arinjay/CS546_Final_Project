@@ -1,22 +1,31 @@
 const mongoCollections = require("../config/mongoCollections");
 const feed = mongoCollections.feed;
+const users = mongoCollections.users;
 const { ObjectId } = require("mongodb");
 const userHelper = require("../helpers/userHelper");
 
-const createFeed = async (title, description, teamID, createdByID) => {
+const createFeed = async (title, description, createdByID) => {
   userHelper.checkInputString(title);
   userHelper.checkInputString(description);
-  userHelper.checkId(teamID);
   userHelper.checkId(createdByID);
 
   title = title.trim();
   description = description.trim();
-  teamID = teamID.trim();
   createdByID = createdByID.trim();
 
   const feedCollection = await feed();
   if (feedCollection === undefined) {
     throw "ERROR: DATABASE COULD NOT BE REACHED.";
+  }
+
+  const userCollection = await users();
+  if (userCollection === undefined) {
+    throw "ERROR: DATABASE COULD NOT BE REACHED.";
+  }
+
+  const findUser = await userCollection.findOne({ _id: ObjectId(createdByID) });
+  if (findUser === null) {
+    throw "ERROR: USER NOT FOUND";
   }
 
   let today = new Date();
@@ -27,13 +36,13 @@ const createFeed = async (title, description, teamID, createdByID) => {
   let reviewDate = mm + "/" + dd + "/" + yyyy;
 
   let newFeed = {
-    teamID: teamID,
     createdByID: createdByID,
     title: title,
     description: description,
     datePosted: reviewDate,
     comments: [],
   };
+
   const insertInfo = await feedCollection.insertOne(newFeed);
   if (!insertInfo.acknowledged || insertInfo.insertedCount === 0) {
     throw "ERROR: COULD NOT CREATE POST";
@@ -70,7 +79,7 @@ const getAllFeed = async () => {
     throw "ERROR: DATABASE COULD NOT BE REACHED.";
   }
 
-  const allFeed = await feedCollection.find({}).toArray();
+  const allFeed = await feedCollection.find({}).sort({ datePosted: 1}).toArray();
   if (!allFeed) throw "ERROR: NO POSTS FOUND";
 
   allFeed.forEach((element) => {

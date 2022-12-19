@@ -38,7 +38,7 @@ const createTeamItem = async (
     title: title.trim(),
     content: content.trim(),
     teamID: teamID.trim(),
-    comments: comments,
+    comment: comments,
   };
 
   const teamCollection = await teams();
@@ -147,7 +147,7 @@ const updateTeamItem = async (
     teamID: updatedInfo.teamID,
     done: done,
     type: type,
-    comments: updatedInfo.comments,
+    comment: updatedInfo.comment,
   };
   const updateI = await teamItemsCollection.updateOne(
     { _id: ObjectId(id) },

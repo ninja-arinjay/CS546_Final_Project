@@ -2,6 +2,7 @@ const express = require("express");
 const data = require("../data");
 const teamData = data.teams;
 const userData = data.users;
+const commentData = data.comments;
 const teamItemData = data.teamItems;
 const router = express.Router();
 const path = require("path");
@@ -11,8 +12,9 @@ const aes256 = require("aes256");
 const config = require("config");
 const { Console } = require("console");
 const { teamItems } = require("../data");
+const xss = require("xss");
 
-router.route("/task/create/:id").post(async (req, res) => {
+router.route("/create/:id").post(async (req, res) => {
   try {
     const errorObject = {
       status: 400,
@@ -63,15 +65,16 @@ router.route("/task/create/:id").post(async (req, res) => {
   }
 });
 
-router.route("/task/addComment/:id").post(async (req, res) => {
+router.route("/addComment/:id").post(async (req, res) => {
   try {
     const errorObject = {
       status: 400,
     };
     if (req.session.user) {
-      helpers.checkTeamInput("id", req.params.id.trim(), "Team Id");
+      //helpers.checkTeamInput("id", req.params.id.trim(), "Team Id");
+      userHelpers.checkId(req.params.id.trim());
       let teamRow = await teamItemData.getTeamItemById(req.params.id.trim());
-      helpers.checkTeamInput("description", req.body.comment, "Task Comment");
+      helpers.checkTeamInput("description", xss(req.body.comment.trim()), "Task Comment");
       let d = new Date();
       let dateCreated =
         d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
@@ -83,13 +86,15 @@ router.route("/task/addComment/:id").post(async (req, res) => {
         errorObject.error = "ERROR: CANNOT ADD COMMENT AS TASK IS NOT ACTIVE";
         throw errorObject;
       }
-      await teamItemData.addComment(
+      await commentData.addComment(
         teamRow._id,
-        req.body.comment,
-        aes256.decrypt(config.get("aes_key"), req.session.user.id)
+        teamRow.createdBy,
+        xss(req.body.comment.trim()),
+        aes256.decrypt(config.get("aes_key"), req.session.user.id),
+        "teamItem"
       );
-      req.session.success = "Task Created Successfully";
-      res.redirect("/team/info/" + teamRow._id);
+      req.session.success = "Comment Created Successfully";
+      res.redirect("/task/info/" + teamRow._id);
     } else {
       errorObject.status = 403;
       errorObject.error = "Unauthorized Access";
@@ -120,7 +125,7 @@ router.route("/task/addComment/:id").post(async (req, res) => {
   }
 });
 
-router.route("/task/info/:id").get(async (req, res) => {
+router.route("/info/:id").get(async (req, res) => {
   try {
     const errorObject = {
       status: 400,
@@ -210,7 +215,7 @@ router.route("/task/info/:id").get(async (req, res) => {
   }
 });
 
-router.route("/task/addComment/:id").get(async (req, res) => {
+router.route("/addComment/:id").get(async (req, res) => {
   try {
     const errorObject = {
       status: 400,
@@ -236,10 +241,11 @@ router.route("/task/addComment/:id").get(async (req, res) => {
         throw errorObject;
       }
       return res.status(200).render("task/create", {
-        title: "Taks Comment Info",
-        page: "Taks Comment Info",
+        title: "Task Comment Info",
+        page: "Task Comment Info",
         activeClass: "team-active",
         taskID: teamItemRow._id,
+        layout: "main",
       });
     } else {
       errorObject.status = 403;

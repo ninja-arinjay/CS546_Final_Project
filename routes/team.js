@@ -3,13 +3,12 @@ const data = require("../data");
 const teamData = data.teams;
 const userData = data.users;
 const router = express.Router();
-const path = require("path");
 const helpers = require("./../helpers/teamHelper");
 const userHelpers = require("./../helpers/userHelper");
 const aes256 = require("aes256");
 const config = require("config");
 const logger = require("../utils/logger");
-const { Console } = require("console");
+const xss = require("xss");
 
 router.route("/team").get(async (req, res) => {
   try {
@@ -113,7 +112,7 @@ router
           errorObject.error = "Invalid Data Posted.";
           throw errorObject;
         }
-        let result = (req.body);
+        let result = req.body;
         let privateFlag = false;
         if (result.private) {
           privateFlag = true;
@@ -156,7 +155,7 @@ router
         if (req.body.addUser != 0) {
           return res.redirect("/team/addUser/" + teamRow._id);
         } else {
-          return res.redirect("/");
+          return res.redirect("/team");
         }
       } else {
         errorObject.status = 403;
@@ -207,7 +206,7 @@ router
       if (req.session.user) {
         let successMessage = req.session.success;
         req.session.success = "";
-        helpers.checkTeamInput("id", req.params.id, "Team");
+        helpers.checkTeamInput("id", xss(req.params.id.trim()), "Team");
         let userInTeam = await teamData.userStatus(
           req.params.id.trim(),
           aes256.decrypt(config.get("aes_key"), req.session.user.id)
@@ -228,7 +227,7 @@ router
         let team = await teamData.getTeamById(req.params.id.trim());
         let users = await userData.getUsersByTeam(team.members);
         let minAgeUser = await userData.getMinAgeUser(team._id);
-        let minAgeValue = minAgeUser ? minAgeUser[0].age : 120;
+        let minAgeValue = minAgeUser.length !== 0 ? minAgeUser[0].age : 120;
         return res.status(200).render("team/edit", {
           title: "Edit Team",
           page: "Edit Team",
@@ -296,11 +295,18 @@ router
           throw errorObject;
         }
 
-        let result = (req.body);
+        let result = req.body;
         let privateFlag = false;
         if (result.private) {
           privateFlag = true;
         }
+        // xss check
+        result.name = xss(result.name.trim());
+        result.description = xss(result.description.trim());
+        result.memberLimit = xss(result.memberLimit.trim());
+        result.ageMin = xss(result.ageMin.trim());
+        result.privateFlag = xss(result.privateFlag);
+        console.log(result);
         helpers.checkTeamInput("name", result.name, "Team Name", true);
         helpers.checkTeamInput(
           "description",
@@ -326,15 +332,22 @@ router
           "Team Member Minimum Count",
           true
         );
-        const teamRow = await teamData.updateTeam(
-          req.params.id.trim(),
-          result.name.trim(),
-          result.description.trim(),
-          privateFlag,
-          parseInt(result.memberLimit),
-          parseInt(result.ageMin),
-          aes256.decrypt(config.get("aes_key"), req.session.user.id)
-        );
+        let teamRow;
+        try {
+          teamRow = await teamData.updateTeam(
+            req.params.id.trim(),
+            result.name.trim(),
+            result.description.trim(),
+            privateFlag,
+            parseInt(result.memberLimit),
+            parseInt(result.ageMin),
+            aes256.decrypt(config.get("aes_key"), req.session.user.id)
+          );
+        } catch (error) {
+          errorObject.error = error.error;
+          throw errorObject;
+        }
+
         return res.json({ teamRow });
       } else {
         errorObject.status = 403;
@@ -342,6 +355,7 @@ router
         throw errorObject;
       }
     } catch (e) {
+          console.log(e);
       if (
         typeof e === "object" &&
         e !== null &&
@@ -790,7 +804,7 @@ router.route("/team/addComment/:id").post(async (req, res) => {
     };
     if (req.session.user) {
       helpers.checkTeamInput("id", req.params.id.trim(), "Team");
-      let teamRow = await teamData.getTeamById(req.params.id.trim());
+      let teamRow = await teamData.getTeamById(xss(req.params.id.trim()));
       let userInTeam = await teamData.userStatus(
         req.params.id.trim(),
         aes256.decrypt(config.get("aes_key"), req.session.user.id)
@@ -829,7 +843,7 @@ router.route("/team/addComment/:id").post(async (req, res) => {
     } else {
       return res.status(400).render("error/error", {
         title: "Error",
-        error: e,
+        error: e.error,
         status: 400,
         layout: "error",
       });

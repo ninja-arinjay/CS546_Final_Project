@@ -264,7 +264,7 @@ const exportedMethods = {
     let usersData = await userCollection
       .find({
         teamsJoined: { $in: [teamId] },
-        teamsCreated: { $nin: [teamId] },
+        teamsCreated: { $in: [teamId] },
       })
       .sort({ age: 1 })
       .limit(1)
