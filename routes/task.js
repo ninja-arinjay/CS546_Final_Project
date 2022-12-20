@@ -67,6 +67,52 @@ router.route("/create/:id").post(async (req, res) => {
   }
 });
 
+router.route("/deleteComment/:id").get(async (req, res) => {
+  try {
+    const errorObject = {
+      status: 400,
+    };
+    if (req.session.user) {
+      let id = xss(req.params.id.trim());
+      userHelpers.checkId(id);
+      let commentRow = await commentData.getCommentById(id);
+      if(commentRow === null){
+        req.session.error = "Comment Does Not Exist";
+        return res.status(404).redirect("/task/info/" + commentRow.teamID);
+      }
+      await commentData.deleteComment(id, "teamItem");
+      req.session.success = "Comment Deleted Successfully";
+      res.redirect("/task/info/" + commentRow.teamID);
+    } else {
+      errorObject.status = 403;
+      errorObject.error = "Unauthorized Access";
+      throw errorObject;
+    }
+  } catch (e) {
+    if (
+      typeof e === "object" &&
+      e !== null &&
+      !Array.isArray(e) &&
+      "status" in e &&
+      "error" in e
+    ) {
+      return res.status(e.status).render("error/error", {
+        title: "Error",
+        error: e.error,
+        status: e.status,
+        layout: "error",
+      });
+    } else {
+      return res.status(400).render("error/error", {
+        title: "Error",
+        error: e,
+        status: 400,
+        layout: "error",
+      });
+    }
+  }
+});
+
 router.route("/addComment/:id").post(async (req, res) => {
   try {
     const errorObject = {
@@ -76,18 +122,21 @@ router.route("/addComment/:id").post(async (req, res) => {
       //helpers.checkTeamInput("id", req.params.id.trim(), "Team Id");
       userHelpers.checkId(req.params.id.trim());
       let teamRow = await teamItemData.getTeamItemById(req.params.id.trim());
+      //console.log(teamRow);
       userHelpers.checkInputString(xss(req.body.comment.trim()));
       let comm = xss(req.body.comment.trim());
       let d = new Date();
       let dateCreated =
-        d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
+      d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
+
+      //console.log(dateCreated, teamRow.dateStart, teamRow.dateEnd);
+
       if (
-        Date.parse(teamRow.startDate) > Date.parse(dateCreated) ||
-        Date.parse(teamRow.endDate) < dateCreated
+        Date.parse(teamRow.dateStart) > Date.parse(dateCreated) ||
+        Date.parse(teamRow.dateEnd) < dateCreated
       ) {
-        errorObject.status = 500;
-        errorObject.error = "ERROR: CANNOT ADD COMMENT AS TASK IS NOT ACTIVE";
-        throw errorObject;
+        req.session.error = "Task is Not Active";
+        return res.status(400).redirect("/task/info/" + teamRow.teamID);
       }
       await commentData.createComment(
         teamRow._id,

@@ -55,6 +55,10 @@
                 <div class="card-header pb-0 px-3">
                   <p class="mb-0">{{this.title}}</p>
                   <p class="mb-0">Description: {{this.content}}</p>
+                  <div>
+                    <p class="mb-0">Start Date: {{this.dateStart}}</p>
+                    <p class="mb-0">End Date: {{this.dateEnd}}</p>
+                  </div>
                   <p class="mb-0">Comments</p>
                 </div>
                 <a
@@ -74,6 +78,13 @@
                               class="text-dark font-weight-bold ms-sm-2"
                             >{{this.content}}</span></span>
                         </div>
+                      {{#if ../adminUser}}
+                  <div class="ms-auto text-end">
+                    <a class="btn btn-link text-danger text-gradient px-3 mb-0"
+                      href="/task/deleteComment/{{this._id}}"><i
+                        class="far fa-trash-alt me-2"></i>Delete</a>
+                  </div>
+                  {{/if}}
                       </li>
                     {{/each}}
                   </ul>
