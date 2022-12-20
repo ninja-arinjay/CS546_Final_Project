@@ -133,7 +133,7 @@ const getAllUserTeams = async (array, flag = true) => {
     status: 400,
   };
   if (!Array.isArray(array)) {
-    errorObject.status = 500;
+    errorObject.status = 400;
     errorObject.error = "Invalid Data";
     throw errorObject;
   }
@@ -176,7 +176,7 @@ const getTeamById = async (id) => {
 
   const findTeam = await teamCollection.findOne({ _id: ObjectId(id) });
   if (!findTeam) {
-    errorObject.status = 500;
+    errorObject.status = 404;
     errorObject.error = "TEAM NOT FOUND";
     throw errorObject;
   }
@@ -203,7 +203,7 @@ const getTeamByName = async (teamName) => {
 
   const findTeam = await teamCollection.findOne({ teamName: teamName });
   if (!findTeam) {
-    errorObject.status = 500;
+    errorObject.status = 404;
     errorObject.error = "TEAM NOT FOUND";
     throw errorObject;
   }
@@ -252,7 +252,7 @@ const updateTeam = async (
 
   const findTeam = await teamCollection.findOne({ _id: ObjectId(id) });
   if (!findTeam) {
-    errorObject.status = 500;
+    errorObject.status = 404;
     errorObject.error = "TEAM NOT FOUND";
     throw errorObject;
   }
@@ -263,14 +263,14 @@ const updateTeam = async (
     teamName: teamName,
   });
   if (findOtherTeam) {
-    errorObject.status = 500;
+    errorObject.status = 400;
     errorObject.error = "Team with this name already exists";
     throw errorObject;
   }
 
   //check if user changing is admin or not
   if (!findTeam.admins.includes(currentUserID)) {
-    errorObject.status = 500;
+    errorObject.status = 403;
     errorObject.error = "Unauthorized Access";
     throw errorObject;
   }
@@ -280,7 +280,7 @@ const updateTeam = async (
   let usersData = await userCollection
     .find({
       teamsJoined: { $in: [id] },
-      teamsCreated: { $nin: [id] },
+      teamsCreated: { $in: [id] },
     })
     .sort({ age: 1 })
     .limit(1)
@@ -313,7 +313,7 @@ const updateTeam = async (
   );
   if (updateInfo.modifiedCount === 0) {
     {
-      errorObject.status = 500;
+      errorObject.status = 400;
       errorObject.error = "Team Values Same as Old One";
       throw errorObject;
     }

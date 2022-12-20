@@ -1,19 +1,36 @@
-<main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg">
+<main
+  class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+>
   <!-- Navbar -->
-  <nav class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl" id="navbarBlur">
+  <nav
+    class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
+    id="navbarBlur"
+  >
     <div class="container-fluid py-1 px-3">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-          <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
-          <li class="breadcrumb-item text-sm text-dark active" aria-current="page">{{page}}</li>
+          <li class="breadcrumb-item text-sm"><a
+              class="text-dark"
+              href="javascript:;"
+            >Pages</a></li>
+          <li
+            class="breadcrumb-item text-sm text-dark active"
+            aria-current="page"
+          >{{page}}</li>
         </ol>
-        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+        <p class="font-weight-bolder mb-0">{{page}}</p>
       </nav>
-      <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
+      <div
+        class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
+        id="navbar"
+      >
 
         <ul class="navbar-nav justify-content-end">
           <li class="nav-item d-flex align-items-center">
-            <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="/team/info/{{teamId}}">Back</a>
+            <a
+              class="btn btn-outline-primary btn-sm mb-0 me-3"
+              href="/team/info/{{teamId}}"
+            >Back</a>
           </li>
 
         </ul>
@@ -25,85 +42,134 @@
   <div class="container-fluid py-4">
     <div class="row">
       {{#if error}}
-      <p class="error message-div">{{error}}</p>
+        <p class="error message-div">{{error}}</p>
       {{/if}}
       {{#if success}}
-      <p class="success message-div">{{success}}</p>
+        <p class="success message-div">{{success}}</p>
       {{/if}}
       {{#if taskData}}
-      {{#each taskData}}
-      <div class="row">
-        <div class="col-md-12 mt-4">
-          <div class="card">
-            <div class="card-header pb-0 px-3">
-              <h6 class="mb-0">{{this.title}} Comments</h6>
-            </div>
-            <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="/task/addComment/{{this._id}}"><i
-                class="far fa-plus me-2"></i>Add Comment</a>
-            <div class="card-body pt-4 p-3">
-              <ul class="list-group">
-                {{#each this.comments}}
-                <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
-                  <div class="d-flex flex-column">
-                    <h6 class="mb-3 text-sm">{{this.name}}, {{this.createdAt}}</h6>
-                    <span class="mb-2 text-xs"><span
-                        class="text-dark font-weight-bold ms-sm-2">{{this.comment}}</span></span>
+        {{#each taskData}}
+          <div class="row">
+            <div class="col-md-12 mt-4">
+              <div class="card">
+                <div class="card-header pb-0 px-3">
+                  <p class="mb-0">{{this.title}}</p>
+                  <p class="mb-0">Description: {{this.content}}</p>
+                  <div>
+                    <p class="mb-0">Start Date: {{this.dateStart}}</p>
+                    <p class="mb-0">End Date: {{this.dateEnd}}</p>
                   </div>
-                </li>
-                {{/each}}
-              </ul>
+                  <p class="mb-0">Comments</p>
+                </div>
+                <a
+                  class="btn btn-link text-danger text-gradient px-3 mb-0"
+                  href="/task/addComment/{{this._id}}"
+                ><i class="far fa-plus me-2"></i>Add Comment</a>
+                <div class="card-body pt-4 p-3">
+                  <ul class="list-group">
+                    {{#each this.comments}}
+                      <li
+                        class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg"
+                      >
+                        <div class="d-flex flex-column">
+                          <p class="mb-3 text-sm">{{this.creatorID}},
+                            {{this.dateCreated}}</p>
+                          <span class="mb-2 text-xs"><span
+                              class="text-dark font-weight-bold ms-sm-2"
+                            >{{this.content}}</span></span>
+                        </div>
+                      {{#if ../../adminUser}}
+                  <div class="ms-auto text-end">
+                    <a class="btn btn-link text-danger text-gradient px-3 mb-0"
+                      href="/task/deleteComment/{{this._id}}/{{../../teamId}}"><i
+                        class="far fa-trash-alt me-2"></i>Delete</a>
+                  </div>
+                  {{/if}}
+                      </li>
+                    {{/each}}
+                  </ul>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
 
-      {{/each}}
+        {{/each}}
       {{/if}}
 
     </div>
   </div>
 </main>
 
-
-
-<div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="Task Modal" aria-hidden="true">
+<div
+  class="modal fade"
+  id="exampleModal2"
+  tabindex="-1"
+  role="dialog"
+  aria-hidden="true"
+>
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="Task Modal">Add Team Task</h5>
-        <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+        <p class="modal-title" id="Task-Modal">Add Team Task</p>
+        <button
+          type="button"
+          class="close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <form role="form" id="task-form" action="/task/create/{{teamData._id}}" method="post">
+      <form id="task-form" action="/task/create/{{teamData._id}}" method="post">
         <div class="modal-body">
           <label>Title</label>
           <div class="mb-3 title-div">
-            <input type="text" class="form-control inputName required" aria-label="title" aria-describedby="title-addon"
-              name="title">
+            <input
+              type="text"
+              class="form-control inputName required"
+              aria-label="title"
+              name="title"
+            />
           </div>
           <div></div>
           <label>Content</label>
           <div class="mb-3 content-div">
-            <textarea class="form-control required" aria-label="content" aria-describedby="content-addon"
-              name="content" /></textarea>
+            <textarea
+              class="form-control required"
+              aria-label="content"
+              name="content"
+            ></textarea>
           </div>
           <div></div>
           <label>Start Date</label>
           <div class="mb-3 startDate-div">
-            <input type="date" id="StartDate" class="form-control required" aria-label="startDate"
-              aria-describedby="startDate-addon" name="startDate" />
+            <input
+              type="date"
+              id="StartDate"
+              class="form-control required"
+              aria-label="startDate"
+              name="startDate"
+            />
           </div>
           <div></div>
           <label>End Date</label>
           <div class="mb-3 endDate-div">
-            <input type="date" id="EndDate" class="form-control required" aria-label="endDate"
-              aria-describedby="endDate-addon" name="endDate" />
+            <input
+              type="date"
+              id="EndDate"
+              class="form-control required"
+              aria-label="endDate"
+              name="endDate"
+            />
           </div>
           <div></div>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >Close</button>
           <button type="submit" class="btn btn-primary">Add Task</button>
         </div>
       </form>

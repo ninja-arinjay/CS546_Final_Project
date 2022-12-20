@@ -2,6 +2,7 @@ const express = require("express");
 const data = require("../data");
 const teamData = data.teams;
 const userData = data.users;
+const commentData = data.comments;
 const teamItemData = data.teamItems;
 const router = express.Router();
 const path = require("path");
@@ -11,8 +12,9 @@ const aes256 = require("aes256");
 const config = require("config");
 const { Console } = require("console");
 const { teamItems } = require("../data");
+const xss = require("xss");
 
-router.route("/task/create/:id").post(async (req, res) => {
+router.route("/create/:id").post(async (req, res) => {
   try {
     const errorObject = {
       status: 400,
@@ -20,6 +22,8 @@ router.route("/task/create/:id").post(async (req, res) => {
     if (req.session.user) {
       helpers.checkTeamInput("id", req.params.id.trim(), "Team Id");
       let teamRow = await teamData.getTeamById(req.params.id.trim());
+      req.body.title = xss(req.body.title.trim());
+      req.body.content = xss(req.body.content.trim());
       helpers.checkTeamInput("name", req.body.title, "Task Title");
       helpers.checkTeamInput("description", req.body.content, "Task Content");
       userHelpers.dateCheckTask(req.body.startDate, req.body.endDate);
@@ -63,33 +67,30 @@ router.route("/task/create/:id").post(async (req, res) => {
   }
 });
 
-router.route("/task/addComment/:id").post(async (req, res) => {
+router.route("/deleteComment/:id/:teamId").get(async (req, res) => {
   try {
     const errorObject = {
       status: 400,
     };
     if (req.session.user) {
-      helpers.checkTeamInput("id", req.params.id.trim(), "Team Id");
-      let teamRow = await teamItemData.getTeamItemById(req.params.id.trim());
-      helpers.checkTeamInput("description", req.body.comment, "Task Comment");
-      let d = new Date();
-      let dateCreated =
-        d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
-      if (
-        Date.parse(teamRow.startDate) > Date.parse(dateCreated) ||
-        Date.parse(teamRow.endDate) < dateCreated
-      ) {
-        errorObject.status = 500;
-        errorObject.error = "ERROR: CANNOT ADD COMMENT AS TASK IS NOT ACTIVE";
-        throw errorObject;
+      let id = xss(req.params.id.trim());
+      let teamId = xss(req.params.teamId.trim());
+      userHelpers.checkId(id);
+      let commentRow = await commentData.getCommentById(id, "teamItem");
+      if(commentRow === null){
+        req.session.error = "Comment Does Not Exist";
+        return res.status(404).redirect("/task/info/" + commentRow.teamID);
       }
-      await teamItemData.addComment(
-        teamRow._id,
-        req.body.comment,
-        aes256.decrypt(config.get("aes_key"), req.session.user.id)
-      );
-      req.session.success = "Task Created Successfully";
-      res.redirect("/team/info/" + teamRow._id);
+      try {
+        await commentData.deleteComment(id, "teamItem");
+        //console.log("Comment Deleted Successfully")
+      } catch (error) {
+        req.session.error = "Comment Does Not Exist";
+        return res.redirect("/task/info/" + teamId);
+      }
+      //console.log(commentRow)
+      req.session.success = "Comment Deleted Successfully";
+      return res.redirect("/task/info/" + teamId);
     } else {
       errorObject.status = 403;
       errorObject.error = "Unauthorized Access";
@@ -120,7 +121,71 @@ router.route("/task/addComment/:id").post(async (req, res) => {
   }
 });
 
-router.route("/task/info/:id").get(async (req, res) => {
+router.route("/addComment/:id").post(async (req, res) => {
+  try {
+    const errorObject = {
+      status: 400,
+    };
+    if (req.session.user) {
+      //helpers.checkTeamInput("id", req.params.id.trim(), "Team Id");
+      userHelpers.checkId(req.params.id.trim());
+      let teamRow = await teamItemData.getTeamItemById(req.params.id.trim());
+      //console.log(teamRow);
+      userHelpers.checkInputString(xss(req.body.comment.trim()));
+      let comm = xss(req.body.comment.trim());
+      let d = new Date();
+      let dateCreated =
+      d.getMonth() + 1 + "/" + d.getDate() + "/" + d.getFullYear();
+
+      //console.log(dateCreated, teamRow.dateStart, teamRow.dateEnd);
+
+      if (
+        Date.parse(teamRow.dateStart) > Date.parse(dateCreated) ||
+        Date.parse(teamRow.dateEnd) < dateCreated
+      ) {
+        req.session.error = "Task is Not Active";
+        return res.status(400).redirect("/task/info/" + teamRow.teamID);
+      }
+      await commentData.createComment(
+        teamRow._id,
+        aes256.decrypt(config.get("aes_key"), req.session.user.id),
+        comm,
+        "teamItem"
+      );
+      req.session.success = "Comment Created Successfully";
+      res.redirect("/task/info/" + teamRow.teamID);
+    } else {
+      errorObject.status = 403;
+      errorObject.error = "Unauthorized Access";
+      throw errorObject;
+    }
+  } catch (e) {
+    //console.log(e);
+    if (
+      typeof e === "object" &&
+      e !== null &&
+      !Array.isArray(e) &&
+      "status" in e &&
+      "error" in e
+    ) {
+      return res.status(e.status).render("error/error", {
+        title: "Error",
+        error: e.error,
+        status: e.status,
+        layout: "error",
+      });
+    } else {
+      return res.status(400).render("error/error", {
+        title: "Error",
+        error: e,
+        status: 400,
+        layout: "error",
+      });
+    }
+  }
+});
+
+router.route("/info/:id").get(async (req, res) => {
   try {
     const errorObject = {
       status: 400,
@@ -168,6 +233,26 @@ router.route("/task/info/:id").get(async (req, res) => {
       let d = new Date();
       d = d.getFullYear() + "-" + (d.getMonth() + 1) + "-" + d.getDate();
       let taskRows = await teamItemData.getTeamItemByTeam(teamRow._id);
+      for (let i = 0; i < taskRows.length; i++) {
+        let comms = await commentData.getAllComments(
+          taskRows[i]._id,
+          "teamItem"
+        );
+        if (!comms) {
+          comms = [];
+        } else {
+          for (let j = 0; j < comms.length; j++) {
+            let user = await userData.getUserById(comms[j].creatorID);
+            if (user) {
+              comms[j].creatorID = user.firstName + " " + user.lastName;
+            } else {
+              comms[j].creatorID = "deleted user";
+            }
+          }
+        }
+        taskRows[i].comments = comms;
+      }
+      //console.log(adminUser);
       return res.status(200).render("task/info", {
         title: "Task Info",
         page: "Task Info",
@@ -210,7 +295,7 @@ router.route("/task/info/:id").get(async (req, res) => {
   }
 });
 
-router.route("/task/addComment/:id").get(async (req, res) => {
+router.route("/addComment/:id").get(async (req, res) => {
   try {
     const errorObject = {
       status: 400,
@@ -236,10 +321,12 @@ router.route("/task/addComment/:id").get(async (req, res) => {
         throw errorObject;
       }
       return res.status(200).render("task/create", {
-        title: "Taks Comment Info",
-        page: "Taks Comment Info",
+        title: "Task Comment Info",
+        page: "Task Comment Info",
         activeClass: "team-active",
         taskID: teamItemRow._id,
+        layout: "main",
+        teamID: teamItemRow.teamID,
       });
     } else {
       errorObject.status = 403;

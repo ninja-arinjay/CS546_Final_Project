@@ -10,10 +10,11 @@ const config = require("config");
 const helpers = require("./../helpers/userHelper");
 //const { title } = require("process");
 const xss = require("xss");
-const { feed } = require("../data");
+//const { feed } = require("../data");
 const logger = require("../utils/logger");
 
 router.route("/").get(async (req, res) => {
+  logger.info("User Feed Accessed");
   if (!req.session.user) {
     return res.redirect("/");
   }
@@ -22,10 +23,15 @@ router.route("/").get(async (req, res) => {
       status: 404,
     };
     const feedList = await feedData.getAllFeed();
+    if (!feedList) {
+      errorObject.error = "No feeds found.";
+      throw errorObject;
+    }
     if (feedList.length === 0) {
       errorObject.error = "No feeds found.";
       throw errorObject;
     }
+    //console.log(feedList);
     // only get what is needed for the feed
     let feedProjection = [];
     for (let i = 0; i < feedList.length; i++) {
@@ -45,12 +51,14 @@ router.route("/").get(async (req, res) => {
         title: feedItem.title,
         description: feedItem.description,
         createdByID: firstLast,
+        userId: userName ? userName._id : null,
         dataPosted: feedItem.datePosted,
         comments: feedItem.comments,
       };
       feedProjection.push(curr);
     }
-    res.status(200).render("user/feed", {
+
+    return res.status(200).render("user/feed", {
       title: "Feed",
       feedList: feedProjection,
       page: "Feed",
@@ -67,11 +75,13 @@ router.route("/").get(async (req, res) => {
     ) {
       return res.status(e.status).render("user/feed", {
         title: "Feed",
+        page: "Feed",
         error: [e.error],
       });
     } else {
       return res.status(400).render("user/feed", {
         title: "Feed",
+        page: "Feed",
         error: [e],
       });
     }
@@ -83,11 +93,12 @@ router.route("/post/:id").get(async (req, res) => {
     return res.redirect("/");
   }
   try {
-    let id = (req.params.id);
+    let id = xss(req.params.id);
     helpers.checkId(id);
     let feedPost = await feedData.getFeedById(id);
     if (!feedPost) throw "No such post exists";
     let userName = await userData.getUserById(feedPost.createdByID);
+    let userId = feedPost.createdByID;
     if (!userName) throw "No such user exists";
     feedPost.createdByID = userName.firstName + " " + userName.lastName;
     let comments = await commentData.getAllComments(id, "feed");
@@ -104,7 +115,7 @@ router.route("/post/:id").get(async (req, res) => {
           userName = "deleted user";
         }
         if (!userName) throw "No such user exists";
-        if(userName !== "deleted user"){
+        if (userName !== "deleted user") {
           comments[i].creatorID = userName.firstName + " " + userName.lastName;
         } else {
           comments[i].creatorID = userName;
@@ -115,6 +126,7 @@ router.route("/post/:id").get(async (req, res) => {
       feedPost: feedPost,
       title: feedPost.title,
       comments: comments,
+      userId: userId,
       page: "Post",
     });
   } catch (e) {
@@ -139,25 +151,26 @@ router
         errorObject.error = "Invalid Data Posted.";
         throw errorObject;
       }
-      let result = (req.body);
-      let objKeys = ["title", "description"];
-      objKeys.forEach((element) => {
-        helpers.checkInput(
-          element,
-          result[element],
-          element + "of the feed",
-          true
-        );
-      });
+      let result = req.body;
+      if (!result.title || !result.description) {
+        errorObject.error = "Please fill out all fields.";
+        throw errorObject;
+      }
+
       //retreiving teamID and userID - pending
-      result.teamID = "";
-      result.createdByID = "";
-      await feedData.createFeed(
-        result[title],
-        result[description],
-        result[teamID],
-        result[createdByID]
+      result.createdByID = aes256.decrypt(
+        config.get("aes_key"),
+        req.session.user.id
       );
+      result.description = xss(result.description.trim());
+      result.title = xss(result.title.trim());
+
+      let newFeed = await feedData.createFeed(
+        result.title,
+        result.description,
+        result.createdByID
+      );
+
       logger.info("User Created Feed.");
       res.redirect("/feed");
     } catch (e) {
@@ -170,14 +183,16 @@ router
       ) {
         return res.status(e.status).render("user/createFeed", {
           title: "Create Feed",
-          error: [e.error],
-          layout: "auth",
+          page: "Create Feed",
+          error: e.error,
+          layout: "main",
         });
       } else {
         return res.status(400).render("user/createFeed", {
           title: "Create Feed",
-          error: [e],
-          layout: "auth",
+          page: "Create Feed",
+          error: e.error,
+          layout: "main",
         });
       }
     }
@@ -189,6 +204,7 @@ router
     res.render("user/createFeed", {
       title: "Create Feed",
       page: "Create Feed",
+      activeClass: "feed-active",
     });
   });
 
@@ -196,8 +212,8 @@ router.route("/addComment/:id").post(async (req, res) => {
   if (!req.session.user) {
     return res.redirect("/");
   }
-  let id = (req.params.id.trim());
-  let comment = (req.body.comment.trim());
+  let id = xss(req.params.id.trim());
+  let comment = xss(req.body.comment.trim());
   helpers.checkId(id);
   helpers.checkInputString(comment);
   try {

@@ -17,7 +17,7 @@
             aria-current="page"
           >{{page}}</li>
         </ol>
-        <p class="font-weight-bolder mb-0 text-dark">{{page}}</p>
+        <p class="font-weight-bolder mb-0">{{page}}</p>
       </nav>
       <div
         class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
@@ -28,35 +28,23 @@
           <li class="nav-item d-flex align-items-center">
             <a
               class="btn btn-outline-primary btn-sm mb-0 me-3"
-              href="/feed/createfeed"
-            >Create Feed Post</a>
+              href="/feed"
+            >Back</a>
           </li>
         </ul>
       </div>
     </div>
   </nav>
-  <div class="card-body pt-4 p-3">
-    <ul class="list-group">
-      {{#each feedList}}
-        <li
-          class="list-group-item border-2 d-flex p-4 mb-2 bg-gray-100 border-radius-lg"
-        >
-          <div class="d-flex flex-column">
-            <div>
-              <p class="mb-0 text-dark">{{this.title}}</p>
-            </div>
-            <p class="mb-3 text-sm text-dark">{{this.createdByID}},
-              {{this.dataPosted}}</p>
-            <div class="mb-2"><span
-                class="text-dark font-weight-bold ms-sm-2"
-              >{{this.description}}</span></div>
-            <div class="flex row">
-              <a href="/feed/post/{{this._id}}">Comments</a>
-            </div>
-          </div>
-        </li>
-      {{/each}}
-    </ul>
+  <div id="post-page" class="container-fluid py-4">
+    <header>
+      <h1 class="text-dark">Name: {{userData.firstName}} {{userData.lastName}}</h1>
+      <h2 class="text-dark">Location: {{userData.location}}</h2>
+    </header>
+    <div id="post-content">
+      <p>Age: {{userData.age}}</p>
+    </div>
+    <div>
+      <p>Bio: {{userData.bio}}</p>
+    </div>
   </div>
-
 </main>

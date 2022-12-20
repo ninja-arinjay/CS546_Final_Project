@@ -1,70 +1,80 @@
-<form id="main-form" action="/task/addComment/{{taskID}}" method="post">
+<main
+  class="main-content position-relative max-height-vh-100 h-100 border-radius-lg pb-4"
+>
+  <nav
+    class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
+    id="navbarBlur"
+  >
+    <div class="container-fluid py-1 px-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+          <li class="breadcrumb-item text-sm"><a
+              class="text-dark"
+              href="javascript:;"
+            >Pages</a></li>
+          <li
+            class="breadcrumb-item text-sm text-dark active"
+            aria-current="page"
+          >{{page}}</li>
+        </ol>
+        <p class="font-weight-bolder mb-0 text-dark">{{page}}</p>
+      </nav>
+      <div
+        class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
+        id="navbar"
+      >
 
-  <div></div><label for="text1">Comment</label>
-  <div class="mb-3 comment-div">
-    <textarea class="form-control required" aria-label="comment" id="text1" name="comment"></textarea>
+        <ul class="navbar-nav justify-content-end">
+          <li class="nav-item d-flex align-items-center">
+            <a
+              class="btn btn-outline-primary btn-sm mb-0 me-3"
+              href="/task/info/{{teamID}}"
+            >Back</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="container-fluid py-4">
+    <form id="main-form" action="/task/addComment/{{taskID}}" method="post">
+
+      <div></div><label for="text1">Comment</label>
+      <div class="mb-3 comment-div">
+        <textarea
+          class="form-control required"
+          aria-label="comment"
+          id="text1"
+          name="comment"
+        ></textarea>
+      </div>
+
+      <div class="text-center">
+        <label for="btnSubmit">Create</label>
+        <button
+          id="btnSubmit"
+          type="submit"
+          class="btn bg-gradient-info w-100 mt-4 mb-0"
+        >Create Comment</button>
+
+      </div>
+    </form>
   </div>
-
-  <div class="text-center">
-    <label for="btnSubmit">Create</label>
-    <button id="btnSubmit" type="submit" class="btn bg-gradient-info w-100 mt-4 mb-0">Create Comment</button>
-
-  </div>
-</form>
-
+</main>
 
 {{#section "script"}}
 
-<script>
-  jQuery(document).ready(function () {
-    jQuery("#main-form").validate({
-      ignore: [],
-      rules: {
+  <script>
+    jQuery(document).ready(function () { jQuery("#main-form").validate({ ignore:
+    [], rules: { comment: { required: true, minlength: 5, }, }, errorPlacement:
+    function (error, element) { error.insertAfter("." + element.attr("name") +
+    "-div"); }, submitHandler: function (form) { form.submit(); }, });
+    jQuery.validator.addMethod( "inputName", function (value, element) { return
+    /\d*[a-zA-Z][a-zA-Z0-9 ]*$/i.test( value ); }, "Invalid Name" ); });
+    jQuery.validator.addMethod( "minAge", function (value, element) { return
+    /^[0-9]+$/i.test( value ); }, "Invalid Minimum Age" );
+    jQuery.validator.addMethod( "memberLimit", function (value, element) {
+    return /^[0-9]+$/i.test( value ); }, "Invalid Member Limit" );
 
-        comment: {
-          required: true,
-          minlength: 5,
-        },
-
-      },
-      errorPlacement: function (error, element) {
-        error.insertAfter("." + element.attr("name") + "-div");
-      },
-      submitHandler: function (form) {
-        form.submit();
-      },
-    });
-    jQuery.validator.addMethod(
-      "inputName",
-      function (value, element) {
-        return /\d*[a-zA-Z][a-zA-Z0-9 ]*$/i.test(
-          value
-        );
-      },
-      "Invalid Name"
-    );
-  });
-
-  jQuery.validator.addMethod(
-    "minAge",
-    function (value, element) {
-      return /^[0-9]+$/i.test(
-        value
-      );
-    },
-    "Invalid Minimum Age"
-  );
-
-  jQuery.validator.addMethod(
-    "memberLimit",
-    function (value, element) {
-      return /^[0-9]+$/i.test(
-        value
-      );
-    },
-    "Invalid Member Limit"
-  );
-
-</script>
+  </script>
 
 {{/section}}
