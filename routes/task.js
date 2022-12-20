@@ -22,6 +22,8 @@ router.route("/create/:id").post(async (req, res) => {
     if (req.session.user) {
       helpers.checkTeamInput("id", req.params.id.trim(), "Team Id");
       let teamRow = await teamData.getTeamById(req.params.id.trim());
+      req.body.title = xss(req.body.title.trim());
+      req.body.content = xss(req.body.content.trim());
       helpers.checkTeamInput("name", req.body.title, "Task Title");
       helpers.checkTeamInput("description", req.body.content, "Task Content");
       userHelpers.dateCheckTask(req.body.startDate, req.body.endDate);

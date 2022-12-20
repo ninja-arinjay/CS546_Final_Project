@@ -113,6 +113,11 @@ router
           throw errorObject;
         }
         let result = req.body;
+        result.name = xss(result.name.trim());
+        result.description = xss(result.description.trim());
+        result.private = xss(result.private.trim());
+        result.memberLimit = xss(result.memberLimit.trim());
+        result.ageMin = xss(result.ageMin.trim());
         let privateFlag = false;
         if (result.private) {
           privateFlag = true;
@@ -817,7 +822,7 @@ router.route("/team/addComment/:id").post(async (req, res) => {
       await teamData.addComment(
         teamRow._id,
         aes256.decrypt(config.get("aes_key"), req.session.user.id),
-        req.body.comment.trim()
+        xss(req.body.comment.trim())
       );
       req.session.success = "Comment Added Successfully";
       res.redirect("/team/info/" + teamRow._id);

@@ -78,6 +78,13 @@ router
           throw errorObject;
         }
         let result = (req.body);
+        result.email = xss(result.email.trim());
+        result.password = xss(result.password.trim());
+        result.firstName = xss(result.firstName.trim());
+        result.lastName = xss(result.lastName.trim());
+        result.location = xss(result.location.trim());
+        result.age = xss(result.age.trim());
+        result.bio = xss(result.bio.trim());
         let objKeys = [
           "email",
           "password",

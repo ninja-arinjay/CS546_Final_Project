@@ -67,13 +67,13 @@ router
         throw errorObject;
       }
       let result = req.body;
-      result.email = xss(result.email);
-      result.password = xss(result.password);
-      result.firstName = xss(result.firstName);
-      result.lastName = xss(result.lastName);
-      result.age = xss(result.age);
-      result.bio = xss(result.bio);
-      result.location = xss(result.location);
+      result.email = xss(result.email.trim());
+      result.password = xss(result.password.trim());
+      result.firstName = xss(result.firstName.trim());
+      result.lastName = xss(result.lastName.trim());
+      result.age = xss(result.age.trim());
+      result.bio = xss(result.bio.trim());
+      result.location = xss(result.location.trim());
       let objKeys = [
         "email",
         "password",
@@ -144,6 +144,8 @@ router
         throw errorObject;
       }
       let result = req.body;
+      result.email = xss(result.email.trim());
+      result.password = xss(result.password.trim());
       let objKeys = ["email", "password"];
       objKeys.forEach((element) => {
         helpers.checkInput(
