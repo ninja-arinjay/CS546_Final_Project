@@ -128,7 +128,7 @@ router
         );
         logger.info("User Updated Profile");
         req.session.success = "Profile Udated Successfully";
-        return res.redirect("/account");
+        return res.redirect("/user/account");
       } else {
         errorObject.status = 403;
         errorObject.error = "Unauthorized Access";
