@@ -67,22 +67,30 @@ router.route("/create/:id").post(async (req, res) => {
   }
 });
 
-router.route("/deleteComment/:id").get(async (req, res) => {
+router.route("/deleteComment/:id/:teamId").get(async (req, res) => {
   try {
     const errorObject = {
       status: 400,
     };
     if (req.session.user) {
       let id = xss(req.params.id.trim());
+      let teamId = xss(req.params.teamId.trim());
       userHelpers.checkId(id);
-      let commentRow = await commentData.getCommentById(id);
+      let commentRow = await commentData.getCommentById(id, "teamItem");
       if(commentRow === null){
         req.session.error = "Comment Does Not Exist";
         return res.status(404).redirect("/task/info/" + commentRow.teamID);
       }
-      await commentData.deleteComment(id, "teamItem");
+      try {
+        await commentData.deleteComment(id, "teamItem");
+        //console.log("Comment Deleted Successfully")
+      } catch (error) {
+        req.session.error = "Comment Does Not Exist";
+        return res.redirect("/task/info/" + teamId);
+      }
+      //console.log(commentRow)
       req.session.success = "Comment Deleted Successfully";
-      res.redirect("/task/info/" + commentRow.teamID);
+      return res.redirect("/task/info/" + teamId);
     } else {
       errorObject.status = 403;
       errorObject.error = "Unauthorized Access";
@@ -244,7 +252,7 @@ router.route("/info/:id").get(async (req, res) => {
         }
         taskRows[i].comments = comms;
       }
-
+      //console.log(adminUser);
       return res.status(200).render("task/info", {
         title: "Task Info",
         page: "Task Info",

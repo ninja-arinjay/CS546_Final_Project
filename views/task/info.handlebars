@@ -78,10 +78,10 @@
                               class="text-dark font-weight-bold ms-sm-2"
                             >{{this.content}}</span></span>
                         </div>
-                      {{#if ../adminUser}}
+                      {{#if ../../adminUser}}
                   <div class="ms-auto text-end">
                     <a class="btn btn-link text-danger text-gradient px-3 mb-0"
-                      href="/task/deleteComment/{{this._id}}"><i
+                      href="/task/deleteComment/{{this._id}}/{{../../teamId}}"><i
                         class="far fa-trash-alt me-2"></i>Delete</a>
                   </div>
                   {{/if}}
