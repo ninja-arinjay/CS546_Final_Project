@@ -8,49 +8,49 @@
         {{/if}}
         <div class="wrap-input100 email-div validate-input m-b-23">
           <label for="email" class="label-input100">Email</label>
-          <input class="input100 email" type="text" name="email" id="email" placeholder="Type your email" />
-          <span class="focus-input100" data-symbol="&#xf206;"></span>
+          <input class="input100 email" name="email" id="email" placeholder="Type your email" />
+          <span class="focus-input100"></span>
         </div>
 
         <div class="wrap-input100 firstName-div validate-input m-b-23">
           <label for="firstName" class="label-input100">First Name</label>
-          <input class="input100 inputName" type="text" name="firstName" id="firstName"
+          <input class="input100 inputName" name="firstName" id="firstName"
             placeholder="Type your first name" />
-          <span class="focus-input100" data-symbol="&#xf206;"></span>
+          <span class="focus-input100"></span>
         </div>
 
         <div class="wrap-input100 lastName-div validate-input m-b-23">
           <label for="lastName" class="label-input100">Last Name</label>
-          <input class="input100 inputName" type="text" name="lastName" id="lastName"
+          <input class="input100 inputName" name="lastName" id="lastName"
             placeholder="Type your last name" />
-          <span class="focus-input100" data-symbol="&#xf206;"></span>
+          <span class="focus-input100"></span>
         </div>
 
         <div class="wrap-input100 location-div validate-input m-b-23">
           <label for="location" class="label-input100">Location (Area)</label>
-          <input class="input100 inputName" type="text" name="location" id="location"
+          <input class="input100 inputName" name="location" id="location"
             placeholder="Type your location" />
-          <span class="focus-input100" data-symbol="&#xf206;"></span>
+          <span class="focus-input100"></span>
         </div>
 
         <div class="wrap-input100 bio-div validate-input m-b-23">
           <label for="bio" class="label-input100">Bio</label>
-          <textarea class="input100" type="text" name="bio" id="bio" placeholder="Type your bio"></textarea>
-          <span class="focus-input100" data-symbol="&#xf206;"></span>
+          <textarea class="input100" name="bio" id="bio" placeholder="Type your bio"></textarea>
+          <span class="focus-input100"></span>
         </div>
 
         <div class="wrap-input100 age-div validate-input m-b-23">
           <label for="age" class="label-input100">Age</label>
           <input class="input100 age" type="number" name="age" id="age" placeholder="Type your age" min="12"
             max="120" />
-          <span class="focus-input100" data-symbol="&#xf206;"></span>
+          <span class="focus-input100"></span>
         </div>
 
         <div class="wrap-input100 password-div validate-input">
           <label for="password" class="label-input100">Password</label>
           <input class="input100 password" type="password" name="password" id="password"
             placeholder="Type your password" />
-          <span class="focus-input100" data-symbol="&#xf190;"></span>
+          <span class="focus-input100"></span>
         </div>
 
         <div class="text-right p-t-8 p-b-31"></div>
@@ -72,7 +72,7 @@
 
 {{#section 'script'}}
 
-<script type="text/javascript">
+<script>
   jQuery(document).ready(function () {
     jQuery("#register-form").validate({
       ignore: [],

@@ -9,7 +9,7 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
           <li class="breadcrumb-item text-sm"><a
-              class="opacity-5 text-dark"
+              class="text-dark"
               href="javascript:;"
             >Pages</a></li>
           <li
@@ -17,7 +17,7 @@
             aria-current="page"
           >{{page}}</li>
         </ol>
-        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+        <p class="font-weight-bolder mb-0 text-dark">{{page}}</p>
       </nav>
       <div
         class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
@@ -39,14 +39,14 @@
     <ul class="list-group">
       {{#each feedList}}
         <li
-          class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg"
+          class="list-group-item border-2 d-flex p-4 mb-2 bg-gray-100 border-radius-lg"
         >
           <div class="d-flex flex-column">
             <div>
-              <h5 class="mb-0">{{this.title}}</h5>
+              <p class="mb-0 text-dark">{{this.title}}</p>
             </div>
-            <h6 class="mb-3 text-sm">{{this.createdByID}},
-              {{this.dataPosted}}</h6>
+            <p class="mb-3 text-sm text-dark">{{this.createdByID}},
+              {{this.dataPosted}}</p>
             <div class="mb-2"><span
                 class="text-dark font-weight-bold ms-sm-2"
               >{{this.description}}</span></div>

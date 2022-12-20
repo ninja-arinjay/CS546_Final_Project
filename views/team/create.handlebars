@@ -10,7 +10,7 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
           <li class="breadcrumb-item text-sm"><a
-              class="opacity-5 text-dark"
+              class="text-dark"
               href="javascript:;"
             >Pages</a></li>
           <li
@@ -18,7 +18,7 @@
             aria-current="page"
           >{{page}}</li>
         </ol>
-        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+        <p class="font-weight-bolder mb-0">{{page}}</p>
       </nav>
       <div
         class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
@@ -47,13 +47,13 @@
               <p class="error">{{error}}</p>
             {{/if}}
           <div class="card-header pb-0 text-left bg-transparent">
-            <h3 class="font-weight-bolder text-info text-gradient">Create Your
-              Team</h3>
+            <p class="font-weight-bolder text-info text-gradient text-lg">Create Your
+              Team</p>
             <p class="mb-0">Enter your team name and add users if you wish</p>
           </div>
           <div class="card-body">
             <form id="main-form" action="/team/create" method="post">
-              <div></div><label for="addUserChange">Name</label>
+              <div></div><label>Name</label>
               <div class="mb-3 name-div">
                 <input type="hidden" id="addUserChange" name="addUser" value="0">
                 <input
@@ -96,18 +96,18 @@
                     min="16"
                 />
               </div>
-               <div></div><label>Is Private Team</label>
+               <div></div><label for="private_option">Is Private Team</label>
                <div class="mb-3 private-div">
                 <input type="checkbox" id="private_option" name="private" value="1">
               </div>
               <div class="text-center">
-                <label for="btnSubmit">Create</label>
+                <label for="btnSubmit" hidden>Create</label>
                 <button
                 id="btnSubmit"
                   type="submit"
                   class="btn bg-gradient-info w-100 mt-4 mb-0"
                 >Create Team</button>
-                <label for="btnSubmit2">Create & Add Users</label>
+                <label for="btnSubmit2" hidden>Create & Add Users</label>
                 <button
                 id="btnSubmit2"
                   type="button"

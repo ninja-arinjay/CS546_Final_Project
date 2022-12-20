@@ -4,10 +4,10 @@
     <div class="container-fluid py-1 px-3">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-          <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+          <li class="breadcrumb-item text-sm"><a class="text-dark" href="javascript:;">Pages</a></li>
           <li class="breadcrumb-item text-sm text-dark active" aria-current="page">{{page}}</li>
         </ol>
-        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+        <p class="font-weight-bolder mb-0">{{page}}</p>
       </nav>
       <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
 
@@ -54,8 +54,8 @@
                 <div>
                   <div class="d-flex px-2 py-1">
                     <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm" style="text-transform: uppercase;">Team Name :
-                        {{teamData.teamName}}</h6>
+                      <p class="mb-0 text-sm" style="text-transform: uppercase;">Team Name :
+                        {{teamData.teamName}}</p>
                     </div>
                   </div>
                 </div>
@@ -64,8 +64,8 @@
                 <div>
                   <div class="d-flex px-2 py-1">
                     <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm" style="text-transform: uppercase;">Created At :
-                        {{teamData.dateCreated}}</h6>
+                      <p class="mb-0 text-sm" style="text-transform: uppercase;">Created At :
+                        {{teamData.dateCreated}}</p>
                     </div>
                   </div>
                 </div>
@@ -74,8 +74,8 @@
                 <div>
                   <div class="d-flex px-2 py-1">
                     <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm" style="text-transform: uppercase;">Number of Members :
-                        {{teamData.numMembers}}</h6>
+                      <p class="mb-0 text-sm" style="text-transform: uppercase;">Number of Members :
+                        {{teamData.numMembers}}</p>
                     </div>
                   </div>
                 </div>
@@ -85,8 +85,8 @@
                 <div>
                   <div class="d-flex px-2 py-1">
                     <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm" style="text-transform: uppercase;"> Minimum User Age:
-                        {{teamData.ageMin}}</h6>
+                      <p class="mb-0 text-sm" style="text-transform: uppercase;"> Minimum User Age:
+                        {{teamData.ageMin}}</p>
                     </div>
                   </div>
                 </div>
@@ -95,8 +95,8 @@
                 <div>
                   <div class="d-flex px-2 py-1">
                     <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm" style="text-transform: uppercase;"> Team User Limit:
-                        {{teamData.memberLimit}}</h6>
+                      <p class="mb-0 text-sm" style="text-transform: uppercase;"> Team User Limit:
+                        {{teamData.memberLimit}}</p>
                     </div>
                   </div>
                 </div>
@@ -114,7 +114,7 @@
                 <div>
                   <div class="d-flex px-2 py-1">
                     <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm" style="text-transform: uppercase;">{{this.firstName}} {{this.lastName}}
+                      <p class="mb-0 text-sm" style="text-transform: uppercase;">{{this.firstName}} {{this.lastName}}
                         {{#checkInputValue this._id ../teamData.creatorID true}}
                         (Creator)
                         {{/checkInputValue}}
@@ -123,7 +123,7 @@
                         (Admin)
                         {{/checkInputValue}}
                         {{/checkInputValue}}
-                      </h6>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -138,14 +138,14 @@
         <div class="col-md-12 mt-4">
           <div class="card">
             <div class="card-header pb-0 px-3">
-              <h6 class="mb-0">Team Comments</h6>
+              <p class="mb-0">Team Comments</p>
             </div>
             <div class="card-body pt-4 p-3">
               <ul class="list-group">
                 {{#each teamData.comments}}
                 <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                   <div class="d-flex flex-column">
-                    <h6 class="mb-3 text-sm">{{this.userName}}, {{this.createdAt}}</h6>
+                    <p class="mb-3 text-sm">{{this.userName}}, {{this.createdAt}}</p>
                     <span class="mb-2 text-xs"><span
                         class="text-dark font-weight-bold ms-sm-2">{{this.comment}}</span></span>
                   </div>
@@ -170,14 +170,14 @@
         <div class="col-md-12 mt-4">
           <div class="card">
             <div class="card-header pb-0 px-3">
-              <h6 class="mb-0">Team Comments</h6>
+              <p class="mb-0">Team Comments</p>
             </div>
             <div class="card-body pt-4 p-3">
               <ul class="list-group">
                 {{#each teamData.comments}}
                 <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                   <div class="d-flex flex-column">
-                    <h6 class="mb-3 text-sm">{{this.userName}}, {{this.createdAt}}</h6>
+                    <p class="mb-3 text-sm">{{this.userName}}, {{this.createdAt}}</p>
                     <span class="mb-2 text-xs"><span
                         class="text-dark font-weight-bold ms-sm-2">{{this.comment}}</span></span>
                   </div>
@@ -208,7 +208,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="Comment-Modal">Add Team Comment</h5>
+        <p class="modal-title" id="Comment-Modal">Add Team Comment</p>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -235,7 +235,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="Task-Modal">Add Team Task</h5>
+        <p class="modal-title" id="Task-Modal">Add Team Task</p>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>

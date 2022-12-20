@@ -10,7 +10,7 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
           <li class="breadcrumb-item text-sm"><a
-              class="opacity-5 text-dark"
+              class="text-dark"
               href="javascript:;"
             >Pages</a></li>
           <li
@@ -18,7 +18,7 @@
             aria-current="page"
           >{{page}}</li>
         </ol>
-        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+        <p class="font-weight-bolder mb-0">{{page}}</p>
       </nav>
       <div
         class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
@@ -53,13 +53,22 @@
             <thead>
               <tr>
                 <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder"
                 >Team</th>
                 <th
-                  class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2"
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder ps-2"
                 >Created At</th>
                 <th
-                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7"
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder"
+                >Members</th>
+                                <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder"
+                >Minimum Age</th>
+                                <th
+                  class="text-uppercase text-secondary text-xxs font-weight-bolder"
+                >Description</th>
+                <th
+                  class="text-center text-uppercase text-secondary text-xxs font-weight-bolder"
                 >Options</th>
               </tr>
             </thead>
@@ -71,17 +80,37 @@
                     <div class="d-flex px-2 py-1">
 
                       <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm" style="text-transform: uppercase;">{{this.teamName}}</h6>
+                        <p class="mb-0 text-sm" style="text-transform: uppercase;">{{this.teamName}}</p>
                       </div>
                     </div>
                   </td>
                   <td>
                     <div class="d-flex px-2 py-1">
                       <div class="d-flex flex-column justify-content-center">
-                        <h6 class="mb-0 text-sm">{{this.dateCreated}}</h6>
+                        <p class="mb-0 text-sm">{{this.dateCreated}}</p>
                       </div>
                     </div>
-
+                  </td>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div class="d-flex flex-column justify-content-center">
+                        <p class="mb-0 text-sm">{{this.numMembers}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div class="d-flex flex-column justify-content-center">
+                        <p class="mb-0 text-sm">{{this.ageMin}}</p>
+                      </div>
+                    </div>
+                  </td>
+                  <td>
+                    <div class="d-flex px-2 py-1">
+                      <div class="d-flex flex-column justify-content-center">
+                        <p class="mb-0 text-sm">{{this.description}}</p>
+                      </div>
+                    </div>
                   </td>
                   <td class="align-middle text-center text-sm">
                     
@@ -109,7 +138,6 @@
                       class="badge badge-sm bg-gradient-warning"
                     >Team Info</span></a>
                   </td>
-
 
                 </tr>
               {{/each}}

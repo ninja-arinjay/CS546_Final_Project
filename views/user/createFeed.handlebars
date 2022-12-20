@@ -9,7 +9,7 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
           <li class="breadcrumb-item text-sm"><a
-              class="opacity-5 text-dark"
+              class="text-dark"
               href="javascript:;"
             >Pages</a></li>
           <li
@@ -17,7 +17,7 @@
             aria-current="page"
           >{{page}}</li>
         </ol>
-        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+        <p class="font-weight-bolder mb-0 text-dark">{{page}}</p>
       </nav>
       <div
         class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
@@ -42,10 +42,8 @@
           <label for="title">Title</label>
           <textarea
             name="title"
-            type="text"
             id="title"
             placeholder="Enter the Title of your Feed."
-            value=""
             required=""
           ></textarea>
           <div class="invalid-feedback">
@@ -56,10 +54,8 @@
           <label for="description">Description</label>
           <textarea
             name="description"
-            type="text"
             id="description"
             placeholder="Enter the description of your Feed."
-            value=""
             required=""
           ></textarea>
           <div class="invalid-feedback">

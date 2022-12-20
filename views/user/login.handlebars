@@ -5,16 +5,16 @@
         <span class="login100-form-title p-b-49"> Login </span>
         <p class="error">{{error}}</p>
         <div class="wrap-input100 email-div validate-input m-b-23">
-          <label for="email"class="label-input100">Email</label>
+          <label for="email" class="label-input100">Email</label>
           <input class="input100 email" type="text" name="email" id="email" placeholder="Type your email" />
-          <span class="focus-input100" data-symbol="&#xf206;"></span>
+          <span class="focus-input100"></span>
         </div>
 
         <div class="wrap-input100 password-div validate-input">
           <label for="password" class="label-input100">Password</label>
           <input class="input100 password" type="password" name="password" id="password"
             placeholder="Type your password" />
-          <span class="focus-input100" data-symbol="&#xf190;"></span>
+          <span class="focus-input100"></span>
         </div>
 
         <div class="text-right p-t-8 p-b-31"></div>
@@ -34,7 +34,7 @@
 </div>
 
 {{#section "script"}}
-<script type="text/javascript">
+<script>
   jQuery(document).ready(function () {
     jQuery("#login-form").validate({
       ignore: [],

@@ -4,10 +4,10 @@
     <div class="container-fluid py-1 px-3">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-          <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+          <li class="breadcrumb-item text-sm"><a class="text-dark" href="javascript:;">Pages</a></li>
           <li class="breadcrumb-item text-sm text-dark active" aria-current="page">{{page}}</li>
         </ol>
-        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+        <p class="font-weight-bolder mb-0">{{page}}</p>
       </nav>
       <div class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4" id="navbar">
 
@@ -37,35 +37,37 @@
           <p class="success"></p>
           {{/if}}
           <div class="card-header pb-0 text-left bg-transparent">
-            <h3 class="font-weight-bolder text-info text-gradient">Edit Your
-              Team</h3>
+            <p class="font-weight-bolder text-info text-gradient">Edit Your
+              Team</p>
             <p class="mb-0">Edit your team and add users</p>
           </div>
           <div class="card-body">
             <form id="main-form" action="/team/edit/{{teamData._id}}" method="post">
-              <label>Name</label>
+              <label for="teamname">Name</label>
               <div class="mb-3 name-div">
-                <input type="text" class="form-control required inputName" placeholder="name" aria-label="name" name="name" value="{{teamData.teamName}}" />
+                <input id="teamname" type="text" class="form-control required inputName" placeholder="name" aria-label="name" name="name" value="{{teamData.teamName}}" />
               </div>
               <div></div><label>Description</label>
               <div class="mb-3 description-div">
                 <textarea class="form-control required" aria-label="description" name="description" >{{teamData.description}}</textarea>
               </div>
-              <div></div><label>Member Limit</label>
+              <div></div><label for="memberlim">Member Limit</label>
               <div class="mb-3 memberLimit-div">
-                <input type="number" class="form-control required memberLimit" aria-label="memberLimit" name="memberLimit" min="{{teamData.numMembers}}" max="200"
+                <input id="memberlim" type="number" class="form-control required memberLimit" aria-label="memberLimit" name="memberLimit" min="{{teamData.numMembers}}" max="200"
                   value="{{teamData.memberLimit}}" />
               </div>
-              <div></div><label>Minimum User Age</label>
+              <div></div><label for="agemin">Minimum User Age</label>
               <div class="mb-3 ageMin-div">
-                <input type="number" class="form-control required minAge" aria-label="ageMin" name="ageMin" min="16" max="{{minAgeValue}}"
+                <input id="agemin" type="number" class="form-control required minAge" aria-label="ageMin" name="ageMin" min="16" max="{{minAgeValue}}"
                   value="{{teamData.ageMin}}" />
               </div>
               <div></div><label>Is Private Team</label>
               <div class="mb-3 private-div">
                 {{#if teamData.private}}
+                <label for="private_option" hidden>Private</label>
                 <input type="checkbox" id="private_option" name="private" checked value="1">
                 {{else}}
+                <label for="private_option" hidden>Private</label>
                 <input type="checkbox" id="private_option" name="private" value="1">
                 {{/if}}
               </div>
@@ -82,8 +84,8 @@
           <table class="table align-items-center mb-0">
             <thead>
               <tr>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Member</th>
-                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Options</th>
+                <th class="text-uppercase text-third text-sm font-weight-bolder opacity-7">Member</th>
+                <th class="text-center text-uppercase text-third text-sm font-weight-bolder opacity-7">Options</th>
               </tr>
             </thead>
             <tbody>
@@ -94,7 +96,7 @@
                   <div class="d-flex px-2 py-1">
 
                     <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">{{this.firstName}} {{this.lastName}}</h6>
+                      <p class="mb-0 text-sm">{{this.firstName}} {{this.lastName}}</p>
                     </div>
                   </div>
                 </td>

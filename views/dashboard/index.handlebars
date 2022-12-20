@@ -4,10 +4,10 @@
     <div class="container-fluid py-1 px-3">
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
-          <li class="breadcrumb-item text-sm"><a class="opacity-5 text-dark" href="javascript:;">Pages</a></li>
+          <li class="breadcrumb-item text-md"><a class="text-dark" href="javascript:;">Pages</a></li>
           <li class="breadcrumb-item text-sm text-dark active" aria-current="page">{{page}}</li>
         </ol>
-        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+        <p class="font-weight-bolder mb-0">{{page}}</p>
       </nav>
 
     </div>
@@ -22,13 +22,13 @@
               <div class="col-8">
                 <div class="numbers">
                   <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Teams</p>
-                  <h5 class="font-weight-bolder mb-0">
+                  <p class="font-weight-bolder mb-0">
                     {{#if teamCount}}
                     {{teamCount}}
                     {{else}}
                     0
                     {{/if}}
-                  </h5>
+                  </p>
                 </div>
               </div>
               <div class="col-4 text-end">
@@ -47,13 +47,13 @@
               <div class="col-8">
                 <div class="numbers">
                   <p class="text-sm mb-0 text-capitalize font-weight-bold">My Teams</p>
-                  <h5 class="font-weight-bolder mb-0">
+                  <p class="font-weight-bolder mb-0">
                     {{#if myTeams}}
                     {{myTeams}}
                     {{else}}
                     0
                     {{/if}}
-                  </h5>
+                  </p>
                 </div>
               </div>
               <div class="col-4 text-end">
@@ -72,13 +72,13 @@
               <div class="col-8">
                 <div class="numbers">
                   <p class="text-sm mb-0 text-capitalize font-weight-bold">Total Users</p>
-                  <h5 class="font-weight-bolder mb-0">
+                  <p class="font-weight-bolder mb-0">
                     {{#if userCount}}
                     {{userCount}}
                     {{else}}
                     0
                     {{/if}}
-                  </h5>
+                  </p>
                 </div>
               </div>
               <div class="col-4 text-end">
@@ -94,7 +94,7 @@
     </div>
     <div class="row">
       <div>
-        <h6>My Team</h6>
+        <p>My Team</p>
       </div>
       {{#if error}}
       <p class="error message-div">{{error}}</p>
@@ -107,9 +107,9 @@
           <table class="table align-items-center mb-0">
             <thead>
               <tr>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Team</th>
-                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Created At</th>
-                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Options</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder">Team</th>
+                <th class="text-uppercase text-secondary text-xxs font-weight-bolder ps-2">Created At</th>
+                <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder">Options</th>
               </tr>
             </thead>
             <tbody>
@@ -120,14 +120,14 @@
                   <div class="d-flex px-2 py-1">
 
                     <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm" style="text-transform: uppercase;">{{this.teamName}}</h6>
+                      <p class="mb-0 text-sm" style="text-transform: uppercase;">{{this.teamName}}</p>
                     </div>
                   </div>
                 </td>
                 <td>
                   <div class="d-flex px-2 py-1">
                     <div class="d-flex flex-column justify-content-center">
-                      <h6 class="mb-0 text-sm">{{this.dateCreated}}</h6>
+                      <p class="mb-0 text-sm">{{this.dateCreated}}</p>
                     </div>
                   </div>
 

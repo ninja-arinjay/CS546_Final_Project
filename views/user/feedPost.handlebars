@@ -9,7 +9,7 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
           <li class="breadcrumb-item text-sm"><a
-              class="opacity-5 text-dark"
+              class="text-dark"
               href="javascript:;"
             >Pages</a></li>
           <li
@@ -17,7 +17,7 @@
             aria-current="page"
           >{{page}}</li>
         </ol>
-        <h6 class="font-weight-bolder mb-0">{{page}}</h6>
+        <p class="font-weight-bolder mb-0">{{page}}</p>
       </nav>
       <div
         class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
@@ -38,7 +38,7 @@
   <div id="post-page" class="container-fluid py-4">
     <header>
       <h1 class="text-dark">{{title}}</h1>
-      <h2 class="opacity-5 text-dark">Created by: {{feedPost.createdByID}}</h2>
+      <h2 class="text-dark">Created by: {{feedPost.createdByID}}</h2>
     </header>
     <div id="post-content">
       <p>{{feedPost.description}}</p>
@@ -58,14 +58,14 @@
         <div class="col-md-12 mt-4">
           <div class="card">
             <div class="card-header pb-0 px-3">
-              <h6 class="mb-0">Post Comments</h6>
+              <p class="mb-0">Post Comments</p>
             </div>
             <div class="card-body pt-4 p-3">
               <ul class="list-group">
                 {{#each comments}}
                 <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                   <div class="d-flex flex-column">
-                    <h6 class="mb-3 text-sm">{{this.creatorID}}, {{this.dateCreated}}</h6>
+                    <p class="mb-3 text-sm">{{this.creatorID}}, {{this.dateCreated}}</p>
                     <span class="mb-2 text-xs"><span
                         class="text-dark font-weight-bold ms-sm-2">{{this.content}}</span></span>
                   </div>
@@ -85,7 +85,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="Comment-Modal">Add Post Comment</h5>
+        <p class="modal-title" id="Comment-Modal">Add Post Comment</p>
         <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
