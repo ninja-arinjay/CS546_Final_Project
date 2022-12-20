@@ -51,6 +51,7 @@ router.route("/").get(async (req, res) => {
         title: feedItem.title,
         description: feedItem.description,
         createdByID: firstLast,
+        userId: userName ? userName._id : null,
         dataPosted: feedItem.datePosted,
         comments: feedItem.comments,
       };
@@ -97,6 +98,7 @@ router.route("/post/:id").get(async (req, res) => {
     let feedPost = await feedData.getFeedById(id);
     if (!feedPost) throw "No such post exists";
     let userName = await userData.getUserById(feedPost.createdByID);
+    let userId = feedPost.createdByID;
     if (!userName) throw "No such user exists";
     feedPost.createdByID = userName.firstName + " " + userName.lastName;
     let comments = await commentData.getAllComments(id, "feed");
@@ -124,6 +126,7 @@ router.route("/post/:id").get(async (req, res) => {
       feedPost: feedPost,
       title: feedPost.title,
       comments: comments,
+      userId: userId,
       page: "Post",
     });
   } catch (e) {

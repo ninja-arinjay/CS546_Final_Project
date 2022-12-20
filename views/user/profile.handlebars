@@ -1,0 +1,50 @@
+<main
+  class="main-content position-relative max-height-vh-100 h-100 border-radius-lg"
+>
+  <nav
+    class="navbar navbar-main navbar-expand-lg px-0 mx-4 shadow-none border-radius-xl"
+    id="navbarBlur"
+  >
+    <div class="container-fluid py-1 px-3">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb bg-transparent mb-0 pb-0 pt-1 px-0 me-sm-6 me-5">
+          <li class="breadcrumb-item text-sm"><a
+              class="text-dark"
+              href="javascript:;"
+            >Pages</a></li>
+          <li
+            class="breadcrumb-item text-sm text-dark active"
+            aria-current="page"
+          >{{page}}</li>
+        </ol>
+        <p class="font-weight-bolder mb-0">{{page}}</p>
+      </nav>
+      <div
+        class="collapse navbar-collapse mt-sm-0 mt-2 me-md-0 me-sm-4"
+        id="navbar"
+      >
+
+        <ul class="navbar-nav justify-content-end">
+          <li class="nav-item d-flex align-items-center">
+            <a
+              class="btn btn-outline-primary btn-sm mb-0 me-3"
+              href="/feed"
+            >Back</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div id="post-page" class="container-fluid py-4">
+    <header>
+      <h1 class="text-dark">Name: {{userData.firstName}} {{userData.lastName}}</h1>
+      <h2 class="text-dark">Location: {{userData.location}}</h2>
+    </header>
+    <div id="post-content">
+      <p>Age: {{userData.age}}</p>
+    </div>
+    <div>
+      <p>Bio: {{userData.bio}}</p>
+    </div>
+  </div>
+</main>

@@ -39,6 +39,9 @@
     <header>
       <h1 class="text-dark">{{title}}</h1>
       <h2 class="text-dark">Created by: {{feedPost.createdByID}}</h2>
+      {{#if userId}}
+      <a class="btn btn-outline-primary btn-sm mb-0 me-3" href="/user/account/{{userId}}">View Profile</a>
+      {{/if}}
     </header>
     <div id="post-content">
       <p>{{feedPost.description}}</p>

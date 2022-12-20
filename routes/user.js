@@ -157,4 +157,31 @@ router
     }
   });
 
+  router.route("/account/:id").get(async (req, res) => {
+    if(!req.session.user) {
+      return res.status(403).render("error/error", {
+        title: "Error",
+        error: "Unauthorized Access",
+        status: 403,
+        layout: "error",
+      });
+    }
+    try {
+      let id = xss(req.params.id.trim());
+      let usersData = await userData.getUserById(id);
+      return res.status(200).render("user/profile", {
+        title: "Account",
+        page: "Account",
+        activeClass: "profile-active",
+        userData: usersData,
+        success: "",
+      });
+    } catch(e) {
+      return res.status(400).render("user/account", {
+        title: "Account",
+        error: e,
+      });
+    }
+  });
+
 module.exports = router;
