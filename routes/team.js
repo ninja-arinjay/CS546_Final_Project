@@ -115,7 +115,7 @@ router
         let result = req.body;
         result.name = xss(result.name.trim());
         result.description = xss(result.description.trim());
-        result.private = xss(result.private.trim());
+        result.private = xss(result.private);
         result.memberLimit = xss(result.memberLimit.trim());
         result.ageMin = xss(result.ageMin.trim());
         let privateFlag = false;
@@ -311,7 +311,7 @@ router
         result.memberLimit = xss(result.memberLimit.trim());
         result.ageMin = xss(result.ageMin.trim());
         result.privateFlag = xss(result.privateFlag);
-        console.log(result);
+        //console.log(result);
         helpers.checkTeamInput("name", result.name, "Team Name", true);
         helpers.checkTeamInput(
           "description",
@@ -360,7 +360,7 @@ router
         throw errorObject;
       }
     } catch (e) {
-          console.log(e);
+          //console.log(e);
       if (
         typeof e === "object" &&
         e !== null &&
